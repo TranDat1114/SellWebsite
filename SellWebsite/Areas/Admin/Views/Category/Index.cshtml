@@ -1,0 +1,77 @@
+﻿@model List< SellWebsite.Models.Models.Category>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <h2 class="text-primary">
+                Category List
+            </h2>
+        </div>
+        <div class="col-12 col-md-6 text-end">
+            <a class="btn btn-primary" asp-controller="Category" asp-action="Create">
+                <i class="bi bi-plus-circle"></i> Create new category
+            </a>
+        </div>
+    </div>
+    <div class="row py-2">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].NameEnglish)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].DescriptionEnglish)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].NameVietnamese)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].DescriptionVietnamese)
+                    </th>
+                    <th>
+                        Edit
+                    </th>
+                    <th>
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(o => o.Id))
+                {
+                    <tr style="height:100px;" class="align-middle">
+                        <td>
+                            @item.Id
+                        </td>
+                        <td class="fw-bold">
+                            @item.NameEnglish
+                        </td>
+                        <td>
+                            @item.DescriptionEnglish
+                        </td>
+                        <td class="fw-bold">
+                            @item.NameVietnamese
+                        </td>
+                        <td>
+                            @item.DescriptionVietnamese
+                        </td>
+                        <td>
+                            <img style="width:100px; object-fit:contain; object-position:center" class="m-auto" src="@item.Image" alt="CategoryIMG" />
+                        </td>
+                        <td>
+                            <a class="btn btn-primary text-nowrap" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger text-nowrap" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3-fill"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

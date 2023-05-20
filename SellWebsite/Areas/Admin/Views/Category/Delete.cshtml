@@ -1,0 +1,48 @@
+﻿@model CategoryVM
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Delete Category</h2>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.Id"></label>
+            <input style="width:150px" class="form-control" readonly asp-for="Category.Id" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.NameEnglish"></label>
+            <input class="form-control" type="text" readonly asp-for="Category.NameEnglish" placeholder="Input Category Name" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.DescriptionEnglish"></label>
+            <textarea class="form-control" rows="6" readonly asp-for="Category.DescriptionEnglish" placeholder="Input Description...">
+
+            </textarea>
+        </div>
+        <hr class="text-primary" />
+        <div class="mb-3 row">
+            <label asp-for="Category.NameVietnamese"></label>
+            <input class="form-control" type="text" readonly asp-for="Category.NameVietnamese" placeholder="Input Category Name" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.DescriptionVietnamese"></label>
+            <textarea class="form-control" rows="6" readonly asp-for="Category.DescriptionVietnamese" placeholder="Input Description...">
+
+            </textarea>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.Image"></label>
+            <input class="form-control" type="text" readonly asp-for="Category.Image" placeholder="Input Category Image Url" />
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button class="btn btn-danger form-control" type="submit">Delete</button>
+
+            </div>
+            <div class="col-6 col-md-3">
+
+                <a class="btn btn-outline-secondary border form-control" asp-controller="Category" asp-action="Index">Back to list</a>
+            </div>
+        </div>
+    </div>
+</form>

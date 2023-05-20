@@ -1,0 +1,94 @@
+﻿@model ProductVM
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Category</h2>
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3 row">
+            <label asp-for="Product.Id"></label>
+            <input style="width:150px" class="form-control" readonly asp-for="Product.Id" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Product.Title"></label>
+            <input class="form-control" type="text" asp-for="Product.Title" placeholder="Input Category Name" />
+            <span class="text-danger" asp-validation-for="Product.Title"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label asp-for="Product.Author"></label>
+            <input class="form-control" rows="6" asp-for="Product.Author" placeholder="Input Description..." />
+            <span class="text-danger" asp-validation-for="Product.Author"></span>
+        </div>
+        <hr class="text-primary" />
+        <div class="mb-3 row">
+            <label asp-for="Product.Credits"></label>
+            <input class="form-control" type="text" asp-for="Product.Credits" placeholder="Input Category Name" />
+            <span class="text-danger" asp-validation-for="Product.Credits"></span>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Product.Description"></label>
+            <textarea class="form-control" rows="6" asp-for="Product.Description" placeholder="Input Description...">
+
+            </textarea>
+            <span class="text-danger" asp-validation-for="Product.Description"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label asp-for="Product.PostsBy"></label>
+            <input class="form-control" type="text" asp-for="Product.PostsBy" placeholder="Input Category Image Url" />
+            <span class="text-danger" asp-validation-for="Product.PostsBy"></span>
+        </div>
+
+        <div class="mb-3 row">
+            <label asp-for="Product.PreviewUrl"></label>
+            <input class="form-control" type="text" asp-for="Product.PreviewUrl" placeholder="Input Category Image Url" />
+            <span class="text-danger" asp-validation-for="Product.PreviewUrl"></span>
+
+        </div>
+
+        <div class="mb-3 row">
+            <label asp-for="Product.DownloadUrl"></label>
+            <input class="form-control" type="text" asp-for="Product.DownloadUrl" placeholder="Input Category Image Url" />
+            <span class="text-danger" asp-validation-for="Product.DownloadUrl"></span>
+
+        </div>
+
+        <div class="mb-3 row">
+            <label asp-for="Product.License"></label>
+            <input class="form-control" type="text" asp-for="Product.License" placeholder="Input Category Image Url" />
+            <span class="text-danger" asp-validation-for="Product.License"></span>
+
+        </div>
+
+        <label class="mt-3">Categories:</label>
+        <div class="mb-3 row">
+            @foreach (var checkBox in Model.CategoryList)
+            {
+                <div class="col-6 col-md-3 form-check">
+                    <input class="form-check-input" type="checkbox" name="CategoryIdList" value="@checkBox.Id" checked="@checkBox.IsSelected" />
+                    <label class="form-check-label">@checkBox.Name</label>
+                </div>
+            }
+        </div>
+
+
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button class="btn btn-primary form-control" type="submit">Update</button>
+
+            </div>
+            <div class="col-6 col-md-3">
+                <a class="btn btn-outline-secondary border form-control" asp-controller="Product" asp-action="Index">Back to list</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+    {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

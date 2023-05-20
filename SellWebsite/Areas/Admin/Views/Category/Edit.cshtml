@@ -1,0 +1,61 @@
+﻿@model CategoryVM
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Category</h2>
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3 row">
+            <label asp-for="Category.Id"></label>
+            <input style="width:150px" class="form-control" readonly asp-for="Category.Id" />
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.NameEnglish"></label>
+            <input class="form-control" type="text" asp-for="Category.NameEnglish" placeholder="Input Category Name" />
+            <span class="text-danger" asp-validation-for="Category.NameEnglish"></span>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.DescriptionEnglish"></label>
+            <textarea class="form-control" rows="6" asp-for="Category.DescriptionEnglish" placeholder="Input Description...">
+
+            </textarea>
+            <span class="text-danger" asp-validation-for="Category.DescriptionEnglish"></span>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.NameVietnamese"></label>
+            <input class="form-control" type="text" asp-for="Category.NameVietnamese" placeholder="Input Category Name" />
+            <span class="text-danger" asp-validation-for="Category.NameVietnamese"></span>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.DescriptionVietnamese"></label>
+            <textarea class="form-control" rows="6" asp-for="Category.DescriptionVietnamese" placeholder="Input Description...">
+
+            </textarea>
+            <span class="text-danger" asp-validation-for="Category.DescriptionVietnamese"></span>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Category.Image"></label>
+            <input class="form-control" type="text" asp-for="Category.Image" placeholder="Input Category Image Url" />
+            <span class="text-danger" asp-validation-for="Category.Image"></span>
+
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button class="btn btn-primary form-control" type="submit">Update</button>
+
+            </div>
+            <div class="col-6 col-md-3">
+
+                <a class="btn btn-outline-secondary border form-control" asp-controller="Category" asp-action="Index">Back to list</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+    {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
