@@ -12,8 +12,8 @@ using SellWebsite.DataAccess.Data;
 namespace SellWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230517062308_addGet")]
-    partial class addGet
+    [Migration("20230521110145_demo_1")]
+    partial class demo_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,7 +285,8 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("Date")
-                        .HasColumnName("ProductUpdatedDate");
+                        .HasColumnName("ProductUpdatedDate")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("Id");
 
@@ -296,7 +297,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 5, 17, 13, 23, 8, 14, DateTimeKind.Local).AddTicks(9216),
+                            CreatedDate = new DateTime(2023, 5, 21, 18, 1, 45, 298, DateTimeKind.Local).AddTicks(3274),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -305,7 +306,7 @@ namespace SellWebsite.DataAccess.Migrations
                             PostsBy = "ADminTPD",
                             PreviewUrl = "LinkPreviewUrl",
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 5, 17, 13, 23, 8, 14, DateTimeKind.Local).AddTicks(9232)
+                            UpdatedDate = new DateTime(2023, 5, 21, 18, 1, 45, 298, DateTimeKind.Local).AddTicks(3283)
                         });
                 });
 

@@ -12,8 +12,8 @@ using SellWebsite.DataAccess.Data;
 namespace SellWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230517052842_category_product_AndSeedData")]
-    partial class category_product_AndSeedData
+    [Migration("20230522114717_demo_3")]
+    partial class demo_3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,9 +61,11 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)")
-                        .HasColumnName("CategoryImage");
+                        .HasColumnName("CategoryImage")
+                        .HasDefaultValueSql("'/assets/avatar.jpg'");
 
                     b.Property<string>("NameEnglish")
                         .IsRequired()
@@ -212,7 +214,7 @@ namespace SellWebsite.DataAccess.Migrations
                             Id = 16,
                             DescriptionEnglish = "A huge list of the best business website templates is built to serve any company, from construction to business consulting and financial services. All templates are mobile-friendly and feature both one-page and multi-page setups. Whether you are bringing a fresh project or redesigning your current website, these templates have you covered. They are powerful enough to meet any firm and organization owner’s needs and requirements.",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
-                            Image = "No img",
+                            Image = "/assets/dev.png",
                             NameEnglish = "Business",
                             NameVietnamese = "Kinh doanh"
                         });
@@ -234,8 +236,10 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasColumnName("ProductAuthor");
 
                     b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("Date")
-                        .HasColumnName("ProductCreatedDate");
+                        .HasColumnName("ProductCreatedDate")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Credits")
                         .HasMaxLength(256)
@@ -256,6 +260,14 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)")
                         .HasColumnName("ProductDownloadUrl");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("ProductImage")
+                        .HasDefaultValueSql("'/assets/dev.png'");
 
                     b.Property<string>("License")
                         .HasMaxLength(128)
@@ -281,8 +293,10 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasColumnName("ProductTitle");
 
                     b.Property<DateTime>("UpdatedDate")
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("Date")
-                        .HasColumnName("ProductUpdatedDate");
+                        .HasColumnName("ProductUpdatedDate")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("Id");
 
@@ -293,7 +307,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 5, 17, 12, 28, 42, 62, DateTimeKind.Local).AddTicks(1921),
+                            CreatedDate = new DateTime(2023, 5, 22, 18, 47, 16, 671, DateTimeKind.Local).AddTicks(446),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -302,7 +316,7 @@ namespace SellWebsite.DataAccess.Migrations
                             PostsBy = "ADminTPD",
                             PreviewUrl = "LinkPreviewUrl",
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 5, 17, 12, 28, 42, 62, DateTimeKind.Local).AddTicks(1930)
+                            UpdatedDate = new DateTime(2023, 5, 22, 18, 47, 16, 671, DateTimeKind.Local).AddTicks(470)
                         });
                 });
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SellWebsite.DataAccess.Data;
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
+using SellWebsite.Models.ViewModels;
 
 namespace SellWebsite.DataAccess.Reponsitory
 {
@@ -30,5 +31,36 @@ namespace SellWebsite.DataAccess.Reponsitory
         {
             _db.SaveChanges();
         }
+
+        public void UpdateCategories(Product product, List<int> selectedCategoryIds)
+        {
+            //Cập nhật dữ liệu cho bảng Categories
+            if (product.Id != 0)
+            {
+                product = Get(p => p.Id == product.Id, p => p.Categories);
+            }
+
+            // Xóa các danh mục hiện tại của sản phẩm
+
+            if (product.Categories != null)
+            {
+                product.Categories.Clear();
+            }
+            else
+            {
+                product.Categories = new List<Category>();
+            }
+
+            if (selectedCategoryIds != null)
+            {
+                // Thêm các danh mục mới được chọn
+                foreach (var categoryId in selectedCategoryIds)
+                {
+                    product.Categories.Add(_db.Categories.First(p => p.Id == categoryId));
+                }
+            }
+
+        }
     }
+
 }

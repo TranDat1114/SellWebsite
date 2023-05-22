@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SellWebsite.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class category_product_AndSeedData : Migration
+    public partial class demo_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,8 +39,8 @@ namespace SellWebsite.DataAccess.Migrations
                     ProductTitle = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProductAuthor = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProductDescription = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    ProductCreatedDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ProductUpdatedDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ProductCreatedDate = table.Column<DateTime>(type: "Date", nullable: false, defaultValueSql: "GETDATE()"),
+                    ProductUpdatedDate = table.Column<DateTime>(type: "Date", nullable: false, defaultValueSql: "GETDATE()"),
                     ProductLicense = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: true),
                     ProductCredits = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     ProductPreviewUrl = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false),
@@ -101,8 +101,8 @@ namespace SellWebsite.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductId", "ProductAuthor", "ProductCreatedDate", "ProductCredits", "ProductDescription", "ProductDownloadCount", "ProductDownloadUrl", "ProductLicense", "ProductPostsBy", "ProductPreviewUrl", "ProductTitle", "ProductUpdatedDate" },
-                values: new object[] { 1, "TranPhuDat", new DateTime(2023, 5, 17, 12, 28, 42, 62, DateTimeKind.Local).AddTicks(1921), "Images from Unsplash;Boostrap", "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.", 0, "linkdownloadFIle", "", "ADminTPD", "LinkPreviewUrl", "Glint", new DateTime(2023, 5, 17, 12, 28, 42, 62, DateTimeKind.Local).AddTicks(1930) });
+                columns: new[] { "ProductId", "ProductAuthor", "ProductCreatedDate", "ProductCredits", "ProductDescription", "ProductDownloadCount", "ProductDownloadUrl", "ProductLicense", "ProductPostsBy", "ProductPreviewUrl", "ProductTitle" },
+                values: new object[] { 1, "TranPhuDat", new DateTime(2023, 5, 21, 18, 1, 45, 298, DateTimeKind.Local).AddTicks(3274), "Images from Unsplash;Boostrap", "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.", 0, "linkdownloadFIle", "", "ADminTPD", "LinkPreviewUrl", "Glint" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryProduct_ProductsId",

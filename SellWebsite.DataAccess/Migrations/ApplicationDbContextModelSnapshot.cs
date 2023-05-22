@@ -58,9 +58,11 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)")
-                        .HasColumnName("CategoryImage");
+                        .HasColumnName("CategoryImage")
+                        .HasDefaultValueSql("'/assets/avatar.jpg'");
 
                     b.Property<string>("NameEnglish")
                         .IsRequired()
@@ -209,25 +211,10 @@ namespace SellWebsite.DataAccess.Migrations
                             Id = 16,
                             DescriptionEnglish = "A huge list of the best business website templates is built to serve any company, from construction to business consulting and financial services. All templates are mobile-friendly and feature both one-page and multi-page setups. Whether you are bringing a fresh project or redesigning your current website, these templates have you covered. They are powerful enough to meet any firm and organization owner’s needs and requirements.",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
-                            Image = "No img",
+                            Image = "/assets/dev.png",
                             NameEnglish = "Business",
                             NameVietnamese = "Kinh doanh"
                         });
-                });
-
-            modelBuilder.Entity("SellWebsite.Models.Models.CategoryProduct", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CategoryProducts");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.Product", b =>
@@ -271,6 +258,14 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasColumnType("varchar(128)")
                         .HasColumnName("ProductDownloadUrl");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("ProductImage")
+                        .HasDefaultValueSql("'/assets/dev.png'");
+
                     b.Property<string>("License")
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)")
@@ -297,7 +292,8 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("Date")
-                        .HasColumnName("ProductUpdatedDate");
+                        .HasColumnName("ProductUpdatedDate")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("Id");
 
@@ -308,7 +304,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 5, 21, 3, 29, 16, 456, DateTimeKind.Local).AddTicks(4494),
+                            CreatedDate = new DateTime(2023, 5, 22, 18, 47, 16, 671, DateTimeKind.Local).AddTicks(446),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -317,7 +313,7 @@ namespace SellWebsite.DataAccess.Migrations
                             PostsBy = "ADminTPD",
                             PreviewUrl = "LinkPreviewUrl",
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 5, 21, 3, 29, 16, 456, DateTimeKind.Local).AddTicks(4512)
+                            UpdatedDate = new DateTime(2023, 5, 22, 18, 47, 16, 671, DateTimeKind.Local).AddTicks(470)
                         });
                 });
 
@@ -334,25 +330,6 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SellWebsite.Models.Models.CategoryProduct", b =>
-                {
-                    b.HasOne("SellWebsite.Models.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SellWebsite.Models.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

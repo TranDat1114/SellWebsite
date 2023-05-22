@@ -17,7 +17,7 @@ namespace SellWebsite.Models.ViewModels
         [ValidateNever]
         public IEnumerable<CategoryListVM> CategoryList { get; set; }
         [ValidateNever]
-        public List<int>? CategoryIdList { get; set; }
+        public List<int> CategoryIdList { get; set; }
     }
 
     public class CategoryListVM

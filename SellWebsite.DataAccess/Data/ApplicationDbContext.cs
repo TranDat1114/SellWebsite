@@ -14,9 +14,11 @@ namespace SellWebsite.DataAccess.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<CategoryProduct> CategoryProducts { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -155,7 +157,7 @@ namespace SellWebsite.DataAccess.Data
                         NameVietnamese = "Kinh doanh",
                         DescriptionEnglish = "A huge list of the best business website templates is built to serve any company, from construction to business consulting and financial services. All templates are mobile-friendly and feature both one-page and multi-page setups. Whether you are bringing a fresh project or redesigning your current website, these templates have you covered. They are powerful enough to meet any firm and organization owner’s needs and requirements.",
                         DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
-                        Image = "No img",
+                        Image = @"/assets/dev.png",
 
                     }
             };
@@ -181,6 +183,11 @@ namespace SellWebsite.DataAccess.Data
             };
 
             //
+
+            modelBuilder.Entity<Category>()
+             .Property(e => e.Image)
+             .HasDefaultValueSql("'/assets/avatar.jpg'");
+
             modelBuilder.Entity<Category>().HasData(
                 categories
             );
@@ -191,13 +198,19 @@ namespace SellWebsite.DataAccess.Data
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Product>()
+               .Property(e => e.Image)
+               .HasDefaultValueSql("'/assets/dev.png'");
+
+            modelBuilder.Entity<Product>()
+                .Property(e => e.UpdatedDate)
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Product>().HasData(
                 products
             );
-
-            modelBuilder.Entity<CategoryProduct>().HasKey(cp => new { cp.CategoryId, cp.ProductId });
 
 
             base.OnModelCreating(modelBuilder);

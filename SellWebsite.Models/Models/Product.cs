@@ -77,12 +77,15 @@ namespace SellWebsite.Models.Models
         [DisplayName("PostsBy")]
         public string PostsBy { get; set; }
 
+        [Column("ProductImage", TypeName = "varchar(256)")]
+        [DisplayName("Product Image Url")]
+        [Required]
+        [MaxLength(256)]
+        public string Image { get; set; }
+
 
         [DisplayName("Categories")]
         public ICollection<Category>? Categories { get; set; }
-
-        //[NotMapped]
-        //public List<int>? CategoryIdList { get; set; }
 
     }
 }

@@ -24,9 +24,9 @@ namespace SellWebsite.Areas.Admin.Controllers
             return View(objProducts);
         }
 
-        public IActionResult Create()
+        //Hàm Create cũ đặt tên và chỉnh sửa lại, update và insert
+        public IActionResult Upsert(int? id)
         {
-
             var productVM = new ProductVM()
             {
                 CategoryList = _unitOfWork.Category.GetAll().Select(u => new CategoryListVM()
@@ -36,22 +36,25 @@ namespace SellWebsite.Areas.Admin.Controllers
                 }),
                 Product = new Product(),
             };
-
+            if (id != null || id != 0)
+            {
+                productVM.Product = _unitOfWork.Product.Get(p => p.Id == id);
+            }
             return View(productVM);
+
+
         }
+
+        //Upsert là create và edit kết hợp
         [HttpPost]
-        public IActionResult Create(ProductVM productVM)
+        public IActionResult Upsert(ProductVM productVM,IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                if (productVM.CategoryIdList != null)
-                {
-                    foreach (var item in productVM.CategoryIdList)
-                    {
-                        productVM.Product.Categories.Add(_unitOfWork.Category.GetAll().First(p => p.Id == item));
-                    }
-                }
                 _unitOfWork.Product.Add(productVM.Product);
+                //Lệnh dưới để cập nhật categories cho product
+
+                _unitOfWork.Product.UpdateCategories(productVM.Product, productVM.CategoryIdList);
                 _unitOfWork.Save();
                 TempData["Success"] = "Product created successfully";
 
@@ -61,7 +64,25 @@ namespace SellWebsite.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Edit(int? id)
+       
+        //[HttpPost]
+        //public IActionResult Edit(ProductVM productVM)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Product.Update(productVM.Product);
+        //        //Lệnh dưới để cập nhật categories cho product
+        //        _unitOfWork.Product.UpdateCategories(productVM.Product, productVM.CategoryIdList);
+        //        _unitOfWork.Save();
+
+        //        TempData["Success"] = "Product updated successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+
+        //}
+
+        public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
             {
@@ -69,7 +90,6 @@ namespace SellWebsite.Areas.Admin.Controllers
             }
 
             var categoryIdList = _unitOfWork.Product.Get(obj => obj.Id == id, p => p.Categories).Categories.Select(u => u.Id).ToList();
-
             var productVM = new ProductVM()
             {
                 Product = _unitOfWork.Product.Get(obj => obj.Id == id),
@@ -81,40 +101,6 @@ namespace SellWebsite.Areas.Admin.Controllers
                     Name = u.NameEnglish,
                     IsSelected = categoryIdList.Contains(u.Id)
                 })
-            };
-
-            if (productVM.Product == null)
-            {
-                return NotFound();
-            }
-            return View(productVM);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(ProductVM productVM)
-        {
-            if (ModelState.IsValid)
-            {
-
-                _unitOfWork.Product.Update(productVM.Product);
-                _unitOfWork.Save();
-
-                TempData["Success"] = "Product updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-
-        }
-
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var productVM = new ProductVM()
-            {
-                Product = _unitOfWork.Product.Get(obj => obj.Id == id),
             };
 
             if (productVM.Product == null)
