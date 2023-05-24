@@ -50,7 +50,7 @@ namespace SellWebsite.DataAccess.Reponsitory
                     query = query.Include(include);
                 }
             }
-           
+
             return query.FirstOrDefault();
         }
 

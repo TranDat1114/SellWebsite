@@ -2,19 +2,29 @@
 
 <form method="post" enctype="multipart/form-data">
     <div class="border p-3 mt-4">
+
         <div class="row pb-2">
-            <h2 class="text-primary">Edit Category</h2>
+            <h2 class="text-primary">@(Model.Category.Id != 0 ? "Update" : "Create") Category</h2>
         </div>
         <div asp-validation-summary="All"></div>
+
+
         <div class="mb-3 row">
             <label asp-for="Category.Id"></label>
             <input style="width:150px" class="form-control" readonly asp-for="Category.Id" />
         </div>
+
+        <div class="mb-3 row" hidden>
+            <label asp-for="Category.Image"></label>
+            <input class="form-control" readonly asp-for="Category.Image" />
+        </div>
+
         <div class="mb-3 row">
             <label asp-for="Category.NameEnglish"></label>
             <input class="form-control" type="text" asp-for="Category.NameEnglish" placeholder="Input Category Name" />
             <span class="text-danger" asp-validation-for="Category.NameEnglish"></span>
         </div>
+
         <div class="mb-3 row">
             <label asp-for="Category.DescriptionEnglish"></label>
             <textarea class="form-control" rows="6" asp-for="Category.DescriptionEnglish" placeholder="Input Description...">
@@ -22,6 +32,7 @@
             </textarea>
             <span class="text-danger" asp-validation-for="Category.DescriptionEnglish"></span>
         </div>
+        <hr class="text-primary" />
         <div class="mb-3 row">
             <label asp-for="Category.NameVietnamese"></label>
             <input class="form-control" type="text" asp-for="Category.NameVietnamese" placeholder="Input Category Name" />
@@ -34,18 +45,28 @@
             </textarea>
             <span class="text-danger" asp-validation-for="Category.DescriptionVietnamese"></span>
         </div>
-        <div class="mb-3 row">
-            <label asp-for="Category.Image"></label>
-            <input class="form-control" type="file" asp-for="Category.Image" placeholder="Input Category Image Url" />
-            
+
+        <div class="mb-3 row ">
+            <div class="col-12 col-md-8">
+                <label asp-for="Category.Image"></label>
+                <input class="form-control mt-3" type="file" name="file" asp-for="Category.Image" />
+            </div>
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+                <img id="preview-img" style="height:200px;object-fit:contain" class="w-100" src="@Model.Category.Image" />
+            </div>
         </div>
         <div class="row">
             <div class="col-6 col-md-3">
-                <button class="btn btn-primary form-control" type="submit">Update</button>
-
+                @if (Model.Category.Id != 0)
+                {
+                    <button class="btn btn-primary form-control" type="submit">Update</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary form-control" type="submit">Create</button>
+                }
             </div>
             <div class="col-6 col-md-3">
-
                 <a class="btn btn-outline-secondary border form-control" asp-controller="Category" asp-action="Index">Back to list</a>
             </div>
         </div>
@@ -54,6 +75,13 @@
 
 @section Scripts
     {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons lists  table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent',
+        });
+    </script>
     @{
         <partial name="_ValidationScriptsPartial" />
     }

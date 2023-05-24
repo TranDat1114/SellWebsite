@@ -15,7 +15,7 @@ namespace SellWebsite.Models.ViewModels
     {
         public Product Product { get; set; }
         [ValidateNever]
-        public IEnumerable<CategoryListVM> CategoryList { get; set; }
+        public List<CategoryListVM> CategoryList { get; set; }
         [ValidateNever]
         public List<int> CategoryIdList { get; set; }
     }

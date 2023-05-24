@@ -29,8 +29,8 @@ namespace SellWebsite.Models.Models
         [MaxLength(128)]
         public string Author { get; set; }
 
-        [Column("ProductDescription", TypeName = "nvarchar(512)")]
-        [MaxLength(512)]
+        [Column("ProductDescription", TypeName = "nvarchar(4096)")]
+        [MaxLength(4096)]
         [DisplayName("Product Description")]
         public string? Description { get; set; }
 
@@ -79,13 +79,13 @@ namespace SellWebsite.Models.Models
 
         [Column("ProductImage", TypeName = "varchar(256)")]
         [DisplayName("Product Image Url")]
-        [Required]
-        [MaxLength(256)]
-        public string Image { get; set; }
+                [MaxLength(256)]
+        
+        public string? Image { get; set; }
 
 
         [DisplayName("Categories")]
-        public ICollection<Category>? Categories { get; set; }
+        public virtual ICollection<Category>? Categories { get; set; }
 
     }
 }

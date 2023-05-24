@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using SellWebsite.DataAccess.Data;
 using SellWebsite.DataAccess.Reponsitory;
@@ -12,9 +12,13 @@ namespace SellWebsite
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container. 
+            //.UseLazyLoadingProxies()
+            //Test :tên database khác để hỗ trợ việc đổi dữ liệu 
+            //DebugDb : tên database khác để hỗ trợ việc đổi dữ liệu 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DebugDb")));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
+
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -36,9 +40,8 @@ namespace SellWebsite
             app.UseAuthorization();
 
             app.MapControllerRoute(
-                name: "default",
+                name: "home",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}");
-
             app.Run();
         }
     }
