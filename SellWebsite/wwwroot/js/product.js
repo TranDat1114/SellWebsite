@@ -7,6 +7,14 @@ function loadDataTable() {
         "ajax": { url: '/admin/product/getall' },
         "columns": [
             { data: 'Id' },
+            {
+                data: 'Image',
+                "render": function (data) {
+                    return `
+                    <img class="img-table" src="${data}" alt="img" />
+                    `
+                }
+            },
             { data: 'Title' },
             { data: 'Author' },
             { data: 'Description' },
@@ -28,15 +36,6 @@ function loadDataTable() {
                     return categoriesHTML;
                 }
 
-            },
-            {
-                data: 'Image',
-                "render": function (data) {
-                    return `
-                    <img style="object-fit:contain" class="w-100" src="${data}" alt="img" />
-                    
-                    `
-                }
             },
             {
                 data: 'Id',

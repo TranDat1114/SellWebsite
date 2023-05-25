@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
-using SellWebsite.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
+using SellWebsite.Models.ViewModels.Admin;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {
@@ -153,6 +153,8 @@ namespace SellWebsite.Areas.Admin.Controllers
             }
 
             _unitOfWork.Category.Remove(category);
+
+
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful" });
         }

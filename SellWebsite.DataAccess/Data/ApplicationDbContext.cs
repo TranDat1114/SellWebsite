@@ -71,7 +71,7 @@ namespace SellWebsite.DataAccess.Data
                     new Category()
                     {
                         Id = 6,
-                        NameEnglish = "Social media",
+                        NameEnglish = "Social-media",
                         NameVietnamese = "Mạng xã hội",
                         DescriptionEnglish = "These are websites that allow users to interact and connect with each other, such as Facebook, Twitter, or Instagram.",
                         DescriptionVietnamese = "Đây là trang web cho phép người dùng tương tác và kết nối với nhau, chẳng hạn như Facebook, Twitter, Instagram.",
@@ -107,7 +107,7 @@ namespace SellWebsite.DataAccess.Data
                     new Category()
                     {
                         Id = 10,
-                        NameEnglish = "Online learning",
+                        NameEnglish = "Online-learning",
                         NameVietnamese = "Học tập trực tuyến",
                         DescriptionEnglish = "These are websites that provide online courses or study materials, such as Coursera, edX, or Udemy.",
                         DescriptionVietnamese = "Đây là trang web cung cấp các khóa học hoặc tài liệu học tập trực tuyến, chẳng hạn như Coursera, edX hay Udemy.",

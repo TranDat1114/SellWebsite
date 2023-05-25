@@ -1,3 +1,67 @@
-﻿@{
+﻿@model HomeVM
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<!-- Header -->
+<header id="header" class="header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-xl-5">
+                <div class="text-container">
+                    <div class="section-title">Welcome to JADY web agency</div>
+                    <h1 class="h1-large">JADY creates stylish and efficient sites</h1>
+                    <p class="p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim, neque ut ultrices sollicitudin</p>
+                    <a class="btn-solid-lg" href="#services">Offered services</a>
+                    <a class="quote" href="#contact"><i class="fas fa-paper-plane"></i>Get quote</a>
+                </div> <!-- end of text-container -->
+            </div> <!-- end of col -->
+            <div class="col-lg-6 col-xl-7">
+                <div class="image-container">
+                    <lottie-player class="w-100" src="https://assets1.lottiefiles.com/packages/lf20_aesgckiv.json" background="transparent" speed="1" loop autoplay></lottie-player>
+                    @*<img  src="~/assets/Images/TemplateIMG/header-illustration.svg" alt="alternative">*@
+                </div> <!-- end of image-container -->
+            </div> <!-- end of col -->
+        </div> <!-- end of row -->
+    </div> <!-- end of container -->
+</header> <!-- end of header -->
+<!-- end of header -->
+
+<!-- Projects -->
+<div id="projects" class="filter bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="h2-heading">Projects that we're proud of</h2>
+            </div> <!-- end of col -->
+        </div> <!-- end of row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Filter -->
+                <div class="button-group filters-button-group row-cols-5">
+                    <button class="button is-checked" data-filter="*">ALL</button>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <button class="button" data-filter=".@item.NameEnglish">@item.NameEnglish</button>
+                    }
+                </div> <!-- end of button group -->
+                <div class="grid">
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="element-item @(string.Join(" ",item.Categories.Select(p=>p.NameEnglish)))">
+                            <a href="article.html">
+                                <img style="height:200px; object-fit:cover" class="" src="@item.Image" alt="alternative">
+                                <p><strong>@item.Title</strong> - @item.Author</p>
+                                <p><strong>@item.DownloadCount</strong></p>
+                            </a>
+                            <a href="@item.PreviewUrl">Live Preview</a>
+                        </div>
+                    }
+                </div> <!-- end of grid -->
+                <!-- end of filter -->
+
+            </div> <!-- end of col -->
+        </div> <!-- end of row -->
+    </div> <!-- end of container -->
+</div> <!-- end of filter -->
+<!-- end of projects -->

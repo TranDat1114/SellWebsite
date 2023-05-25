@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using SellWebsite.Models.Models;
 
-namespace SellWebsite.Models.ViewModels
+namespace SellWebsite.Models.ViewModels.Admin
 {
     public class CategoryVM
     {

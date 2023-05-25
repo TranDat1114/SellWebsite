@@ -10,7 +10,7 @@ using NuGet.ContentModel;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
-using SellWebsite.Models.ViewModels;
+using SellWebsite.Models.ViewModels.Admin;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {

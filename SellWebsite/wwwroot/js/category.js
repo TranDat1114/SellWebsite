@@ -7,18 +7,18 @@ function loadDataTable() {
         "ajax": { url: '/admin/category/getall' },
         "columns": [
             { data: 'id' },
-            { data: 'nameEnglish' },
-            { data: 'descriptionEnglish' },
-            { data: 'nameVietnamese' },
-            { data: 'descriptionVietnamese' },
             {
                 data: 'image',
                 "render": function (data) {
                     return `
-                    <img style="object-fit:contain" class="w-100" src="${data}" alt="img" />
+                    <img class="img-table" src="${data}" alt="img" />
                         `
                 },
             },
+            { data: 'nameEnglish' },
+            { data: 'descriptionEnglish' },
+            { data: 'nameVietnamese' },
+            { data: 'descriptionVietnamese' },
             {
                 data: 'id',
                 "render": function (data) {
