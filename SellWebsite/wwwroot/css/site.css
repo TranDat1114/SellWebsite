@@ -2,3 +2,8 @@
     overflow-x:auto;
     display:block;
 }
+
+.img-table{
+    object-fit:contain;
+    width:100%;
+}

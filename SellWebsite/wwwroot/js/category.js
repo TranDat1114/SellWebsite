@@ -11,7 +11,7 @@ function loadDataTable() {
                 data: 'image',
                 "render": function (data) {
                     return `
-                    <img style="object-fit:contain" src="${data}" alt="img" />
+                    <img class="img-table" src="${data}" alt="img" />
                         `
                 },
             },

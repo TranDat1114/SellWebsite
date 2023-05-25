@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
+using SellWebsite.Models.ViewModels;
+using SellWebsite.Models.ViewModels.Customer;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -12,14 +14,19 @@ namespace SellWebsite.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController( IUnitOfWork unitOfWork)
+        public HomeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var homeVM = new HomeVM()
+            {
+                Products = _unitOfWork.Product.GetAll(p => p.Categories).ToList(),
+                Categories = _unitOfWork.Category.GetAll().ToList(),
+            };
+            return View(homeVM);
         }
 
         public IActionResult Privacy()

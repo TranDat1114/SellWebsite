@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using SellWebsite.Models.Models;
 
-namespace SellWebsite.Models.ViewModels
+namespace SellWebsite.Models.ViewModels.Admin
 {
     public class ProductVM
     {
