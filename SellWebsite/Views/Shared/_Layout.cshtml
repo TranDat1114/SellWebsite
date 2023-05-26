@@ -37,7 +37,7 @@
 <body data-bs-spy="scroll" data-bs-target="#navbarExample">
     <!-- Navigation -->
     <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
-        <div class="container">
+        <div class="container-fluid">
 
             <!-- Image Logo -->
             @*<a class="navbar-brand logo-image" href="index.html"><img src="~/assets/Images/TemplateIMG/logo.svg" alt="alternative"></a> *@
@@ -87,11 +87,11 @@
                         </li>
                     }
 
-                    <partial name="_LoginPartial">
 
                 </ul>
                 <span class="nav-item">
-                    <a class="btn-solid-sm" href="#contact">Get quote</a>
+                    <partial name="_LoginPartial">
+                    @*<a class="btn-solid-sm" href="#contact">Get quote</a>*@
                 </span>
             </div> <!-- end of navbar-collapse -->
         </div> <!-- end of container -->
@@ -101,7 +101,7 @@
     <div class="container-fluid p-8rem">
         <div class="row">
             <div class="col-12">
-                <main role="main">
+                <main class="mx-5" role="main">
                     @{
                         <partial name="_Notification" />
                     }
