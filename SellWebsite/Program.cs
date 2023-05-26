@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 using SellWebsite.DataAccess.Data;
 using SellWebsite.DataAccess.Reponsitory;
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
+using Microsoft.AspNetCore.Identity;
 
 namespace SellWebsite
 {
@@ -19,8 +20,13 @@ namespace SellWebsite
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
+            //options.SignIn.RequireConfirmedAccount = true Đăng nhập sẽ gửi yêu cầu confirm về email
 
+            builder.Services.AddDefaultIdentity<IdentityUser>( ).AddEntityFrameworkStores<ApplicationDbContext>();
+            
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
@@ -36,9 +42,11 @@ namespace SellWebsite
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
+            app.MapRazorPages();
             app.MapControllerRoute(
                 name: "home",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}");

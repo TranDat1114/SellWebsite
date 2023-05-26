@@ -9,28 +9,29 @@
     <meta name="author" content="JayAndy-DatTran">
 
     <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
-	<meta property="og:site_name" content="" /> <!-- website name -->
-	<meta property="og:site" content="" /> <!-- website link -->
-	<meta property="og:title" content=""/> <!-- title shown in the actual shared post -->
-	<meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
-	<meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
-	<meta property="og:url" content="" /> <!-- where do you want your post to link to -->
-
+    <meta property="og:site_name" content="" /> <!-- website name -->
+    <meta property="og:site" content="" /> <!-- website link -->
+    <meta property="og:title" content="" /> <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
     <!-- Webpage Title -->
     <title>@ViewData["Title"] - SellWebsite</title>
 
     <!-- Favicon  -->
     <link rel="icon" href="~/favicon.ico">
 
-     <!-- Styles -->
+    <!-- Styles -->
     <script src="https://kit.fontawesome.com/4552defb60.js" crossorigin="anonymous"></script>
+     <script src="https://cdn.tiny.cloud/1/y07btutcpwdzswao1xm5ps6m0l90919xay5fmsmylhv1s0kr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-     <script src="https://unpkg.com/@@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <script src="https://unpkg.com/@@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
     <link href="~/css/Template_Css/swiper.css" rel="stylesheet">
-	<link href="~/css/Template_Css/styles.css" rel="stylesheet">
+    <link href="~/css/Template_Css/styles.css" rel="stylesheet">
 
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbarExample">
@@ -54,12 +55,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#header">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects">Projects</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Drop</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown01">
@@ -68,20 +63,29 @@
                             <li><a class="dropdown-item" href="terms.html">Terms Conditions</a></li>
                             <li><div class="dropdown-divider"></div></li>
                             <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="#services">Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="#projects">Projects</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#pricing">Pricing</a>
                     </li>
-                    
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index" >Product Management</a></li>
+                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
                             <li><div class="dropdown-divider"></div></li>
                             <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
                         </ul>
                     </li>
+                    
+                    <partial name="_LoginPartial">
+                    
                 </ul>
                 <span class="nav-item">
                     <a class="btn-solid-sm" href="#contact">Get quote</a>
@@ -90,83 +94,21 @@
         </div> <!-- end of container -->
     </nav> <!-- end of navbar -->
     <!-- end of navigation -->
-   
-    <div class="container-fluid">
+
+    <div class="container-fluid p-8rem">
         <div class="row">
             <div class="col-12">
                 <main role="main">
-                        @{
-                            <partial name="_Notification" />
-                        }
-                        @RenderBody()
+                    @{
+                        <partial name="_Notification" />
+                    }
+                    @RenderBody()
                 </main>
             </div>
         </div>
     </div>
 
-    <!-- Invitation -->
-    <div class="basic-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-container">
-                        <h4>In gravida at nunc sodales pretium. Vivamus semper, odio vitae mattis auctor, elit elit semper magna rico</h4>
-                        <p class="p-large">Ac tristique velit sapien vitae eros. Praesent ut erat a tellus cursus pharetra finibus posuere nisi. Vivamus feugiat tincidunt sem pre toro</p>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of basic-2 -->
-    <!-- end of invitation -->
 
-
-    <!-- Contact -->
-    <div id="contact" class="form-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="h2-heading"><span>Use the following form to</span><br> request a quote for your project</h2>
-                    <p class="p-heading">Vel malesuada sapien condimentum nec. Fusce interdum nec urna et finibus pulvinar tortor id</p>
-                    <ul class="list-unstyled li-space-lg">
-                        <li><i class="fas fa-map-marker-alt"></i> &nbsp;22 Praesentum, Pharetra Fin, CB 12345, KL</li>
-                        <li><i class="fas fa-phone"></i> &nbsp;<a href="tel:00817202212">+81 720 2212</a></li>
-                        <li><i class="fas fa-envelope"></i> &nbsp;<a href="mailto:lorem@ipsum.com">lorem@ipsum.com</a></li>
-                    </ul>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-            <div class="row">
-                <div class="col-lg-10 offset-lg-1">
-                    
-                    <!-- Contact Form -->
-                    <form>
-                        <div class="form-group">
-                            <input type="text" class="form-control-input" placeholder="Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control-input" placeholder="Email" required>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control-select" required>
-                                <option class="select-option" value="" disabled selected>Project type</option>
-                                <option class="select-option" value="Company Website">Company Website</option>
-                                <option class="select-option" value="Landing Page">Landing Page</option>
-                                <option class="select-option" value="Online Shop">Online Shop</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control-textarea" placeholder="Message" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="form-control-submit-button">Submit</button>
-                        </div>
-                    </form>
-                    <!-- end of contact form -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of form-1 -->
-    <!-- end of contact -->
 
 
     <!-- Footer -->
@@ -211,10 +153,8 @@
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
-    </div> <!-- end of footer -->  
+    </div> <!-- end of footer -->
     <!-- end of footer -->
-
-
     <!-- Copyright -->
     <div class="copyright bg-gray">
         <div class="container">
@@ -234,10 +174,9 @@
                 </div> <!-- end of col -->
             </div> <!-- enf of row -->
         </div> <!-- end of container -->
-    </div> <!-- end of copyright --> 
+    </div> <!-- end of copyright -->
     <!-- end of copyright -->
-
-        <!-- Back To Top Button -->
+    <!-- Back To Top Button -->
     <button onclick="topFunction()" id="myBtn">
         <img src="~/assets/Images/TemplateIMG/up-arrow.png" alt="alternative">
     </button>

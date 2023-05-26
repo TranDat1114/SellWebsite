@@ -26,7 +26,7 @@ namespace SellWebsite.Models.Models
 
         [Column("CategoryDescriptionEnglish", TypeName = "varchar(4096)")]
         [DisplayName("Category Description")]
-        [MaxLength(4096)]
+        [MaxLength(512)]
         public string? DescriptionEnglish { get; set; }
 
         [Column("CategoryNameVietnamese", TypeName = "nvarchar(128)")]
@@ -37,7 +37,7 @@ namespace SellWebsite.Models.Models
 
         [Column("CategoryDescriptionVietnamese", TypeName = "nvarchar(4096)")]
         [DisplayName("Mô tả danh mục")]
-        [MaxLength(4096)]
+        [MaxLength(512)]
         public string? DescriptionVietnamese { get; set; }
 
         public virtual ICollection<Product>? Products { get; set; }

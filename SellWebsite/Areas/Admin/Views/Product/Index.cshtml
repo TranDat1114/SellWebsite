@@ -1,148 +1,145 @@
 ﻿@model List< SellWebsite.Models.Models.Product>
 
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-12 col-md-6">
-            <h2 class="text-white">
-                Category List
+            <h2 class="text-primary">
+                Product List
             </h2>
         </div>
         <div class="col-12 col-md-6 text-end">
             <a class="btn btn-primary" asp-controller="Product" asp-action="Upsert">
-                <i class="bi bi-plus-circle"></i> Create new category
+                <i class="bi bi-plus-circle"></i> Create new Product
             </a>
         </div>
     </div>
+</div>
+<div class="mt-5 container-fluid">
+    <div>
+        <table id="tblData" class="table table-bordered table-hover scroll-table" style="font-size:0.8rem; width:100%">
+            <thead>
+                <tr>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Id)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Image)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Title)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Author)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Description)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].CreatedDate)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].UpdatedDate)
+                    </th>
 
-    <div class="mt-5">
-        <div >
-            <table id="tblData" class="table table-striped scroll-table" style="font-size:0.8rem; width:100%">
-                <thead>
-                    <tr>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Id)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Image)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Title)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Author)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Description)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].CreatedDate)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].UpdatedDate)
-                        </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].License)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Credits)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].PreviewUrl)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].DownloadCount)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].DownloadUrl)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].PostsBy)
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.DisplayNameFor(model => model[0].Categories)
+                    </th>
 
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].License)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Credits)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].PreviewUrl)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].DownloadCount)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].DownloadUrl)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].PostsBy)
-                        </th>
-                        <th class="text-nowrap">
-                            @Html.DisplayNameFor(model => model[0].Categories)
-                        </th>
+                    <th class="text-nowrap">
+                        Edit
+                    </th>
+                    <th class="text-nowrap">
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
 
-                        
+                @*Sử dụng ajax cho tiện*@
+                @* @foreach (var item in Model.OrderBy(o => o.Id))
+                {
+                <tr style="height:100px;" class="align-middle">
+                <td>
+                @item.Id
+                </td>
+                <td>
+                @item.Title
+                </td>
+                <td>
+                @item.Author
+                </td>
+                <td>
+                @item.PostsBy
+                </td>
+                <td style="max-width:20ch;" class="text-truncate">
+                @item.Description
+                </td>
 
-                        <th class="text-nowrap">
-                            Edit
-                        </th>
-                        <th class="text-nowrap">
-                            Delete
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @*Sử dụng ajax cho tiện*@
-                    @* @foreach (var item in Model.OrderBy(o => o.Id))
-                    {
-                    <tr style="height:100px;" class="align-middle">
-                    <td>
-                    @item.Id
-                    </td>
-                    <td>
-                    @item.Title
-                    </td>
-                    <td>
-                    @item.Author
-                    </td>
-                    <td>
-                    @item.PostsBy
-                    </td>
-                    <td style="max-width:20ch;" class="text-truncate">
-                    @item.Description
-                    </td>
-
-                    <td>
-                    @item.License
-                    </td>
-                    <td>
-                    @item.PreviewUrl
-                    </td>
-                    <td>
-                    @item.DownloadUrl
-                    </td>
-                    <td>
-                    @item.CreatedDate
-                    </td>
-                    <td>
-                    @item.UpdatedDate
-                    </td>
-                    <td>
-                    @item.DownloadCount
-                    </td>
-                    <td>
-                    @item.Credits
-                    </td>
+                <td>
+                @item.License
+                </td>
+                <td>
+                @item.PreviewUrl
+                </td>
+                <td>
+                @item.DownloadUrl
+                </td>
+                <td>
+                @item.CreatedDate
+                </td>
+                <td>
+                @item.UpdatedDate
+                </td>
+                <td>
+                @item.DownloadCount
+                </td>
+                <td>
+                @item.Credits
+                </td>
 
 
-                    <td style="width:100ch">
-                    @foreach (var category in item.Categories)
-                    {
-                    <div>
-                    @category.NameEnglish
-                    </div>
-                    }
-                    </td>
+                <td style="width:100ch">
+                @foreach (var category in item.Categories)
+                {
+                <div>
+                @category.NameEnglish
+                </div>
+                }
+                </td>
 
-                    <td>
-                    <img style="width:100px; object-fit:contain; object-position:center" class="m-auto" src="@item.Image" alt="CategoryIMG" />
-                    </td>
+                <td>
+                <img style="width:100px; object-fit:contain; object-position:center" class="m-auto" src="@item.Image" alt="CategoryIMG" />
+                </td>
 
-                    <td>
-                    <a class="btn btn-primary text-nowrap" asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </td>
-                    <td>
-                    <a class="btn btn-danger text-nowrap" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3-fill"></i> Delete</a>
-                    </td>
-                    </tr>
-                    }*@
-                </tbody>
-            </table>
-        </div>
+                <td>
+                <a class="btn btn-primary text-nowrap" asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
+                </td>
+                <td>
+                <a class="btn btn-danger text-nowrap" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3-fill"></i> Delete</a>
+                </td>
+                </tr>
+                }*@
+            </tbody>
+        </table>
     </div>
 </div>
 

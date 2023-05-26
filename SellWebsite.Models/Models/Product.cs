@@ -21,16 +21,16 @@ namespace SellWebsite.Models.Models
         [Column("ProductTitle", TypeName = "nvarchar(128)")]
         [DisplayName("Product Title")]
         [MaxLength(128)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required]
         [Column("ProductAuthor", TypeName = "nvarchar(128)")]
         [DisplayName("Product Author")]
         [MaxLength(128)]
-        public string Author { get; set; }
+        public string Author { get; set; }= string.Empty;
 
         [Column("ProductDescription", TypeName = "nvarchar(4096)")]
-        [MaxLength(4096)]
+        [MaxLength(512)]
         [DisplayName("Product Description")]
         public string? Description { get; set; }
 
@@ -63,13 +63,19 @@ namespace SellWebsite.Models.Models
         [Required]
         [Column("ProductDownloadCount", TypeName = "int")]
         [DisplayName("Download Count")]
-        public int DownloadCount { get; set; }
+        public int DownloadCount { get; set; } = 0;
 
         [Required]
         [MaxLength(128)]
         [Column("ProductDownloadUrl", TypeName = "varchar(128)")]
         [DisplayName("Download Url")]
         public string DownloadUrl { get; set; }
+
+        [Required]
+        [Column("ProductPrice")]
+        [DisplayName("Product Price")]
+        [Range(0,double.MaxValue,ErrorMessage ="Input right value please")]
+        public decimal Price { get; set; }
 
         [Required]
         [MaxLength(128)]
@@ -79,8 +85,7 @@ namespace SellWebsite.Models.Models
 
         [Column("ProductImage", TypeName = "varchar(256)")]
         [DisplayName("Product Image Url")]
-                [MaxLength(256)]
-        
+        [MaxLength(256)]
         public string? Image { get; set; }
 
 

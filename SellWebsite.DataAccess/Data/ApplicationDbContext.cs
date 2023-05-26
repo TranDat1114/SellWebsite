@@ -4,20 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using SellWebsite.Models.Models;
 
 namespace SellWebsite.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<ApplicationUser> ApplicationUsers {get;set;}
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -172,13 +173,13 @@ namespace SellWebsite.DataAccess.Data
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now,
                     PostsBy = "ADminTPD",
-                    Credits = "Images from Unsplash;Boostrap"
-                    ,
+                    Credits = "Images from Unsplash;Boostrap",
                     Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                     DownloadCount = 0,
                     DownloadUrl = "linkdownloadFIle",
                     PreviewUrl = "LinkPreviewUrl",
                     License = "",
+                    Price = 500000,
                 }
             };
 
@@ -201,8 +202,16 @@ namespace SellWebsite.DataAccess.Data
                 .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<Product>()
-               .Property(e => e.Image)
-               .HasDefaultValueSql("'/assets/dev.png'");
+              .Property(e => e.Price)
+              .HasDefaultValueSql("0");
+
+            modelBuilder.Entity<Product>()
+               .Property(e => e.Credits)
+               .HasDefaultValueSql("'JADY'");
+
+            modelBuilder.Entity<Product>()
+                .Property(e => e.Image)
+                .HasDefaultValueSql("'/assets/dev.png'");
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.UpdatedDate)
@@ -211,7 +220,6 @@ namespace SellWebsite.DataAccess.Data
             modelBuilder.Entity<Product>().HasData(
                 products
             );
-
 
             base.OnModelCreating(modelBuilder);
 
