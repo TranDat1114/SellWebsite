@@ -146,13 +146,13 @@ namespace SellWebsite.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
-            var oldIMG = Path.Combine(_webHostEnvironment.WebRootPath, category.Image.Trim('\\'));
+            var oldIMG = Path.Combine(_webHostEnvironment.WebRootPath, category?.Image?.Trim('\\')!);
             if (System.IO.File.Exists(oldIMG))
             {
                 System.IO.File.Delete(oldIMG);
             }
 
-            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Category.Remove(category!);
 
 
             _unitOfWork.Save();

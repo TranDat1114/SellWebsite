@@ -23,7 +23,7 @@ namespace SellWebsite.Areas.Customer.Controllers
         {
             var homeVM = new HomeVM()
             {
-                Products = _unitOfWork.Product.GetAll(p => p.Categories).ToList(),
+                Products = _unitOfWork.Product.GetAll(includes: p => p.Categories!).ToList(),
                 Categories = _unitOfWork.Category.GetAll().ToList(),
             };
             return View(homeVM);

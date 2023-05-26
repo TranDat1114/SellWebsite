@@ -40,21 +40,21 @@
                 <!-- Filter -->
                 <div class="button-group filters-button-group row-cols-3 row-cols-lg-5">
                     <button class="button is-checked" data-filter="*">ALL</button>
-                    @foreach (var item in Model.Categories)
+                    @foreach (var item in Model?.Categories!)
                     {
                         <button class="button" data-filter=".@item.NameEnglish">@item.NameEnglish</button>
                     }
                 </div> <!-- end of button group -->
                 <div class="grid">
-                    @foreach (var item in Model.Products)
+                    @foreach (var item in Model?.Products!)
                     {
-                        <div class="element-item @(string.Join(" ",item.Categories.Select(p=>p.NameEnglish)))">
+                        <div class="element-item @(string.Join(" ",item?.Categories?.Select(p=>p.NameEnglish)!))">
                             <a href="article.html">
-                                <img style="height:200px; object-fit:cover" class="" src="@item.Image" alt="alternative">
-                                <p><strong>@item.Title</strong> - @item.Author</p>
-                                <p><strong>@item.DownloadCount</strong></p>
+                                <img style="height:200px; object-fit:cover" class="" src="@item?.Image" alt="alternative">
+                                <p><strong>@item?.Title</strong> - @item?.Author</p>
+                                <p><strong>@item?.DownloadCount</strong></p>
                             </a>
-                            <a href="@item.PreviewUrl">Live Preview</a>
+                            <a href="@item?.PreviewUrl">Live Preview</a>
                         </div>
                     }
                 </div> <!-- end of grid -->

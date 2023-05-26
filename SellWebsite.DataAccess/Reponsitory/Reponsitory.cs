@@ -36,14 +36,37 @@ namespace SellWebsite.DataAccess.Reponsitory
         }
 
         //Truy vấn theo filter
-        public T Get(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
+        public T Get(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
         {
             //Làm biếng viết cho gọn đỡ phải tạo thêm 1 biến chứa dữ liệu trả về nhưng code vẫn tường minh phải hem? :3
             IQueryable<T> query = dbSet;
-            query = query.Where(filter);
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
 
             //Bản nâng cấp để có thể include thêm các bảng liên quan
-            if (query!=null)
+            if (query != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+            return query?.FirstOrDefault()!;
+        }
+
+        public IQueryable<T> GetAll(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
+        {
+            //Lấy hết nguyên dữ liệu của bảng và ToList()
+            //Tương tự với _db.Categories.ToList();
+            IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            //Bản nâng cấp để có thể include thêm các bảng liên quan
+            if (query != null)
             {
                 foreach (var include in includes)
                 {
@@ -51,24 +74,7 @@ namespace SellWebsite.DataAccess.Reponsitory
                 }
             }
 
-            return query.FirstOrDefault();
-        }
-
-
-        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includes)
-        {
-
-            //Lấy hết nguyên dữ liệu của bảng và ToList()
-            //Tương tự với _db.Categories.ToList();
-            IQueryable<T> query = dbSet;
-
-            //Bản nâng cấp để có thể include thêm các bảng liên quan
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
-
-            return query.ToList();
+            return query!;
         }
 
         public void Remove(T item)

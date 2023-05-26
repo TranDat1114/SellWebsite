@@ -26,7 +26,7 @@ namespace SellWebsite.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var objProducts = _unitOfWork.Product.GetAll(p => p.Categories);
+            var objProducts = _unitOfWork.Product.GetAll(includes: p => p.Categories!);
 
             return View(objProducts);
         }
@@ -50,7 +50,7 @@ namespace SellWebsite.Areas.Admin.Controllers
             }
             else
             {
-                productVM.Product = _unitOfWork.Product.Get(p => p.Id == id, p => p.Categories);
+                productVM.Product = _unitOfWork.Product.Get(p => p.Id == id, p => p.Categories!);
                 if (productVM.Product.Categories != null)
                 {
                     foreach (var item in productVM.Product.Categories)
@@ -173,7 +173,7 @@ namespace SellWebsite.Areas.Admin.Controllers
         {
             //Cơ bản là select xong cái thằng nào mà bị null thì ajax table api nó không hiểu nên mình cho nó thành list rổng thay vì null
             List<Product> products = _unitOfWork.Product
-                .GetAll(p => p.Categories)
+                .GetAll(includes: p => p.Categories!).ToList()
                 .Select(p =>
                         {
                             p.Categories ??= new List<Category>() { new() { DescriptionEnglish = "" } };
@@ -196,13 +196,13 @@ namespace SellWebsite.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
-            var oldIMG = Path.Combine(_webHostEnvironment.WebRootPath, product.Image.Trim('\\'));
+            var oldIMG = Path.Combine(_webHostEnvironment.WebRootPath, product?.Image?.Trim('\\')!);
             if (System.IO.File.Exists(oldIMG))
             {
                 System.IO.File.Delete(oldIMG);
             }
 
-            _unitOfWork.Product.Remove(product);
+            _unitOfWork.Product.Remove(product!);
             _unitOfWork.Save();
 
             return Json(new { success = true, message = "Delete successful" });

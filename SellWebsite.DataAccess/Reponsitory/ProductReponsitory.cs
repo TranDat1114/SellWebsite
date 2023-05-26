@@ -37,7 +37,7 @@ namespace SellWebsite.DataAccess.Reponsitory
             //Cập nhật dữ liệu cho bảng Categories
             if (product.Id != 0)
             {
-                product = Get(p => p.Id == product.Id, p => p.Categories);
+                product = Get(p => p.Id == product.Id, includes: p => p.Categories! );
             }
 
             // Xóa các danh mục hiện tại của sản phẩm

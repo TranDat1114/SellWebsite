@@ -12,9 +12,9 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
     public interface IReponsitory<T> where T : class
     {
         //Phương thức để lấy toàn bộ dữ liệu
-        IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includes);
+        IQueryable<T> GetAll(Expression<Func<T, bool>>? filter=null, params Expression<Func<T, object>>[] includes);
         //Phương thức để lấy 1-record thông qua filter
-        T Get(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
+        T Get(Expression<Func<T, bool>>? filter=null, params Expression<Func<T, object>>[] includes);
         //Thêm 1-record vào database
         void Add(T item);
         //Xóa 1 record trong database

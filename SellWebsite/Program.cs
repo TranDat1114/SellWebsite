@@ -20,10 +20,17 @@ namespace SellWebsite
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            });
+
             //options.SignIn.RequireConfirmedAccount = true Đăng nhập sẽ gửi yêu cầu confirm về email
 
-            builder.Services.AddDefaultIdentity<IdentityUser>( ).AddEntityFrameworkStores<ApplicationDbContext>();
-            
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddRazorPages();

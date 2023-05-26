@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SellWebsite.DataAccess\SellWebsite.DataAccess.csproj" />
     <ProjectReference Include="..\SellWebsite.Models\SellWebsite.Models.csproj" />
+    <ProjectReference Include="..\SellWebsite.Utility\SellWebsite.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
