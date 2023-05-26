@@ -7,10 +7,13 @@ using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using Microsoft.AspNetCore.Hosting;
 using SellWebsite.Models.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
+using SellWebsite.Utility.IdentityHandler;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -24,8 +27,10 @@ namespace SellWebsite.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var objCategories = _unitOfWork.Category.GetAll();
-            return View(objCategories);
+            //Sử dụng API nên hiện không cần dùng nữa
+            //var objCategories = _unitOfWork.Category.GetAll().ToList();
+            //return View(objCategories);
+            return View();
         }
 
         public IActionResult Upsert(int? id)

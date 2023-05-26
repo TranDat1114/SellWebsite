@@ -9,6 +9,15 @@ namespace SellWebsite.Utility.IdentityHandler
     //Tạo các role ở đây -> tiện cho việc xử lý tạo vào so sánh phân quyền,...
     public static class SD
     {
+        //Cảm thấy sử dụng enum có vẻ không phù hợp hơn nên đổi
+        //public enum Role
+        //{
+        //    Customer,
+        //    Employee,
+        //    Admin,
+        //    Boss
+        //}
+
         public const string Role_Customer = "Customer";
         public const string Role_Employee = "Employee";
         public const string Role_Admin = "Admin";

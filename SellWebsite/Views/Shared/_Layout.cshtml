@@ -23,10 +23,10 @@
 
     <!-- Styles -->
     <script src="https://kit.fontawesome.com/4552defb60.js" crossorigin="anonymous"></script>
-     <script src="https://cdn.tiny.cloud/1/y07btutcpwdzswao1xm5ps6m0l90919xay5fmsmylhv1s0kr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/y07btutcpwdzswao1xm5ps6m0l90919xay5fmsmylhv1s0kr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <script src="https://unpkg.com/@@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/@@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet" />
@@ -75,17 +75,20 @@
                         <a class="nav-link" href="#pricing">Pricing</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
-                            <li><div class="dropdown-divider"></div></li>
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
-                        </ul>
-                    </li>
-                    
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
+                                <li><div class="dropdown-divider"></div></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
+                            </ul>
+                        </li>
+                    }
+
                     <partial name="_LoginPartial">
-                    
+
                 </ul>
                 <span class="nav-item">
                     <a class="btn-solid-sm" href="#contact">Get quote</a>

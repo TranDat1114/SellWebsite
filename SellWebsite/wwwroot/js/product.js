@@ -25,6 +25,7 @@ function loadDataTable() {
             { data: 'PreviewUrl' },
             { data: 'DownloadCount' },
             { data: 'DownloadUrl' },
+            { data: 'Price' },
             { data: 'PostsBy' },
             {
                 data: 'Categories',

@@ -46,7 +46,8 @@ namespace SellWebsite.Models.Models
         public DateTime UpdatedDate { get; set; }
 
         [Column("ProductLicense", TypeName = "varchar(128)")]
-        [MaxLength(128)]
+        [DisplayName("Product License")]
+                [MaxLength(128)]
         public string? License { get; set; }
 
         [Column("ProductCredits", TypeName = "varchar(256)")]
@@ -80,11 +81,11 @@ namespace SellWebsite.Models.Models
         [Required]
         [MaxLength(128)]
         [Column("ProductPostsBy", TypeName = "varchar(128)")]
-        [DisplayName("PostsBy")]
+        [DisplayName("Posts By")]
         public string PostsBy { get; set; }
 
         [Column("ProductImage", TypeName = "varchar(256)")]
-        [DisplayName("Product Image Url")]
+        [DisplayName("Product Image")]
         [MaxLength(256)]
         public string? Image { get; set; }
 

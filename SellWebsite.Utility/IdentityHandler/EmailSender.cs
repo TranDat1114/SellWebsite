@@ -12,6 +12,7 @@ namespace SellWebsite.Utility.IdentityHandler
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
+            //Triển khai gửi mail ở đây
             //Tạm thời chưa triển khai gửi email
             return Task.CompletedTask;
         }

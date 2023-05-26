@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -11,10 +12,12 @@ using NuGet.ContentModel;
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Admin;
+using SellWebsite.Utility.IdentityHandler;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -26,9 +29,11 @@ namespace SellWebsite.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var objProducts = _unitOfWork.Product.GetAll(includes: p => p.Categories!);
+            //Sử dụng API nên không cần dùng đoạn dưới nữa
+            //var objProducts = _unitOfWork.Product.GetAll(includes: p => p.Categories!).ToList();
+            //return View(objProducts);
 
-            return View(objProducts);
+            return View();
         }
 
         //Hàm Create cũ đặt tên và chỉnh sửa lại, update và insert

@@ -77,14 +77,16 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <label asp-for="Product.Price"></label>
-                    <input class="form-control" type="number" asp-for="Product.Price" placeholder="Input Product Price..." />
-                    <span class="input-group-text">$</span>
+                    <div class="input-group">
+                        <input class="form-control" type="number" asp-for="Product.Price" placeholder="Input Product Price..." />
+                        <span class="input-group-text">$</span>
+                    </div>
                     <span class="text-danger" asp-validation-for="Product.Price"></span>
                 </div>
             </div>
 
             <div class="mb-3 row">
-                               <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6">
                     <label asp-for="Product.Image"></label>
                     <input id="input-img" class="form-control" type="file" accept="image/*" name="file" asp-for="Product.Image" />
                 </div>
