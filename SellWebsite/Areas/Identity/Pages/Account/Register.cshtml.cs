@@ -108,9 +108,16 @@ namespace SellWebsite.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required]
+            public string Name { get; set; }
+            public string Address { get; set; }
+            public string Region { get; set; }
+            public string Zipcode { get; set; }
+            public string PhoneNumber { get; set; }
+
             //Xóa phần dưới sau khi hoàn thiện đăng nhập
             #region Xóa khi hoàn thiện chương trình
-            public string? Role { get; set; }
+            public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
             #endregion
@@ -154,6 +161,14 @@ namespace SellWebsite.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.Name = Input.Name;
+                user.Region = Input.Region;
+                user.Address = Input.Address;
+                user.Zipcode = Input.Zipcode;
+
+                //Tài khoản đang hoạt động
+                user.State = "Active";
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
