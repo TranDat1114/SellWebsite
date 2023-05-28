@@ -4,15 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SellWebsite.DataAccess.Data;
+using SellWebsite.Models.Models;
 
 namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
 {
-    public interface IUnitOfWork
+    public interface ICompanyReponsitory : IReponsitory<Product>
     {
-        ICategoryReponsitory Category { get; }
-        IProductReponsitory Product { get; }
-        ICompanyReponsitory Company { get; }
+        void Update(Company company);
         void Save();
     }
 }
