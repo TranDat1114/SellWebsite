@@ -516,7 +516,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 5, 27, 5, 49, 45, 123, DateTimeKind.Local).AddTicks(1822),
+                            CreatedDate = new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(15),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -526,7 +526,7 @@ namespace SellWebsite.DataAccess.Migrations
                             PreviewUrl = "LinkPreviewUrl",
                             Price = 500000m,
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 5, 27, 5, 49, 45, 123, DateTimeKind.Local).AddTicks(1835)
+                            UpdatedDate = new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(58)
                         });
                 });
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SellWebsite.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class changeNameDataType : Migration
+    public partial class demo_2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,14 +29,42 @@ namespace SellWebsite.DataAccess.Migrations
                 oldType: "nvarchar(128)",
                 oldMaxLength: 128);
 
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AddColumn<string>(
+                name: "Address",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Discriminator",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
                 name: "Name",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Region",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "State",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Zipcode",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
@@ -61,12 +89,36 @@ namespace SellWebsite.DataAccess.Migrations
                 keyColumn: "ProductId",
                 keyValue: 1,
                 column: "ProductCreatedDate",
-                value: new DateTime(2023, 5, 27, 5, 20, 27, 248, DateTimeKind.Local).AddTicks(9517));
+                value: new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(15));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Address",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Discriminator",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Name",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Region",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "State",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Zipcode",
+                table: "AspNetUsers");
+
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
                 table: "AspNetUserTokens",
@@ -84,15 +136,6 @@ namespace SellWebsite.DataAccess.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(450)");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Name",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
@@ -117,7 +160,7 @@ namespace SellWebsite.DataAccess.Migrations
                 keyColumn: "ProductId",
                 keyValue: 1,
                 column: "ProductCreatedDate",
-                value: new DateTime(2023, 5, 26, 20, 15, 57, 974, DateTimeKind.Local).AddTicks(1991));
+                value: new DateTime(2023, 5, 26, 18, 45, 48, 183, DateTimeKind.Local).AddTicks(8090));
         }
     }
 }

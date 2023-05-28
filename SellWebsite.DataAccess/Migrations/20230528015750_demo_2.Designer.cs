@@ -12,8 +12,8 @@ using SellWebsite.DataAccess.Data;
 namespace SellWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230526222027_changeNameDataType")]
-    partial class changeNameDataType
+    [Migration("20230528015750_demo_2")]
+    partial class demo_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -519,7 +519,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 5, 27, 5, 20, 27, 248, DateTimeKind.Local).AddTicks(9517),
+                            CreatedDate = new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(15),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -529,7 +529,7 @@ namespace SellWebsite.DataAccess.Migrations
                             PreviewUrl = "LinkPreviewUrl",
                             Price = 500000m,
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 5, 27, 5, 20, 27, 248, DateTimeKind.Local).AddTicks(9528)
+                            UpdatedDate = new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(58)
                         });
                 });
 
@@ -540,14 +540,14 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Zipcode")
