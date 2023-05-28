@@ -12,8 +12,8 @@ using SellWebsite.DataAccess.Data;
 namespace SellWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230526131558_add_identity")]
-    partial class add_identity
+    [Migration("20230528015750_demo_2")]
+    partial class demo_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,12 +193,10 @@ namespace SellWebsite.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -235,12 +233,10 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -523,7 +519,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 5, 26, 20, 15, 57, 974, DateTimeKind.Local).AddTicks(1991),
+                            CreatedDate = new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(15),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -533,7 +529,7 @@ namespace SellWebsite.DataAccess.Migrations
                             PreviewUrl = "LinkPreviewUrl",
                             Price = 500000m,
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 5, 26, 20, 15, 57, 974, DateTimeKind.Local).AddTicks(2011)
+                            UpdatedDate = new DateTime(2023, 5, 28, 8, 57, 49, 975, DateTimeKind.Local).AddTicks(58)
                         });
                 });
 
@@ -544,13 +540,14 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
-
                     b.Property<string>("Region")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Zipcode")
