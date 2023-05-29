@@ -29,6 +29,13 @@ namespace SellWebsite.Areas.Customer.Controllers
             return View(homeVM);
         }
 
+        public IActionResult Preview(int? id)
+        {
+            var product = _unitOfWork.Product.Get(x => x.Id == id);
+
+            return View(product);
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -20,6 +20,7 @@ namespace SellWebsite.DataAccess.Reponsitory
             _db = db;
             Category = new CategoryReponsitory(_db);
             Product = new ProductReponsitory(_db);
+            Company = new CompanyReponsitory(_db);
         }
 
         public void Save()

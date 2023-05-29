@@ -44,7 +44,7 @@
 
             <!-- Text Logo - Use this if you don't have a graphic logo -->
             <!-- <a class="navbar-brand logo-text" href="index.html">Zinc</a> -->
-            <a class="navbar-brand logo-text" href="index.html">JADY</a>
+            <a class="navbar-brand logo-text" asp-area="Customer" asp-controller="Home" asp-action="Index">JADY</a>
 
             <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -53,7 +53,7 @@
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ms-auto navbar-nav-scroll">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#header">Home</a>
+                        <a class="nav-link active" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Drop</a>
@@ -75,14 +75,20 @@
                         <a class="nav-link" href="#pricing">Pricing</a>
                     </li>
 
-                    @if (User.IsInRole(SD.Role_Admin))
+                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss) || User.IsInRole(SD.Role_Employee))
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
                                 <li><div class="dropdown-divider"></div></li>
+
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
+                                {
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company Management</a></li>
+                                }
+                                <li><div class="dropdown-divider"></div></li>
                             </ul>
                         </li>
                     }
@@ -91,7 +97,7 @@
                 </ul>
                 <span class="nav-item">
                     <partial name="_LoginPartial">
-                    @*<a class="btn-solid-sm" href="#contact">Get quote</a>*@
+                        @*<a class="btn-solid-sm" href="#contact">Get quote</a>*@
                 </span>
             </div> <!-- end of navbar-collapse -->
         </div> <!-- end of container -->

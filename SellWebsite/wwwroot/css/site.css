@@ -30,3 +30,9 @@
     font-weight: bold;
     color: #000;
 }
+
+.iframe-class {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+    overflow: auto;
+}
