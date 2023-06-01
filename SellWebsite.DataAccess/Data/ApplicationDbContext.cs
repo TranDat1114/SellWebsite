@@ -214,10 +214,6 @@ namespace SellWebsite.DataAccess.Data
                 .Property(e => e.Image)
                 .HasDefaultValueSql("'/assets/dev.png'");
 
-            modelBuilder.Entity<Product>()
-                .Property(e => e.UpdatedDate)
-                .ValueGeneratedOnUpdate();
-
             modelBuilder.Entity<Product>().HasData(
                 products
             );

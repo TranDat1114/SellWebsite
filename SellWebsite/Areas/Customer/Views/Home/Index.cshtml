@@ -45,14 +45,14 @@
                         <button class="button" data-filter=".@item.NameEnglish">@item.NameEnglish</button>
                     }
                 </div> <!-- end of button group -->
-                <div class="grid">
+                <div class="grid gap-3">
                     @foreach (var item in Model?.Products!)
                     {
                         <div class="element-item @(string.Join(" ",item?.Categories?.Select(p=>p.NameEnglish)!))">
-                            <a href="article.html">
-                                <img style="height:200px; object-fit:cover" class="" src="@item?.Image" alt="alternative">
+                            <a asp-area="Customer" asp-controller="Detail" asp-action="Index" asp-route-id="@item?.Id">
+                                <img style="height:200px; object-fit:cover" class="w-100" src="@item?.Image" alt="alternative">
                                 <p><strong>@item?.Title</strong> - @item?.Author</p>
-                                <p><strong>@item?.DownloadCount</strong></p>
+                                <p><strong>@item?.Price</strong></p>
                             </a>
                             <a class="btn btn-primary btn-sm" asp-controller="Home" asp-action="Preview" asp-route-id="@item?.Id" >Live Preview</a>
                         </div>

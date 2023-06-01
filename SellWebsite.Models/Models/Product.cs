@@ -30,7 +30,7 @@ namespace SellWebsite.Models.Models
         public string Author { get; set; }= string.Empty;
 
         [Column("ProductDescription", TypeName = "nvarchar(4096)")]
-        [MaxLength(512)]
+        [MaxLength(4096)]
         [DisplayName("Product Description")]
         public string? Description { get; set; }
 

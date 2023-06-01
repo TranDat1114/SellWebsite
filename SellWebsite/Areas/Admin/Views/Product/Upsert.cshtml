@@ -15,9 +15,13 @@
                     <label asp-for="Product.Id"></label>
                     <input style="width:150px" class="form-control" readonly asp-for="Product.Id" />
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6" hidden>
                     <label asp-for="Product.Image"></label>
                     <input class="form-control" readonly asp-for="Product.Image" />
+                </div>
+                <div class="col-12 col-md-6" hidden>
+                    <label asp-for="Product.CreatedDate"></label>
+                    <input class="form-control" readonly asp-for="Product.CreatedDate" />
                 </div>
             </div>
             <hr class="text-primary" />

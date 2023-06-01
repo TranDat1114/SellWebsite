@@ -100,10 +100,14 @@ namespace SellWebsite.Areas.Admin.Controllers
 
                 if (productVM.Product.Id == 0)
                 {
+                    productVM.Product.CreatedDate = DateTime.Now;
+                    productVM.Product.UpdatedDate = DateTime.Now;
                     _unitOfWork.Product.Add(productVM.Product);
+
                 }
                 else
                 {
+                    productVM.Product.UpdatedDate = DateTime.Now;
                     _unitOfWork.Product.Update(productVM.Product);
                 }
                 //Lệnh dưới để cập nhật categories cho product

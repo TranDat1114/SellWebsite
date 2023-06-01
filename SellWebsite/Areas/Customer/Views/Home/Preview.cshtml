@@ -1,4 +1,5 @@
 ﻿@model Product
+
 <div class="container-fluid">
 
     @if (Model == null)
@@ -40,19 +41,29 @@
 
 </div>
 
-<script>
-    //let WindowHeight = window.innerHeight;
-    //let OptionsBarHeight = $("#OptionsBar").height();
-    //var DeviceHeight = WindowHeight - OptionsBarHeight;
-    //$(".iframe-class").css("height", DeviceHeight);
+@section Scripts{
 
-    function ChangeToPhone() {
-        $(".iframe-class").css("width", 576);
-    }
-    function ChangeToTablet() {
-        $(".iframe-class").css("width", 820);
-    }
-    function ChangeToDesktop() {
-        $(".iframe-class").css("width", "100%");
-    }
-</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#navbarExample").hide();
+        $("#footerPreview").css("display", "none");
+        $("#body").css("padding", "12px");
+    </script>
+    <script>
+        //let WindowHeight = window.innerHeight;
+        //let OptionsBarHeight = $("#OptionsBar").height();
+        //var DeviceHeight = WindowHeight - OptionsBarHeight;
+        //$(".iframe-class").css("height", DeviceHeight);
+
+        function ChangeToPhone() {
+            $(".iframe-class").css("width", 576);
+        }
+        function ChangeToTablet() {
+            $(".iframe-class").css("width", 820);
+        }
+        function ChangeToDesktop() {
+            $(".iframe-class").css("width", "100%");
+        }
+
+    </script>
+}
