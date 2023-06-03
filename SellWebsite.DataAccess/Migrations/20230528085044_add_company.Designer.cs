@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SellWebsite.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using SellWebsite.DataAccess.Data;
 namespace SellWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230528085044_add_company")]
+    partial class add_company
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,13 +256,13 @@ namespace SellWebsite.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DescriptionEnglish")
-                        .HasMaxLength(2048)
-                        .HasColumnType("varchar(2048)")
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(4096)")
                         .HasColumnName("CategoryDescriptionEnglish");
 
                     b.Property<string>("DescriptionVietnamese")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(4096)")
                         .HasColumnName("CategoryDescriptionVietnamese");
 
                     b.Property<string>("Image")
@@ -483,8 +486,8 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasDefaultValueSql("'JADY'");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(4096)")
                         .HasColumnName("ProductDescription");
 
                     b.Property<int>("DownloadCount")
@@ -534,7 +537,7 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasColumnName("ProductTitle");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .ValueGeneratedOnAdd()
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("Date")
                         .HasColumnName("ProductUpdatedDate")
                         .HasDefaultValueSql("GETDATE()");
@@ -548,7 +551,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 6, 2, 21, 20, 14, 157, DateTimeKind.Local).AddTicks(1381),
+                            CreatedDate = new DateTime(2023, 5, 28, 15, 50, 44, 362, DateTimeKind.Local).AddTicks(3414),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -558,32 +561,8 @@ namespace SellWebsite.DataAccess.Migrations
                             PreviewUrl = "LinkPreviewUrl",
                             Price = 500000m,
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 6, 2, 21, 20, 14, 157, DateTimeKind.Local).AddTicks(1399)
+                            UpdatedDate = new DateTime(2023, 5, 28, 15, 50, 44, 362, DateTimeKind.Local).AddTicks(3428)
                         });
-                });
-
-            modelBuilder.Entity("SellWebsite.Models.Models.ShoppingCart", b =>
-                {
-                    b.Property<int>("CartId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CartId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.ApplicationUser", b =>
@@ -673,25 +652,6 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SellWebsite.Models.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("SellWebsite.Models.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SellWebsite.Models.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

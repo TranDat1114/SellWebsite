@@ -18,8 +18,9 @@ namespace SellWebsite.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers {get;set;}
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -212,10 +213,6 @@ namespace SellWebsite.DataAccess.Data
             modelBuilder.Entity<Product>()
                 .Property(e => e.Image)
                 .HasDefaultValueSql("'/assets/dev.png'");
-
-            modelBuilder.Entity<Product>()
-                .Property(e => e.UpdatedDate)
-                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Product>().HasData(
                 products

@@ -1,0 +1,92 @@
+﻿@using System.Globalization;
+@model ShoppingCart;
+
+
+<div class="container">
+    <form class="row" method="post">
+        <input asp-for="CartId" hidden />
+        <input asp-for="ProductId"  hidden/>
+        <div class="col-8">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-primary">
+                        @Model.Product.Title
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex gap-3">
+                        <div>
+                            <i class="fa-regular fa-clock"></i>  @Model.Product.CreatedDate.ToShortDateString()
+                        </div>
+                        <div>
+                            <i class="fa-regular fa-user"></i> @Model.Product.PostsBy
+                        </div>
+                        <div class="text-truncate">
+                            <i class="fa-regular fa-folder"></i>
+                            @foreach (var item in Model.Product.Categories!)
+                            {
+                                @item.NameEnglish
+                                <em>,</em>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-outline-primary w-100 " type="submit"><i class="fa-solid fa-cart-shopping"></i> Add to cart</button>
+        </div>
+    </form>
+
+    <hr />
+    <div class="container">
+        <img class="w-100 shadow-lg mb-5" src="@Model.Product.Image" />
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <h4>Template Details</h4>
+                <p><b>Author: </b>@Model.Product.Author</p>
+                <p><b>Release: </b>@Model.Product.UpdatedDate.ToShortDateString()</p>
+                <p><b>Credits: </b>@Model.Product.Credits</p>
+                <p><b>License: </b>@Model.Product.License</p>
+                <p><b>Price: </b>@Model.Product.Price.ToString("C", CultureInfo.CurrentCulture)</p>
+            </div>
+            <div class="col-12 col-md-8">
+                <h4>Description</h4>
+                <p>@Html.Raw(Model.Product.Description)</p>
+                <hr />
+                <div class="text-truncate">
+                    <i class="fa-regular fa-folder"></i>
+                    @foreach (var item in Model.Product.Categories!)
+                    {
+                        @item.NameEnglish
+                        <em>,</em>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-evenly">
+            <div class="col col-md-4">
+                @*<a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-cart-shopping"></i> Add Cart</a>*@
+            </div>
+            <div class="col-12 col-md-4">
+                <a class="btn btn-outline-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-eye"></i> Live Preview</a>
+            </div>
+            <div class="col col-md-4">
+              @*  <a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-credit-card"></i> Buy Now</a>*@
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <h5 class="mt-5">Share this</h5>
+            <div class="d-flex gap-3">
+                <button class="btn btn-sm btn-outline-primary"><i class="fa-brands fa-facebook"></i> Facebook</button>
+                <button class="btn btn-sm btn-outline-primary"><i class="fa-brands fa-pinterest"></i> Pinterest</button>
+                <button class="btn btn-sm btn-outline-primary"><i class="fa-brands fa-instagram"></i> Instargram</button>
+            </div>
+        </div>
+
+    </div>
+</div>

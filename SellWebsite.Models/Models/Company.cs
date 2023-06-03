@@ -5,18 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Identity;
-
 namespace SellWebsite.Models.Models
 {
-    public class ApplicationUser: IdentityUser
+    public class Company
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public string? State { get; set; } 
         public string? Address { get; set; }
         public string? Region { get; set; }
-        public string? State { get; set; }
         public string? Zipcode { get; set; }
-        
+        public string? PhoneNumber { get; set; }
     }
 }

@@ -1,0 +1,82 @@
+﻿@model Company
+
+<div class="container">
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="border p-3 mt-4">
+
+            <div class="row pb-2">
+                <h2 class="text-primary">@(Model.Id != 0 ? "Update" : "Create") Employee</h2>
+            </div>
+            <div asp-validation-summary="All"></div>
+
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Id"></label>
+                    <input style="width:150px" class="form-control" readonly asp-for="Id" />
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Name"></label>
+                    <input class="form-control" asp-for="Name" />
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="Address"></label>
+                    <input class="form-control" type="text" asp-for="Address" placeholder="Input Category Name" />
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+               
+            </div>
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="PhoneNumber"></label>
+                    <input class="form-control" type="text" asp-for="PhoneNumber" placeholder="Input Category Name" />
+                    <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="Zipcode"></label>
+                    <input class="form-control" type="text" asp-for="Zipcode" placeholder="Nhập tên danh mục" />
+                    <span class="text-danger" asp-validation-for="Zipcode"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="State"></label>
+                    <input class="form-control" type="text" asp-for="State" placeholder="Nhập tên danh mục" />
+                    <span class="text-danger" asp-validation-for="State"></span>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    @if (Model.Id != 0)
+                    {
+                        <button class="btn btn-primary form-control" type="submit">Update</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary form-control" type="submit">Create</button>
+                    }
+                </div>
+                <div class="col-6 col-md-3">
+                    <a class="btn btn-outline-secondary border form-control" asp-controller="Company" asp-action="Index">Back to list</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+    {
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

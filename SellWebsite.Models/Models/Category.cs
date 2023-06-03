@@ -17,16 +17,16 @@ namespace SellWebsite.Models.Models
         [DisplayName("Category Name")]
         [Required]
         [MaxLength(128)]
-        public string NameEnglish { get; set; }
+        public string NameEnglish { get; set; } = string.Empty;
 
         [Column("CategoryImage", TypeName = "varchar(256)")]
         [DisplayName("Category Image Url")]
         [MaxLength(256)]
         public string? Image { get; set; }
 
-        [Column("CategoryDescriptionEnglish", TypeName = "varchar(4096)")]
+        [Column("CategoryDescriptionEnglish", TypeName = "varchar(2048)")]
         [DisplayName("Category Description")]
-        [MaxLength(512)]
+        [MaxLength(2048)]
         public string? DescriptionEnglish { get; set; }
 
         [Column("CategoryNameVietnamese", TypeName = "nvarchar(128)")]
@@ -35,9 +35,9 @@ namespace SellWebsite.Models.Models
         [MaxLength(128)]
         public string NameVietnamese { get; set; }
 
-        [Column("CategoryDescriptionVietnamese", TypeName = "nvarchar(4096)")]
+        [Column("CategoryDescriptionVietnamese", TypeName = "nvarchar(2048)")]
         [DisplayName("Mô tả danh mục")]
-        [MaxLength(512)]
+        [MaxLength(2048)]
         public string? DescriptionVietnamese { get; set; }
 
         public virtual ICollection<Product>? Products { get; set; }

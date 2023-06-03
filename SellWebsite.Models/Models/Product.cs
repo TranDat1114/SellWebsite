@@ -29,8 +29,8 @@ namespace SellWebsite.Models.Models
         [MaxLength(128)]
         public string Author { get; set; }= string.Empty;
 
-        [Column("ProductDescription", TypeName = "nvarchar(4096)")]
-        [MaxLength(512)]
+        [Column("ProductDescription", TypeName = "nvarchar(2048)")]
+        [MaxLength(2048)]
         [DisplayName("Product Description")]
         public string? Description { get; set; }
 
