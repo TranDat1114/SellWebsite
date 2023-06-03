@@ -17,5 +17,6 @@ namespace SellWebsite.Models.Models
         public string? Region { get; set; }
         public string? State { get; set; }
         public string? Zipcode { get; set; }
+        
     }
 }

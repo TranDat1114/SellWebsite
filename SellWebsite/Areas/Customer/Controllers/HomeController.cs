@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
@@ -29,11 +31,34 @@ namespace SellWebsite.Areas.Customer.Controllers
             return View(homeVM);
         }
 
-        public IActionResult Preview(int? id)
+        public IActionResult Detail(int id)
         {
-            var product = _unitOfWork.Product.Get(x => x.Id == id);
+            var cart = new ShoppingCart()
+            {
+                Product = _unitOfWork.Product.Get(x => x.Id == id, p => p.Categories!),
+                ProductId = id,
+            };
+            return View(cart);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Detail(ShoppingCart shoppingCart)
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-            return View(product);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId);
+            if (cartFromDb != null)
+            {
+
+            }
+            else
+            {
+            shoppingCart.ApplicationUserId = userId;
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            _unitOfWork.Save();
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

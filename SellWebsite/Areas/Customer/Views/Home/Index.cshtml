@@ -1,4 +1,5 @@
-﻿@model HomeVM
+﻿@using System.Globalization;
+@model HomeVM
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -49,12 +50,12 @@
                     @foreach (var item in Model?.Products!)
                     {
                         <div class="element-item @(string.Join(" ",item?.Categories?.Select(p=>p.NameEnglish)!))">
-                            <a asp-area="Customer" asp-controller="Detail" asp-action="Index" asp-route-id="@item?.Id">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Detail" asp-route-id="@item?.Id">
                                 <img style="height:200px; object-fit:cover" class="w-100" src="@item?.Image" alt="alternative">
                                 <p><strong>@item?.Title</strong> - @item?.Author</p>
-                                <p><strong>@item?.Price</strong></p>
+                                <p><strong>@item?.Price.ToString("C", CultureInfo.CurrentCulture)</strong></p>
                             </a>
-                            <a class="btn btn-primary btn-sm" asp-controller="Home" asp-action="Preview" asp-route-id="@item?.Id" >Live Preview</a>
+                            <a class="btn btn-primary btn-sm" asp-area="Customer" asp-controller="Preview" asp-action="Index" asp-route-id="@item?.Id">Live Preview</a>
                         </div>
                     }
                 </div> <!-- end of grid -->
@@ -95,8 +96,7 @@
         </div> <!-- end of row -->
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
-
-                <!-- Contact Form -->
+                                <!-- Contact Form -->
                 <form>
                     <div class="form-group">
                         <input type="text" class="form-control-input" placeholder="Name" required>

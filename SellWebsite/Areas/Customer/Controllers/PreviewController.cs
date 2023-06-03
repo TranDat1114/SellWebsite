@@ -5,17 +5,17 @@ using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 namespace SellWebsite.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class DetailController : Controller
+    public class PreviewController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public DetailController(IUnitOfWork unitOfWork)
+        public PreviewController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index(int? id)
         {
-            var product = _unitOfWork.Product.Get(x => x.Id == id, p => p.Categories!);
+            var product = _unitOfWork.Product.Get(x => x.Id == id);
 
             return View(product);
         }
