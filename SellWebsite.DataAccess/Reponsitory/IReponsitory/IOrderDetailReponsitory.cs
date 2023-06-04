@@ -10,6 +10,5 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
 {
     public interface IOrderDetailReponsitory : IReponsitory<OrderDetail>
     {   void Update(OrderDetail orderDetail);
-        void Save();
     }
 }

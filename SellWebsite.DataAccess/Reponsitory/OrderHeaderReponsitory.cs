@@ -22,11 +22,34 @@ namespace SellWebsite.DataAccess.Reponsitory
         {
             _db.OrderHeaders.Update(orderHeader);
         }
-        public void Save()
+
+        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
         {
-            _db.SaveChanges();
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(p => p.Id == id);
+            if (orderFromDb != null)
+            {
+                orderFromDb.OrderStatus = orderStatus;
+                if (!string.IsNullOrEmpty(orderFromDb.PaymentStatus))
+                {
+                    orderFromDb.PaymentStatus = paymentStatus;
+                }
+            }
         }
 
-
+        public void UpdatePaypalPaymentId(int id, string sessionId, string paymentIntentId)
+        {
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(p => p.Id == id);
+            if (orderFromDb != null)
+            {
+                if (!string.IsNullOrEmpty(sessionId))
+                {
+                    orderFromDb.SessionId = sessionId;
+                }
+                if (!string.IsNullOrEmpty(paymentIntentId))
+                {
+                    orderFromDb.PaymentIntendId = paymentIntentId;
+                }
+            }
+        }
     }
 }

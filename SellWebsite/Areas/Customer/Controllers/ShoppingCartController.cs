@@ -2,11 +2,12 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Customer;
-using SellWebsite.Utility.IdentityHandler;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -15,10 +16,12 @@ namespace SellWebsite.Areas.Customer.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly PaypalSettings _paypalSettings;
 
-        public ShoppingCartController(IUnitOfWork unitOfWork)
+        public ShoppingCartController(IUnitOfWork unitOfWork, IOptions<PaypalSettings> paypalSettings)
         {
             _unitOfWork = unitOfWork;
+            _paypalSettings = paypalSettings.Value;
         }
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }

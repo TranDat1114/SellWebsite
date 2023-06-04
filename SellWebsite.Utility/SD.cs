@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SellWebsite.Utility.IdentityHandler
+namespace SellWebsite.Utility
 {
     //Tạo các role ở đây -> tiện cho việc xử lý tạo vào so sánh phân quyền,...
     public static class SD

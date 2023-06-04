@@ -6,7 +6,7 @@ using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SellWebsite.Utility.IdentityHandler;
-
+using SellWebsite.Utility;
 
 namespace SellWebsite
 {
@@ -22,6 +22,8 @@ namespace SellWebsite
             //DebugDb : tên database khác để hỗ trợ việc đổi dữ liệu 
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
+
+            builder.Services.Configure<PaypalSettings>(builder.Configuration.GetSection("Paypal"));
 
             //options.SignIn.RequireConfirmedAccount = true Đăng nhập sẽ gửi yêu cầu confirm về email
 

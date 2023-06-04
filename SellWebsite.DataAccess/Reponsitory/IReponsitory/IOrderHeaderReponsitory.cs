@@ -11,6 +11,7 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
     public interface IOrderHeaderReponsitory : IReponsitory<OrderHeader>
     {
         void Update(OrderHeader orderHeader);
-        void Save();
+        void UpdateStatus (int id,string orderStatus, string? paymentStatus=null);
+        void UpdatePaypalPaymentId(int id,string sessionId, string paymentIntentId);
     }
 }
