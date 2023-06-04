@@ -19,7 +19,5 @@ namespace SellWebsite.DataAccess.Reponsitory
             _db = db;
         }
 
-     
-
     }
 }

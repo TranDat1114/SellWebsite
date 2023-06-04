@@ -25,7 +25,7 @@ namespace SellWebsite.DataAccess.Reponsitory
         //Cập nhật dữ liệu cho bảng Categories
         public void Update(Category category)
         {
-            _db.Update(category);
+            _db.Categories.Update(category);
         }
         //Lưu dữ liệu vào bảng Categories
         public void Save()

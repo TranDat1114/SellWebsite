@@ -24,7 +24,7 @@ namespace SellWebsite.DataAccess.Reponsitory
         //Cập nhật dữ liệu cho bảng Categories
         public void Update(Product product)
         {
-            _db.Update(product);
+            _db.Products.Update(product);
         }
         //Lưu dữ liệu vào bảng Categories
         public void Save()

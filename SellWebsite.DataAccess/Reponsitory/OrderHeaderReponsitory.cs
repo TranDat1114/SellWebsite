@@ -11,17 +11,16 @@ using SellWebsite.Models.Models;
 
 namespace SellWebsite.DataAccess.Reponsitory
 {
-    public class ShoppingCartReponsitory : Reponsitory<ShoppingCart>, IShoppingCartReponsitory
+    public class OrderHeaderReponsitory : Reponsitory<OrderHeader>, IOrderHeaderReponsitory
     {
         private ApplicationDbContext _db;
-        public ShoppingCartReponsitory(ApplicationDbContext db) : base(db)
+        public OrderHeaderReponsitory(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
-
-        public void Update(ShoppingCart shoppingCart)
+        public void Update(OrderHeader orderHeader)
         {
-            _db.ShoppingCarts.Update(shoppingCart);
+            _db.OrderHeaders.Update(orderHeader);
         }
         public void Save()
         {

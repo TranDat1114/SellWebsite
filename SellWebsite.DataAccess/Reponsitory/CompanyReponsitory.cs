@@ -20,7 +20,7 @@ namespace SellWebsite.DataAccess.Reponsitory
 
         public void Update(Company company)
         {
-            _db.Update(company);
+            _db.Companies.Update(company);
         }
 
         public void Save()

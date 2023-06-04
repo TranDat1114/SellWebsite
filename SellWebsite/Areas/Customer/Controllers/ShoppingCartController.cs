@@ -38,6 +38,7 @@ namespace SellWebsite.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+        #region needFix
         public IActionResult Minus(int id)
         {
             var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
@@ -65,6 +66,7 @@ namespace SellWebsite.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
     }
 
 }

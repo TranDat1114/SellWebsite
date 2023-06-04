@@ -67,12 +67,12 @@
             </div>
         </div>
 
-        <div class="row justify-content-evenly">
+        <div class="row justify-content-evenly my-3">
             <div class="col col-md-4">
                 @*<a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-cart-shopping"></i> Add Cart</a>*@
             </div>
-            <div class="col-12 col-md-4">
-                <a class="btn btn-primary btn-sm" asp-area="Customer" asp-controller="Preview" asp-action="Index" asp-route-id="@Model.ProductId">Live Preview</a>
+            <div class="col-12 col-md-4">             
+                <a class="btn btn-outline-primary w-100" asp-area="Customer" asp-controller="Preview" asp-action="Index" asp-route-id="@Model.ProductId">Live Preview</a>
             </div>
             <div class="col col-md-4">
               @*  <a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-credit-card"></i> Buy Now</a>*@
