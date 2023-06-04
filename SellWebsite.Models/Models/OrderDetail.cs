@@ -10,24 +10,22 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SellWebsite.Models.Models
 {
-    public class ShoppingCart
+    public class OrderDetail
     {
-        [Key]
-        public int CartId { get; set; }
+        public int Id { get; set; }
+        public int OrderHeaderId { get; set; }
+        [ForeignKey("OrderHeaderId")]
+        [ValidateNever]
+        public OrderHeader OrderHeader { get; set; }
 
         [Required]
-        [Range(1,999)]
-        public int Quantity { get; set; }
-
         public int ProductId { get; set; }
-        [ValidateNever]
         [ForeignKey("ProductId")]
-        public Product Product { get; set; }
-        public string ApplicationUserId { get; set; }
         [ValidateNever]
-        [ForeignKey("ApplicationUserId")]
-        public ApplicationUser ApplicationUser { get; set; }
+        public Product Product { get; set; }
 
+        public int Count { get; set; }
 
+        public double Price { get; set; }
     }
 }

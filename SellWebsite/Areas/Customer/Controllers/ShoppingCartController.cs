@@ -12,13 +12,13 @@ namespace SellWebsite.Areas.Customer.Controllers
     [Authorize]
     public class ShoppingCartController : Controller
     {
-        public ShoppingCartVM ShoppingCartVM { get; set; }
         private readonly IUnitOfWork _unitOfWork;
 
         public ShoppingCartController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+        public ShoppingCartVM ShoppingCartVM { get; set; } = new ShoppingCartVM();
         public IActionResult Index()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
@@ -27,9 +27,43 @@ namespace SellWebsite.Areas.Customer.Controllers
             ShoppingCartVM = new()
             {
                 Carts = listProduct,
-                TotalPrice = listProduct.Sum(p=>p.Product.Price)
+                TotalPrice = listProduct.Sum(p => p.Product.Price)
             };
             return View(ShoppingCartVM);
+        }
+        public IActionResult Remove(int id)
+        {
+            var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
+            _unitOfWork.ShoppingCart.Remove(productInCart);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Minus(int id)
+        {
+            var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
+            if (productInCart.Quantity <= 1)
+            {
+                _unitOfWork.ShoppingCart.Remove(productInCart);
+            }
+            else
+            {
+                productInCart.Quantity -= 1;
+            }
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Plus(int id)
+        {
+            var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
+            if (productInCart.Quantity >= 999)
+            {
+            }
+            else
+            {
+                productInCart.Quantity += 1;
+            }
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
         }
     }
 

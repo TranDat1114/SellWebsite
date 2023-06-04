@@ -116,7 +116,8 @@ namespace SellWebsite.Areas.Admin.Controllers
                 _unitOfWork.Save();
                 TempData["Success"] = "Product update successfully";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
+
             }
             else
             {

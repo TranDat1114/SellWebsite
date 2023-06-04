@@ -110,8 +110,9 @@ namespace SellWebsite.Areas.Identity.Pages.Account
 
             [Required]
             public string Name { get; set; }
-            public string Address { get; set; }
-            public string Region { get; set; }
+            public string StreetAddress { get; set; }
+            public string City { get; set; }
+            public string Country { get; set; }
             public string Zipcode { get; set; }
             public string PhoneNumber { get; set; }
 
@@ -163,8 +164,9 @@ namespace SellWebsite.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 user.Name = Input.Name;
-                user.Region = Input.Region;
-                user.Address = Input.Address;
+                user.Country = Input.Country;
+                user.City = Input.City;
+                user.StreetAddress = Input.StreetAddress;
                 user.Zipcode = Input.Zipcode;
 
                 //Tài khoản đang hoạt động
