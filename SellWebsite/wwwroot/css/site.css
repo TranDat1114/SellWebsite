@@ -36,3 +36,32 @@
     transition: all 0.5s ease-in-out;
     overflow: auto;
 }
+
+.scoll-able-modal{
+    overflow-y:scroll;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-button{
+    color: #eee;
+    background:#000;
+
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f0ad4e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #333;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #000;
+    }

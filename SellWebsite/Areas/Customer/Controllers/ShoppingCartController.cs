@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
+using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Customer;
 
 namespace SellWebsite.Areas.Customer.Controllers
@@ -23,14 +24,32 @@ namespace SellWebsite.Areas.Customer.Controllers
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
             var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            var listProduct = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+
+            var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+
             ShoppingCartVM = new()
             {
-                Carts = listProduct,
-                TotalPrice = listProduct.Sum(p => p.Product.Price)
+                Carts = listCarts,
+                OrderHeader = new OrderHeader()
+                {
+                    OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity),
+                    Discount = 0,
+                }
             };
+
+            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
+            ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
+            ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+            ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode;
+            ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+            ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+
             return View(ShoppingCartVM);
         }
+
         public IActionResult Remove(int id)
         {
             var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);

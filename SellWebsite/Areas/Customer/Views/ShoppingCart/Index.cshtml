@@ -7,12 +7,13 @@
             <table class="table tabletable-hover scroll-table">
                 <thead>
                     <tr>
-                        <th><input class="form-check-input" type="checkbox" /></th>
-                        <th colspan="2">All Items</th>
-                        <th>Unit price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th></th>
+                        <th class="text-nowrap"><input class="form-check-input" type="checkbox" /></th>
+                        <th class="text-nowrap">All Items</th>
+                        <th class="text-nowrap">Item Name</th>
+                        <th class="text-nowrap">Unit price</th>
+                        <th class="text-nowrap">Quantity</th>
+                        <th class="text-nowrap">Total</th>
+                        <th class="text-nowrap"></th>
                     </tr>
                 </thead>
                 @if (Model.Carts != null && Model.Carts.Count != 0)
@@ -24,8 +25,8 @@
                                 <td><input class="form-check-input" type="checkbox" /></td>
                                 <td><img class="img-table" src="@item.Product.Image" alt="product"> </td>
                                 <td class="text-truncate">@item.Product.Title</td>
-                                <td>@item.Product.Price.ToString("C", CultureInfo.CurrentCulture)</td>
-                                <td class="text-truncate text-center">
+                                <td class="text-success">@item.Product.Price.ToString("C", CultureInfo.CurrentCulture)</td>
+                                <td class="text-center" style="width:250px">
                                     @*nếu là web thì không cộng trừ*@
                                     <div class="input-group">
                                         <a class="input-group-text text-decoration-none" asp-controller="ShoppingCart" asp-action="Minus" asp-route-id="@item.CartId"><i class="fa-solid fa-minus"></i></a>
@@ -34,7 +35,7 @@
                                    asp-controller="ShoppingCart" asp-action="Plus" asp-route-id="@item.CartId"><i class="fa-solid fa-plus"></i></a>
                                     </div>
                                 </td>
-                                <td>@item.Product.Price.ToString("C", CultureInfo.CurrentCulture)</td>
+                                <td>@((item.Product.Price * item.Quantity).ToString("C", CultureInfo.CurrentCulture))</td>
                                 <td><a class="btn btn-sm btn-outline-danger" asp-controller="ShoppingCart" asp-action="Remove" asp-route-id="@item.CartId"><i class="fa-solid fa-xmark"></i></a></td>
                             </tr>
                         }
@@ -67,23 +68,145 @@
                 <div class="row">
                     <div class="col-12 d-flex g-3 justify-content-between">
                         <p class="fw-bold">Provisional price: </p>
-                        <p>@Model.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</p>
+                        <p class="fw-bolder text-success">@Model.OrderHeader.OrderTotal.ToString("C", CultureInfo.CurrentCulture)</p>
                     </div>
                     <div class="col-12 d-flex g-3 justify-content-between">
                         <p class="fw-bold">Discount: </p>
-                        <p>@(0.ToString("C", CultureInfo.CurrentCulture))</p>
+                        <p class="fw-bolder text-warning">@Model.OrderHeader.Discount.ToString("C", CultureInfo.CurrentCulture)</p>
                     </div>
                     <hr />
                     <div class="col-12 d-flex g-3 justify-content-between">
-                        <p class="fw-bold">Provisional price: </p>
-                        <p class="fw-bolder">@Model.TotalPrice.ToString("C", CultureInfo.CurrentCulture)</p>
+                        <p class="fw-bold">Total price: </p>
+                        <p class="fw-bolder text-success">@((Model.OrderHeader.OrderTotal - Model.OrderHeader.Discount).ToString("C", CultureInfo.CurrentCulture))</p>
                     </div>
                 </div>
                 <hr />
                 <div class="row g-3">
-                    <button class="btn btn-outline-success">Purchase</button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#checkOutPayment">Purchase</button>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="checkOutPayment" tabindex="-1" aria-hidden="true">
+    <div class="modal-xl modal-dialog scoll-able-modal">
+        <form class="modal-content" method="post">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Summary your order details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-8 border-end border-2">
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="OrderHeader.Name" class="form-label">Your Name</label>
+                                    <input asp-for="OrderHeader.Name" type="text" class="form-control" placeholder="Input your name...">
+                                    <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="OrderHeader.PhoneNumber">Phone Number</label>
+                                    <input class="form-control" type="text" asp-for="OrderHeader.PhoneNumber" placeholder="Input phone number..." />
+                                    <span class="text-danger" asp-validation-for="OrderHeader.PhoneNumber"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="OrderHeader.StreetAddress" class="form-label">Street Address</label>
+                                    <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" placeholder="Input Street Address...">
+                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="OrderHeader.City"></label>
+                                    <input class="form-control" type="text" asp-for="OrderHeader.City" placeholder="Input City..." />
+                                    <span class="text-danger" asp-validation-for="OrderHeader.City"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="OrderHeader.State" class="form-label">State</label>
+                                    <input asp-for="OrderHeader.State" type="text" class="form-control" placeholder="Input State...">
+                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label asp-for="OrderHeader.Country"></label>
+                                    <input class="form-control" type="text" asp-for="OrderHeader.Country" placeholder="Input Country..." />
+                                    <span class="text-danger" asp-validation-for="OrderHeader.Country"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label asp-for="OrderHeader.Zipcode">Zipcode</label>
+                                    <input class="form-control" type="text" asp-for="OrderHeader.Zipcode" placeholder="Input phone number..." />
+                                    <span class="text-danger" asp-validation-for="OrderHeader.Zipcode"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-lg-between">
+                                        <p class="fw-bold">Order</p>
+                                        <p>Price x Quantity</p>
+                                    </div>
+                                    <hr />
+                                    @if (Model.Carts != null && Model.Carts.Count != 0)
+                                    {
+                                        @foreach (var cart in @Model.Carts)
+                                        {
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="fw-bold">@cart.Product.Title</p>
+                                                    <p class="text-muted text-light">x @cart.Quantity</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="text-end">@((cart.Product.Price * @cart.Quantity).ToString("C", CultureInfo.CurrentCulture))</p>
+                                                </div>
+                                            </div>
+                                            <hr class="mx-auto w-50" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <hr class="w-100" />
+                            <div class="row">
+                                <div class="col-12 d-flex g-3 justify-content-between">
+                                    <p>Provisional price: </p>
+                                    <p class="fw-bolder text-success">@Model.OrderHeader.OrderTotal.ToString("C", CultureInfo.CurrentCulture)</p>
+                                </div>
+                                <div class="col-12 d-flex g-3 justify-content-between">
+                                    <p>Discount: </p>
+                                    <p class="fw-bolder text-warning">@Model.OrderHeader.Discount.ToString("C", CultureInfo.CurrentCulture)</p>
+                                </div>
+                                <div class="col-12 d-flex g-3 justify-content-between">
+                                    <p class="fw-bold">Total: </p>
+                                    <p class="fw-bolder text-success">@((Model.OrderHeader.OrderTotal - Model.OrderHeader.Discount).ToString("C", CultureInfo.CurrentCulture))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between ">
+                <div class="row align-items-center w-100">
+                    <div class="col-12 col-md-8 pt-2">
+                        <p class="text-start text-nowrap text-danger">
+                            Estimate Arrival Date: @DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()
+                        </p>
+                    </div>
+                    <div class="col-12 col-md-4 ">
+                        <div class="d-flex justify-content-between">
+
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-outline-primary">Place Order</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
     </div>
 </div>

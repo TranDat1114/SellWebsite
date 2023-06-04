@@ -11,6 +11,6 @@ namespace SellWebsite.Models.ViewModels.Customer
     public class ShoppingCartVM
     {
         public List<ShoppingCart> Carts { get; set; }
-        public decimal TotalPrice { get; set; }
+        public OrderHeader OrderHeader { get; set; }
     }
 }

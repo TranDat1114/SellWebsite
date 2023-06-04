@@ -17,9 +17,12 @@ namespace SellWebsite.Models.Models
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
+
         public DateTime OrderTime { get; set; }
         public DateTime ShipingDate { get; set; }
+
         public double OrderTotal { get; set; }
+        public double Discount { get; set; }
 
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
@@ -42,7 +45,7 @@ namespace SellWebsite.Models.Models
         [Required]
         public string Country { get; set; }
         [Required]
-        public string State { get; set; }
+        public string State { get; set; } //State Là tiểu bang nha qua Việt Nam thì là tỉnh thành tại paypal nó biểu cần có
         [Required]
         public string Zipcode { get; set; }
     }
