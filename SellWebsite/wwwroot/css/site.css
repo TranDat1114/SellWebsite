@@ -1,12 +1,12 @@
-.scroll-table{
-    overflow-x:auto;
-    display:block;
+.scroll-table {
+    overflow-x: auto;
+    display: block;
 }
 
-.img-table{
-    object-fit:contain;
-    width:100%;
-    max-height:150px;
+.img-table {
+    object-fit: contain;
+    width: 100%;
+    max-height: 150px;
 }
 
 .p-8rem {
@@ -37,8 +37,13 @@
     overflow: auto;
 }
 
-.scoll-able-modal{
-    overflow-y:scroll;
+.scoll-able-modal {
+    overflow-y: scroll;
+    max-height: 350px;
+}
+
+.max-h-90 {
+    max-height: 90vh;
 }
 
 /* width */
@@ -46,10 +51,9 @@
     width: 7px;
 }
 
-::-webkit-scrollbar-button{
+::-webkit-scrollbar-button {
     color: #eee;
-    background:#000;
-
+    background: #000;
 }
 /* Track */
 ::-webkit-scrollbar-track {

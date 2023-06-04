@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Customer;
+using SellWebsite.Utility.IdentityHandler;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -19,7 +20,9 @@ namespace SellWebsite.Areas.Customer.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public ShoppingCartVM ShoppingCartVM { get; set; } = new ShoppingCartVM();
+        [BindProperty]
+        public ShoppingCartVM ShoppingCartVM { get; set; }
+
         public IActionResult Index()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
@@ -50,6 +53,53 @@ namespace SellWebsite.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
+        [HttpPost]
+        [ActionName("Index")]
+        public IActionResult IndexPOST(ShoppingCartVM shoppingCartVM)
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            ShoppingCartVM.Carts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+
+            ShoppingCartVM.OrderHeader.OrderTotal = ShoppingCartVM.OrderHeader.OrderTotal - ShoppingCartVM.OrderHeader.Discount;
+
+            ShoppingCartVM.OrderHeader.OrderTime = DateTime.Now;
+            ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
+
+            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+            //
+
+            ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+
+            _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+            _unitOfWork.Save();
+
+            foreach (var cart in ShoppingCartVM.Carts)
+            {
+                var orderDetail = new OrderDetail()
+                {
+                    ProductId = cart.ProductId,
+                    OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
+                    Count = cart.Quantity,
+                    Price = (double)cart.Product.Price * cart.Quantity,
+                };
+                _unitOfWork.OrderDetail.Add(orderDetail);
+                _unitOfWork.Save();
+            }
+
+
+            return RedirectToAction(nameof(OrderConfirmation),new {id= ShoppingCartVM.OrderHeader.Id });
+        }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);
+        }
+
+        #region Cart Options
         public IActionResult Remove(int id)
         {
             var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
@@ -57,7 +107,6 @@ namespace SellWebsite.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
-        #region needFix
         public IActionResult Minus(int id)
         {
             var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);

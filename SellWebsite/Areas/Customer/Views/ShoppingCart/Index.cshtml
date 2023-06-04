@@ -90,7 +90,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="checkOutPayment" tabindex="-1" aria-hidden="true">
-    <div class="modal-xl modal-dialog scoll-able-modal">
+    <div class="modal-xl modal-dialog modal-fullscreen-md-down max-h-90 mt-5">
         <form class="modal-content" method="post">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Summary your order details</h1>
@@ -152,31 +152,35 @@
                                         <p>Price x Quantity</p>
                                     </div>
                                     <hr />
-                                    @if (Model.Carts != null && Model.Carts.Count != 0)
-                                    {
-                                        @foreach (var cart in @Model.Carts)
+                                    <div class="container scoll-able-modal">
+                                        @if (Model.Carts != null && Model.Carts.Count != 0)
                                         {
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p class="fw-bold">@cart.Product.Title</p>
-                                                    <p class="text-muted text-light">x @cart.Quantity</p>
+                                            @foreach (var cart in @Model.Carts)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <p class="fw-bold">@cart.Product.Title</p>
+                                                        <p class="text-muted text-light">x @cart.Quantity</p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p class="text-end">@((cart.Product.Price * @cart.Quantity).ToString("C", CultureInfo.CurrentCulture))</p>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <p class="text-end">@((cart.Product.Price * @cart.Quantity).ToString("C", CultureInfo.CurrentCulture))</p>
-                                                </div>
-                                            </div>
-                                            <hr class="mx-auto w-50" />
+                                                <hr class="mx-auto w-50" />
+                                            }
                                         }
-                                    }
+                                    </div>
                                 </div>
                             </div>
                             <hr class="w-100" />
                             <div class="row">
                                 <div class="col-12 d-flex g-3 justify-content-between">
+                                    <input asp-for="OrderHeader.OrderTotal" readonly type="number" hidden>
                                     <p>Provisional price: </p>
                                     <p class="fw-bolder text-success">@Model.OrderHeader.OrderTotal.ToString("C", CultureInfo.CurrentCulture)</p>
                                 </div>
                                 <div class="col-12 d-flex g-3 justify-content-between">
+                                    <input asp-for="OrderHeader.Discount" readonly type="number" hidden>
                                     <p>Discount: </p>
                                     <p class="fw-bolder text-warning">@Model.OrderHeader.Discount.ToString("C", CultureInfo.CurrentCulture)</p>
                                 </div>
@@ -208,4 +212,14 @@
             </div>
         </form>
     </div>
+
 </div>
+
+
+@section Scripts
+    {
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
