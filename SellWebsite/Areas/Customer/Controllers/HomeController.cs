@@ -58,7 +58,10 @@ namespace SellWebsite.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
             _unitOfWork.Save();
             }
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            //Sử dụng ở dưới tránh viết sai chính tả và *MagicString*
+            return RedirectToAction(nameof(ShoppingCartController.Index), nameof(ShoppingCartController).Replace("Controller", ""));
+
         }
 
         public IActionResult Privacy()

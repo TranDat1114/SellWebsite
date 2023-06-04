@@ -17,7 +17,14 @@ function loadDataTable() {
             },
             { data: 'Title' },
             { data: 'Author' },
-            { data: 'Description' },
+            {
+                data: 'Description',
+                "render": function (data) {
+                    return `
+                    <p class="text-truncate w-100">${data}</p>
+                    `
+                }
+            },
             { data: 'CreatedDate' },
             { data: 'UpdatedDate' },
             { data: 'License' },

@@ -57,7 +57,8 @@ namespace SellWebsite.Areas.Admin.Controllers
                 _unitOfWork.Save();
                 TempData["Success"] = "Category update successfully";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
+
             }
             return View(company);
 
