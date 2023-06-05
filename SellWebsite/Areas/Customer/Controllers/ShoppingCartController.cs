@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Customer;
 using SellWebsite.Utility;
+using SellWebsite.Utility.Helpers;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -17,6 +19,7 @@ namespace SellWebsite.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaypalSettings _paypalSettings;
+
 
         public ShoppingCartController(IUnitOfWork unitOfWork, IOptions<PaypalSettings> paypalSettings)
         {
@@ -93,14 +96,28 @@ namespace SellWebsite.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
+            //payment :____(
 
-            return RedirectToAction(nameof(OrderConfirmation),new {id= ShoppingCartVM.OrderHeader.Id });
+            //APIContext apiContext = PaypalGetAccessTokenHelper.GetAPIContext(_paypalSettings);
+
+                var successUrl = Request.Host + $"/Customer/ShoppingCart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}";
+                var cancelUrl = Request.Host + "Customer/ShoppingCart/Index";
+
+            return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
+        }
+
+        public IActionResult Demo()
+        {
+            PaypalHelpers.RunPaypalDemo();
+            return View();
         }
 
         public IActionResult OrderConfirmation(int id)
         {
             return View(id);
         }
+
+      
 
         #region Cart Options
         public IActionResult Remove(int id)
