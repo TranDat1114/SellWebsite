@@ -21,6 +21,7 @@ namespace SellWebsite.Utility
         public const string StatusCancelled = "Cancelled";
         public const string StatusRefunded = "Refunded";
 
+        public const string PaypalVERIFIED = "VERIFIED";
 
         public const string PaymentStatusPending = "Pending";
         public const string PaymentStatusApproved = "Approved";

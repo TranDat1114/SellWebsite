@@ -23,10 +23,6 @@ namespace SellWebsite.DataAccess.Reponsitory
         {
             _db.OrderDetails.Update(orderDetail);
         }
-        public void Save()
-        {
-            _db.SaveChanges();
-        }
 
 
     }

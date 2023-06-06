@@ -1,15 +1,26 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Policy;
+using System.Text;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+
+using Newtonsoft.Json.Linq;
+
+using Newtonsoft.Json;
+
+using PayPal.Api;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Customer;
 using SellWebsite.Utility;
 using SellWebsite.Utility.Helpers;
+
+using static System.Net.WebRequestMethods;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -61,7 +72,7 @@ namespace SellWebsite.Areas.Customer.Controllers
 
         [HttpPost]
         [ActionName("Index")]
-        public IActionResult IndexPOST(ShoppingCartVM shoppingCartVM)
+        public async Task<IActionResult> IndexPOST()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
             var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
@@ -97,27 +108,123 @@ namespace SellWebsite.Areas.Customer.Controllers
             }
 
             //payment :____(
+            try
+            {
+                var apiContext = await PaypalGetAccessTokenHelper.GetPayPalAccessTokenAsync(_paypalSettings);
 
-            //APIContext apiContext = PaypalGetAccessTokenHelper.GetAPIContext(_paypalSettings);
+                PayPalPaymentCreatedResponse createdPayment = await CreatePaypalPaymentAsync(apiContext, ShoppingCartVM.OrderHeader.Id);
 
-                var successUrl = Request.Host + $"/Customer/ShoppingCart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}";
-                var cancelUrl = Request.Host + "Customer/ShoppingCart/Index";
+                var approval_url = createdPayment.links.First(x => x.rel == "approval_url").href;
+                _unitOfWork.OrderHeader.UpdatePaypalPaymentId(ShoppingCartVM.OrderHeader.Id, createdPayment.id, "4MBX7FG6TB5NE");
+                _unitOfWork.Save();
 
-            return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
+                return Redirect(approval_url);
+
+            }
+            catch (Exception)
+            {
+                throw;
+                //return RedirectToAction(nameof(Index));
+            }
         }
 
-        public IActionResult Demo()
+        public async Task<IActionResult> OrderConfirmationAsync(int id)
         {
-            PaypalHelpers.RunPaypalDemo();
-            return View();
-        }
+            try
+            {
+                var apiContext = await PaypalGetAccessTokenHelper.GetPayPalAccessTokenAsync(_paypalSettings);
 
-        public IActionResult OrderConfirmation(int id)
-        {
+                PayPalPaymentExecutedResponse executedPayment = await ExecutePaypalPaymentAsync(apiContext, id);
+                if (executedPayment.payer.status == SD.PaypalVERIFIED)
+                {
+                    var claimIdentity = (ClaimsIdentity)User.Identity!;
+                    var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                    var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+
+                    _unitOfWork.ShoppingCart.RemoveRange(listCarts);
+
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
+            }
+            catch (Exception)
+            {
+                ///
+                throw;
+            }
             return View(id);
         }
 
-      
+        #region Paypal
+
+        public async Task<PayPalPaymentCreatedResponse> CreatePaypalPaymentAsync(PayPalAccessToken accessToken, int orderId)
+        {
+            var httpUri = PaypalGetAccessTokenHelper.GetPaypalHttpClient();
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "v1/payments/payment");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.access_token);
+
+            //https://localhost:7196/
+            var domain = Request.Scheme + "://" + Request.Host;
+            var returnUrl = $"{domain}/Customer/ShoppingCart/OrderConfirmation?id={orderId}";
+            var cancelUrl = $"{domain}/Customer/ShoppingCart/Index";
+
+            var orderHeader = _unitOfWork.OrderHeader.Get(p => p.Id == orderId);
+
+            var payment = JObject.FromObject(new
+            {
+                intent = "sale",
+                redirect_urls = new
+                {
+                    return_url = returnUrl,
+                    cancel_url = cancelUrl,
+                },
+                payer = new { payment_method = "paypal" },
+                transactions = JArray.FromObject(new[]
+    {
+                    new
+                    {
+                        amount = new
+                        {
+                            total = orderHeader.OrderTotal,
+                            currency = "USD"
+                        }
+                    }
+                })
+            });
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(payment), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await httpUri.SendAsync(request);
+
+            string content = await response.Content.ReadAsStringAsync();
+            PayPalPaymentCreatedResponse paypalPaymentCreated = JsonConvert.DeserializeObject<PayPalPaymentCreatedResponse>(content);
+            return paypalPaymentCreated;
+        }
+        public async Task<PayPalPaymentExecutedResponse> ExecutePaypalPaymentAsync(PayPalAccessToken accessToken, int orderId)
+        {
+            var httpUri = PaypalGetAccessTokenHelper.GetPaypalHttpClient();
+            var orderHeader = _unitOfWork.OrderHeader.Get(p => p.Id == orderId);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"v1/payments/payment/{orderHeader.PaymentId}/execute");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.access_token);
+
+            var payment = JObject.FromObject(new
+            {
+                payer_id = orderHeader.PayerId
+            });
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(payment), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await httpUri.SendAsync(request);
+
+            string content = await response.Content.ReadAsStringAsync();
+            PayPalPaymentExecutedResponse executedPayment = JsonConvert.DeserializeObject<PayPalPaymentExecutedResponse>(content);
+
+            return executedPayment;
+        }
+
+        #endregion
+
 
         #region Cart Options
         public IActionResult Remove(int id)

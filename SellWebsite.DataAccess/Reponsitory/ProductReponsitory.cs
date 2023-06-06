@@ -26,11 +26,6 @@ namespace SellWebsite.DataAccess.Reponsitory
         {
             _db.Products.Update(product);
         }
-        //Lưu dữ liệu vào bảng Categories
-        public void Save()
-        {
-            _db.SaveChanges();
-        }
 
         public void UpdateCategories(Product product, List<int> selectedCategoryIds)
         {

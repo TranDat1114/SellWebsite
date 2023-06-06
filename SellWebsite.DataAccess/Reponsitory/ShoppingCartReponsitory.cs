@@ -23,11 +23,5 @@ namespace SellWebsite.DataAccess.Reponsitory
         {
             _db.ShoppingCarts.Update(shoppingCart);
         }
-        public void Save()
-        {
-            _db.SaveChanges();
-        }
-
-
     }
 }

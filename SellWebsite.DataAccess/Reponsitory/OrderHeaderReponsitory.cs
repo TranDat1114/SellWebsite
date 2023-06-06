@@ -34,21 +34,23 @@ namespace SellWebsite.DataAccess.Reponsitory
                     orderFromDb.PaymentStatus = paymentStatus;
                 }
             }
+
         }
 
-        public void UpdatePaypalPaymentId(int id, string sessionId, string paymentIntentId)
+        public void UpdatePaypalPaymentId(int id, string paymentId, string payerId)
         {
             var orderFromDb = _db.OrderHeaders.FirstOrDefault(p => p.Id == id);
             if (orderFromDb != null)
             {
-                if (!string.IsNullOrEmpty(sessionId))
+                if (!string.IsNullOrEmpty(paymentId))
                 {
-                    orderFromDb.SessionId = sessionId;
+                    orderFromDb.PaymentId = paymentId;
                 }
-                if (!string.IsNullOrEmpty(paymentIntentId))
+                if (!string.IsNullOrEmpty(payerId))
                 {
-                    orderFromDb.PaymentIntendId = paymentIntentId;
+                    orderFromDb.PayerId = payerId;
                 }
+
             }
         }
     }

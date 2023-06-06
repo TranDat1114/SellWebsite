@@ -9,6 +9,7 @@ using SellWebsite.Models.Models;
 namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
 {
     public interface IOrderDetailReponsitory : IReponsitory<OrderDetail>
-    {   void Update(OrderDetail orderDetail);
+    {   
+        void Update(OrderDetail orderDetail);
     }
 }

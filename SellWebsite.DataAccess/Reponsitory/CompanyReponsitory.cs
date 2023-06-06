@@ -15,17 +15,13 @@ namespace SellWebsite.DataAccess.Reponsitory
         private ApplicationDbContext _db;
         public CompanyReponsitory(ApplicationDbContext db) : base(db)
         {
+           
             _db = db;
         }
 
         public void Update(Company company)
         {
             _db.Companies.Update(company);
-        }
-
-        public void Save()
-        {
-            _db.SaveChanges();
         }
 
     }

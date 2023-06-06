@@ -12,9 +12,16 @@ namespace SellWebsite.Models.Models
         public string intent { get; set; }
         public string state { get; set; }
         public Payer payer { get; set; }
+        public RedirectUrls redirect_urls { get; set; }
         public Transaction[] transactions { get; set; }
         public DateTime create_time { get; set; }
         public Link[] links { get; set; }
+
+        public class RedirectUrls
+        {
+            public string return_url { get; set; }
+            public string cancel_url { get; set; }
+        }
 
         public class Payer
         {

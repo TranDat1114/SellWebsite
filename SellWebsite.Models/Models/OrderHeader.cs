@@ -32,8 +32,8 @@ namespace SellWebsite.Models.Models
         public DateTime PaymentDate { get; set; }
         public DateTime PaymentDueDate { get; set; }
 
-        public string? SessionId { get; set; }
-        public string? PaymentIntendId { get; set; }
+        public string? PaymentId { get; set; }
+        public string? PayerId { get; set; }
 
         [Required]
         public string PhoneNumber { get; set; }
