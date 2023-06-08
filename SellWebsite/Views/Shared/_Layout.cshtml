@@ -82,6 +82,7 @@
 
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Order Management</a></li>
                                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
                                 {
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company Management</a></li>

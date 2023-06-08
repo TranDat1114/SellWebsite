@@ -7,7 +7,7 @@
             <table class="table tabletable-hover scroll-table">
                 <thead>
                     <tr>
-                        <th class="text-nowrap"><input class="form-check-input" type="checkbox" /></th>
+                        @*<th class="text-nowrap"><input class="form-check-input" type="checkbox" /></th>*@
                         <th class="text-nowrap">All Items</th>
                         <th class="text-nowrap">Item Name</th>
                         <th class="text-nowrap">Unit price</th>
@@ -22,7 +22,7 @@
                         @foreach (var item in @Model.Carts)
                         {
                             <tr>
-                                <td><input class="form-check-input" type="checkbox" /></td>
+                                @*<td><input class="form-check-input" type="checkbox" /></td>*@
                                 <td><img class="img-table" src="@item.Product.Image" alt="product"> </td>
                                 <td class="text-truncate">@item.Product.Title</td>
                                 <td class="text-success">@item.Product.Price.ToString("C", CultureInfo.CurrentCulture)</td>

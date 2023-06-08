@@ -13,7 +13,7 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
         void Update(OrderHeader orderHeader);
         void UpdateStatus(int id, string orderStatus, string? paymentStatus = null);
         void UpdatePaypalPaymentId(int id, string paymentId, string payerId);
-
+       
 
     }
 }

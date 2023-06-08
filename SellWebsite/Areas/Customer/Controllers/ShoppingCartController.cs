@@ -79,57 +79,68 @@ namespace SellWebsite.Areas.Customer.Controllers
 
             ShoppingCartVM.Carts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
 
-            ShoppingCartVM.OrderHeader.OrderTotal = ShoppingCartVM.OrderHeader.OrderTotal - ShoppingCartVM.OrderHeader.Discount;
-
-            ShoppingCartVM.OrderHeader.OrderTime = DateTime.Now;
-            ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
-
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-
-            //
-
-            ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-            ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
-
-            _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
-            _unitOfWork.Save();
-
-            foreach (var cart in ShoppingCartVM.Carts)
+            if (ShoppingCartVM.Carts.Count != 0)
             {
-                var orderDetail = new OrderDetail()
+
+
+                ShoppingCartVM.OrderHeader.OrderTotal = ShoppingCartVM.OrderHeader.OrderTotal - ShoppingCartVM.OrderHeader.Discount;
+
+                ShoppingCartVM.OrderHeader.OrderTime = DateTime.Now;
+                ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
+
+                ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+                //
+
+                ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+
+                _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+                _unitOfWork.Save();
+
+                foreach (var cart in ShoppingCartVM.Carts)
                 {
-                    ProductId = cart.ProductId,
-                    OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
-                    Count = cart.Quantity,
-                    Price = (double)cart.Product.Price * cart.Quantity,
-                };
-                _unitOfWork.OrderDetail.Add(orderDetail);
-                _unitOfWork.Save();
-            }
+                    var orderDetail = new OrderDetail()
+                    {
+                        ProductId = cart.ProductId,
+                        OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
+                        Count = cart.Quantity,
+                        Price = (double)cart.Product.Price * cart.Quantity,
+                    };
+                    _unitOfWork.OrderDetail.Add(orderDetail);
+                    _unitOfWork.Save();
+                }
 
-            //payment :____(
-            try
+                //payment :____(
+                try
+                {
+                    var apiContext = await PaypalGetAccessTokenHelper.GetPayPalAccessTokenAsync(_paypalSettings);
+
+                    PayPalPaymentCreatedResponse createdPayment = await CreatePaypalPaymentAsync(apiContext, ShoppingCartVM.OrderHeader.Id);
+
+                    var approval_url = createdPayment.links.First(x => x.rel == "approval_url").href;
+                    _unitOfWork.OrderHeader.UpdatePaypalPaymentId(ShoppingCartVM.OrderHeader.Id, createdPayment.id, "4MBX7FG6TB5NE");
+                    _unitOfWork.Save();
+
+                    return Redirect(approval_url);
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            else
             {
-                var apiContext = await PaypalGetAccessTokenHelper.GetPayPalAccessTokenAsync(_paypalSettings);
-
-                PayPalPaymentCreatedResponse createdPayment = await CreatePaypalPaymentAsync(apiContext, ShoppingCartVM.OrderHeader.Id);
-
-                var approval_url = createdPayment.links.First(x => x.rel == "approval_url").href;
-                _unitOfWork.OrderHeader.UpdatePaypalPaymentId(ShoppingCartVM.OrderHeader.Id, createdPayment.id, "4MBX7FG6TB5NE");
-                _unitOfWork.Save();
-
-                return Redirect(approval_url);
-
+                return RedirectToAction(nameof(Index));
             }
-            catch (Exception)
-            {
-                throw;
-                //return RedirectToAction(nameof(Index));
-            }
+
         }
 
         public async Task<IActionResult> OrderConfirmationAsync(int id)
         {
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             try
             {
                 var apiContext = await PaypalGetAccessTokenHelper.GetPayPalAccessTokenAsync(_paypalSettings);
@@ -137,13 +148,21 @@ namespace SellWebsite.Areas.Customer.Controllers
                 PayPalPaymentExecutedResponse executedPayment = await ExecutePaypalPaymentAsync(apiContext, id);
                 if (executedPayment.payer.status == SD.PaypalVERIFIED)
                 {
-                    var claimIdentity = (ClaimsIdentity)User.Identity!;
-                    var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                   
                     var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
 
                     _unitOfWork.ShoppingCart.RemoveRange(listCarts);
 
                     _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDate = DateTime.Now;
+                    _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDueDate = DateTime.Now;
+                    _unitOfWork.Save();
+                }
+                else
+                {
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.PaymentRejected, SD.PaymentRejected);
+                    _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDate = DateTime.Now;
+                    _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDueDate = DateTime.Now;
                     _unitOfWork.Save();
                 }
             }
