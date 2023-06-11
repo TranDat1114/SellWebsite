@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Product>
+
+@if (Model != null && Model.Any())
+{        @foreach (var product in Model)
+    {
+        <li class="dropdown-item">
+            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Detail" asp-route-id="@product.Id">
+                <div class="row g-3">
+                    <div class="col-5">
+                        <img class="w-100" style="height:100px; object-fit:cover" src="@product.Image" alt="search img" />
+                    </div>
+                    <div class="col-7">
+                        <p class="text-wrap"><strong>@product.Title</strong></p>
+                    </div>
+                </div>
+            </a>
+        </li>
+    }
+}
+else
+{
+    <li><div class="dropdown-item" style="height:100px;">No results found.</div></li>
+}

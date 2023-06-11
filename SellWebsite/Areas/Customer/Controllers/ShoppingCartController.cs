@@ -12,8 +12,6 @@ using Newtonsoft.Json.Linq;
 
 using Newtonsoft.Json;
 
-using PayPal.Api;
-
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Customer;
@@ -81,15 +79,18 @@ namespace SellWebsite.Areas.Customer.Controllers
 
             if (ShoppingCartVM.Carts.Count != 0)
             {
-
-
                 ShoppingCartVM.OrderHeader.OrderTotal = ShoppingCartVM.OrderHeader.OrderTotal - ShoppingCartVM.OrderHeader.Discount;
 
                 ShoppingCartVM.OrderHeader.OrderTime = DateTime.Now;
                 ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
-                ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-
+                var userData = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+                if (!string.IsNullOrEmpty(userData.PhoneNumber))
+                {
+                    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+                }
+                
+                ShoppingCartVM.OrderHeader.ApplicationUser = userData;
                 //
 
                 ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
@@ -148,7 +149,6 @@ namespace SellWebsite.Areas.Customer.Controllers
                 PayPalPaymentExecutedResponse executedPayment = await ExecutePaypalPaymentAsync(apiContext, id);
                 if (executedPayment.payer.status == SD.PaypalVERIFIED)
                 {
-                   
                     var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
 
                     _unitOfWork.ShoppingCart.RemoveRange(listCarts);

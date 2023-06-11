@@ -95,7 +95,7 @@ namespace SellWebsite.Areas.Admin.Controllers
                     _unitOfWork.Category.Update(categoryVM.Category);
                 }
                 _unitOfWork.Save();
-                TempData["Success"] = "Category update successfully";
+                TempData["success"] = "Category update successfully";
 
                 return RedirectToAction(nameof(Index));
 

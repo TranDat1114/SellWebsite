@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using PayPal.Api;
-
 using SellWebsite.Models.Models;
 
 namespace SellWebsite.Utility.Helpers

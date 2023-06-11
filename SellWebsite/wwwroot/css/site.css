@@ -1,3 +1,10 @@
+*{
+    font-family:'Quicksand Light'
+}
+h1,h2,h3{
+    font-family:Montserrat
+}
+
 .scroll-table {
     overflow-x: auto;
     display: block;
@@ -69,3 +76,7 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #000;
     }
+
+.search-input-group {
+    transition: width 0.5s ease-in-out
+}

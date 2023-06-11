@@ -61,7 +61,7 @@ namespace SellWebsite.Areas.Admin.Controllers
                     _unitOfWork.ShoppingCart.Update(shoppingCart);
                 }
                 _unitOfWork.Save();
-                TempData["Success"] = "Shopping Cart update successfully";
+                TempData["success"] = "Shopping Cart update successfully";
                 return RedirectToAction(nameof(Index));
 
             }

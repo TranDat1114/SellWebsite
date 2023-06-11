@@ -23,6 +23,7 @@ namespace SellWebsite
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
+
             builder.Services.Configure<PaypalSettings>(builder.Configuration.GetSection("Paypal"));
 
             //options.SignIn.RequireConfirmedAccount = true Đăng nhập sẽ gửi yêu cầu confirm về email
@@ -45,7 +46,11 @@ namespace SellWebsite
                 googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
             });
-
+            builder.Services.AddAuthentication().AddFacebook(fbOptions =>
+            {
+                fbOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                fbOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            });
 
             var app = builder.Build();
 
@@ -61,11 +66,13 @@ namespace SellWebsite
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.MapRazorPages();
+
             app.MapControllerRoute(
                 name: "home",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}");

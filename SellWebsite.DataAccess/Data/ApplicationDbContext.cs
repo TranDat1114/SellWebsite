@@ -28,26 +28,10 @@ namespace SellWebsite.DataAccess.Data
         {
             var categories = new List<Category>()
             {
+                   
                     new Category()
                     {
                         Id = 1,
-                        NameEnglish = "Thử nghiệm 2",
-                        NameVietnamese = "",
-                        DescriptionEnglish = "Nước uống có gas cực ngon",
-                        DescriptionVietnamese = "",
-                        Image = "no Img",
-                    },
-                    new Category()
-                    {
-                        Id = 2,
-                        NameEnglish = "Thử nghiệm 1",
-                        NameVietnamese = "",
-                        DescriptionEnglish = "Nước uống có gas cực ngon",
-                        Image = "no Img",
-                    },
-                    new Category()
-                    {
-                        Id = 3,
                         NameEnglish = "Informational",
                         NameVietnamese = "Thông tin",
                         DescriptionEnglish = "These are websites that provide information on a specific topic, such as news websites, educational websites, or government websites.",
@@ -56,7 +40,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 4,
+                        Id = 2,
                         NameEnglish = "E-commerce",
                         NameVietnamese = "Thương mại điện tử",
                         DescriptionEnglish = "These are websites that allow users to purchase items online, such as online shopping websites or auction websites.",
@@ -65,7 +49,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 5,
+                        Id = 3,
                         NameEnglish = "Entertainment",
                         NameVietnamese = "Giải trí",
                         DescriptionEnglish = "These are websites that provide entertainment content, such as movie streaming websites, gaming websites, or music streaming websites.",
@@ -74,7 +58,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 6,
+                        Id = 4,
                         NameEnglish = "Social-media",
                         NameVietnamese = "Mạng xã hội",
                         DescriptionEnglish = "These are websites that allow users to interact and connect with each other, such as Facebook, Twitter, or Instagram.",
@@ -83,7 +67,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 7,
+                        Id = 5,
                         NameEnglish = "Blog",
                         NameVietnamese = "Blog",
                         DescriptionEnglish = "These are personal or business websites that provide the latest posts and information on a specific topic.",
@@ -92,7 +76,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 8,
+                        Id = 6,
                         NameEnglish = "Forum",
                         NameVietnamese = "Diễn đàn",
                         DescriptionEnglish = "These are websites that allow users to discuss a specific topic and share their opinions with others.",
@@ -101,7 +85,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 9,
+                        Id = 7,
                         NameEnglish = "Tool",
                         NameVietnamese = "Công cụ",
                         DescriptionEnglish = "These are websites that provide online tools or services for users, such as Google, Dropbox, or GitHub.",
@@ -110,7 +94,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 10,
+                        Id = 8,
                         NameEnglish = "Online-learning",
                         NameVietnamese = "Học tập trực tuyến",
                         DescriptionEnglish = "These are websites that provide online courses or study materials, such as Coursera, edX, or Udemy.",
@@ -119,7 +103,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 11,
+                        Id = 9,
                         NameEnglish = "Food",
                         NameVietnamese = "Ẩm thực",
                         DescriptionEnglish = "I'm too lazy to write it down, I can't edit it anymore",
@@ -128,7 +112,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 12,
+                        Id = 10,
                         NameEnglish = "Exhibition",
                         NameVietnamese = "Trưng bày",
                         DescriptionEnglish = "Phòng trưng bày",
@@ -137,7 +121,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 14,
+                        Id = 11,
                         NameEnglish = "Travel",
                         NameVietnamese = "Du lịch",
                         DescriptionEnglish = "I'm too lazy to write it down, I can't edit it anymore",
@@ -146,7 +130,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 15,
+                        Id = 12,
                         NameEnglish = "Sports",
                         NameVietnamese = "Thể thao",
                         DescriptionEnglish = "I'm too lazy to write it down, I can't edit it anymore",
@@ -155,7 +139,7 @@ namespace SellWebsite.DataAccess.Data
                     },
                     new Category()
                     {
-                        Id = 16,
+                        Id = 13,
                         NameEnglish = "Business"
                         ,
                         NameVietnamese = "Kinh doanh",
@@ -182,7 +166,25 @@ namespace SellWebsite.DataAccess.Data
                     DownloadUrl = "linkdownloadFIle",
                     PreviewUrl = "LinkPreviewUrl",
                     License = "",
-                    Price = 500000,
+                    Price = 50,
+                    Rating= 4,
+                },
+                new Product()
+                {
+                    Id = 2,
+                    Title = "Dotnet Universe",
+                    Author = "TranPhuDat",
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                    PostsBy = "ADminTPD",
+                    Credits = "Images from Unsplash;Boostrap",
+                    Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
+                    DownloadCount = 3,
+                    DownloadUrl = "https://trandat1114.github.io/DotnetuniverseProject/#!/",
+                    PreviewUrl = "https://trandat1114.github.io/DotnetuniverseProject/#!/",
+                    License = "",
+                    Price = 999,
+                    Rating= 3,
                 }
             };
 

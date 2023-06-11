@@ -4,6 +4,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+
+using NuGet.Protocol;
+
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels;
@@ -28,7 +32,13 @@ namespace SellWebsite.Areas.Customer.Controllers
                 Products = _unitOfWork.Product.GetAll(includes: p => p.Categories!).ToList(),
                 Categories = _unitOfWork.Category.GetAll().ToList(),
             };
+
             return View(homeVM);
+        }
+        [HttpGet]
+        public IActionResult GetCategories()
+        {
+            return Json(new { data = _unitOfWork.Category.GetAll().Select(p => p.NameEnglish).ToList() });
         }
 
         public IActionResult Detail(int id)
@@ -54,25 +64,52 @@ namespace SellWebsite.Areas.Customer.Controllers
             }
             else
             {
-            shoppingCart.ApplicationUserId = userId;
+                shoppingCart.ApplicationUserId = userId;
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
-            _unitOfWork.Save();
+                _unitOfWork.Save();
             }
             //return RedirectToAction("Index");
             //Sử dụng ở dưới tránh viết sai chính tả và *MagicString*
             return RedirectToAction(nameof(ShoppingCartController.Index), nameof(ShoppingCartController).Replace("Controller", ""));
-
         }
 
-        public IActionResult Privacy()
+        [Authorize]
+        public IActionResult AddToCart(int productId)
         {
-            return View();
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == productId);
+
+            if (cartFromDb != null)
+            {
+                //Logic nếu sản phẩm có rồi
+                TempData["Success"] = "Product allready in your cart";
+            }
+            else
+            {
+                var cart = new ShoppingCart()
+                {
+                    Product = _unitOfWork.Product.Get(x => x.Id == productId, p => p.Categories!),
+                    ProductId = productId,
+                };
+                cart.ApplicationUserId = userId;
+                _unitOfWork.ShoppingCart.Add(cart);
+                _unitOfWork.Save();
+                TempData["Success"] = "Add product to cart successful";
+            }
+            return RedirectToAction(nameof(Index));
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Search(string query)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // Perform the search based on the query
+            var searchResults = _unitOfWork.Product.GetAll(p=>p.Title.Contains(query)).ToList();
+
+            // Return the partial view with the search results
+            return PartialView("_SearchResults", searchResults);
         }
+
+
     }
 }

@@ -36,6 +36,7 @@ function loadDataTable() {
             { data: 'DownloadUrl' },
             { data: 'Price' },
             { data: 'PostsBy' },
+            {data: 'Rating'},
             {
                 data: 'Categories',
                 "render": function (data) {

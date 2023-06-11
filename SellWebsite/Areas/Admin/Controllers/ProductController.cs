@@ -114,7 +114,7 @@ namespace SellWebsite.Areas.Admin.Controllers
 
                 _unitOfWork.Product.UpdateCategories(productVM.Product, productVM.CategoryIdList);
                 _unitOfWork.Save();
-                TempData["Success"] = "Product update successfully";
+                TempData["success"] = "Product update successfully";
 
                 return RedirectToAction(nameof(Index));
 

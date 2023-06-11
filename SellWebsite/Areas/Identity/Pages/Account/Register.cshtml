@@ -7,8 +7,17 @@
 <div class="container-fluid ">
     <div class="row justify-content-between">
         <div class="col-12 col-md-6">
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
+            {
+                <h2>CREATE ACCOUNT - ADMIN PORTAL</h2>
+
+            }
+            else
+            {
                 <h2>Create your account</h2>
+            }
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="mb-3 row">
                     <div class="col-12 col-md-6">
@@ -49,30 +58,42 @@
 
                 </div>
                 <div class="mb-3 row">
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <label asp-for="Input.City">City</label>
                         <input asp-for="Input.City" class="form-control" placeholder="Input your City..." />
                         <span asp-validation-for="Input.City" class="text-danger"></span>
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <label asp-for="Input.PhoneNumber">Phone Number</label>
                         <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Input your Phone number..." />
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
-                    <div class="col-12 col-md-4">
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Input.State">State</label>
+                        <input asp-for="Input.State" class="form-control" placeholder="Input your State..." />
+                        <span asp-validation-for="Input.State" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
                         <label asp-for="Input.Zipcode">Zipcode</label>
                         <input asp-for="Input.Zipcode" class="form-control" placeholder="Input your Zipcode..." />
                         <span asp-validation-for="Input.Zipcode" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="mb-3 row">
-                    <label>Role (Sẽ xóa khi hoàn thành phần Identity)</label>
-                    <div class="col-12">
-                        <Select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-control" aria-required="true" placeholder="choiceROle">
-                            <option disabled selected>-Select the role-</option>
-                        </Select>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <div class="mb-3 row">
+                        <label>Role (Sẽ xóa khi hoàn thành phần Identity)</label>
+                        <div class="col-12">
+                            <Select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-control" aria-required="true" placeholder="choiceROle">
+                                <option disabled selected>-Select the role-</option>
+                            </Select>
+                        </div>
                     </div>
-                </div>
+                }
                 <div class="row justify-content-center my-5">
                     <div class="col-0 col-md-3">
                     </div>
@@ -84,42 +105,51 @@
 
                 </div>
             </form>
-            <div class="or-container">
-                <div class="line"></div>
-                <div class="or-text">or</div>
-                <div class="line"></div>
-            </div>
-            <section>
 
-                @{
-                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                    {
-                        <div>
-                            <p>
-                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                    article
-                                    about setting up this ASP.NET application to support logging in via external services
-                                </a>.
-                            </p>
-                        </div>
-                    }
-                    else
-                    {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
+            {
+                //                
+            }
+            else
+            {
+
+                <div class="or-container">
+                    <div class="line"></div>
+                    <div class="or-text">or</div>
+                    <div class="line"></div>
+                </div>
+                <section>
+
+                    @{
+                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
                             <div>
                                 <p>
-                                    @foreach (var provider in Model.ExternalLogins!)
-                                    {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                    }
+                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                        article
+                                        about setting up this ASP.NET application to support logging in via external services
+                                    </a>.
                                 </p>
                             </div>
-                        </form>
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins!)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        }
                     }
-                }
-            </section>
-            <hr />
-            <p><b>Already have an account?</b> <a asp-area="Identity" asp-page="/Account/Login">Log In</a></p>
+                </section>
+                <hr />
+                <p><b>Already have an account?</b> <a asp-area="Identity" asp-page="/Account/Login">Log In</a></p>
+            }
         </div>
         <div class="col-12 col-md-6">
             <lottie-player class=" w-100" src="https://assets3.lottiefiles.com/packages/lf20_hi95bvmx/WebdesignBg.json" background="transparent" speed="1" loop autoplay>
