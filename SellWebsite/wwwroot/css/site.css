@@ -80,3 +80,10 @@ h1,h2,h3{
 .search-input-group {
     transition: width 0.5s ease-in-out
 }
+
+.active {
+    color: #f0ad4e !important;
+}
+.user-review {
+    color: #4bbf73 !important;
+}

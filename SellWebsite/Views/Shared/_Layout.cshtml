@@ -54,25 +54,7 @@
             </button>
 
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav navbar-nav-scroll align-items-center">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown01" id="category-list">
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <div class="input-group search-input-group">
-                            <input class="form-control" type="text" id="searchInput" placeholder="Search product name..." />
-                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                        </div>
-                        <ul class="dropdown-menu w-100" id="searchResults">
-                            <li>
-                                <div class="dropdown-item">
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-
+                <ul class="navbar-nav navbar-nav-scroll align-items-center ms-2">
                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss) || User.IsInRole(SD.Role_Employee))
                     {
                         <li class="nav-item dropdown">
@@ -93,6 +75,25 @@
 
                         </li>
                     }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01" id="category-list">
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <div class="input-group search-input-group">
+                            <input class="form-control" type="text" id="searchInput" placeholder="Search product name..." />
+                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        </div>
+                        <ul class="dropdown-menu w-100" id="searchResults">
+                            <li>
+                                <div class="dropdown-item">
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                    
 
                 </ul>
                 <ul class="navbar-nav ms-auto navbar-nav-scroll align-items-center">
@@ -210,6 +211,7 @@
 
     <script src="~/js/getCategoriesName.js" asp-append-version="true"></script>
     <script src="~/js/searchProduct.js" asp-append-version="true"></script>
+    <script src="~/js/changeIconStartReview.js" asp-append-version="true"></script>
 
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

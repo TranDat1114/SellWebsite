@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SellWebsite.Utility.IdentityHandler;
 using SellWebsite.Utility;
+using System.Net.Mail;
+using MailKit.Net.Smtp;
 
 namespace SellWebsite
 {
@@ -37,7 +39,18 @@ namespace SellWebsite
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddSingleton<ISmtpClient>(sp =>
+            {
+                var client = new SmtpClient();
+                client.Connect(smtpSettings.Host, smtpSettings.Port, SecureSocketOptions.StartTls);
+                client.Authenticate(smtpSettings.Username, smtpSettings.Password);
+                return client;
+            });
+
             builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+
 
             builder.Services.AddRazorPages();
 
