@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
+using SellWebsite.Utility;
+
 namespace SellWebsite.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
@@ -26,6 +28,9 @@ namespace SellWebsite.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+
+            //người dùng logout session được dọn sạch tránh lỗi ngớ ngẩn :3
+            HttpContext.Session.Remove(SD.SessionCart);
 
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)

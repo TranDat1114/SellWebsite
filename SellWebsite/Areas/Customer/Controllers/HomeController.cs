@@ -28,7 +28,7 @@ namespace SellWebsite.Areas.Customer.Controllers
         }
 
         public IActionResult Index()
-        {           
+        {
             var homeVM = new HomeVM()
             {
                 Products = _unitOfWork.Product.GetAll(includes: p => p.Categories!).ToList(),
@@ -84,39 +84,72 @@ namespace SellWebsite.Areas.Customer.Controllers
         //}
         #endregion
 
-        [Authorize]
         public IActionResult AddToCart(int productId)
         {
+
             var claimIdentity = (ClaimsIdentity)User.Identity!;
-            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == productId);
-
-            if (cartFromDb != null)
+            if (claimIdentity.Name != null)
             {
-                //Logic nếu sản phẩm có rồi
-                cartFromDb.Quantity += 1;
-                _unitOfWork.ShoppingCart.Update(cartFromDb);
-                _unitOfWork.Save();
+                var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == productId);
 
-                //Sau kiểm tra sản phẩm có phải trang web hay không
-                //Nếu không thì cộng 
-                TempData["Success"] = "Product allready in your cart";
+                if (cartFromDb != null)
+                {
+                    //Logic nếu sản phẩm có rồi
+                    cartFromDb.Quantity += 1;
+                    _unitOfWork.ShoppingCart.Update(cartFromDb);
+                    _unitOfWork.Save();
+
+                    //Sau kiểm tra sản phẩm có phải trang web hay không
+                    //Nếu không thì cộng 
+                    TempData["Success"] = "Product allready in your cart";
+                }
+                else
+                {
+                    var cart = new ShoppingCart()
+                    {
+                        Product = _unitOfWork.Product.Get(x => x.Id == productId, p => p.Categories!),
+                        ProductId = productId,
+                    };
+                    cart.ApplicationUserId = userId;
+                    _unitOfWork.ShoppingCart.Add(cart);
+                    _unitOfWork.Save();
+
+                    TempData["Success"] = "Add product to cart successful";
+                }
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             else
             {
-                var cart = new ShoppingCart()
+                var ShopCartString = HttpContext.Session.GetString(SD.SessionShopingCarts);
+                var shoppingCarts = new List<ShoppingCart>();
+                if (!string.IsNullOrEmpty(ShopCartString))
                 {
-                    Product = _unitOfWork.Product.Get(x => x.Id == productId, p => p.Categories!),
-                    ProductId = productId,
-                };
-                cart.ApplicationUserId = userId;
-                _unitOfWork.ShoppingCart.Add(cart);
-                _unitOfWork.Save();
+                    shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(ShopCartString);
+                }
+
+                if (shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId) != null)
+                {
+                    shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId).Quantity += 1;
+                }
+                else
+                {
+                    var cart = new ShoppingCart()
+                    {
+                        Product = _unitOfWork.Product.Get(x => x.Id == productId, p => p.Categories!),
+                        ProductId = productId,
+                        ApplicationUserId = "0",
+                        Quantity = 1,
+                    };
+                    shoppingCarts.Add(cart);
+                }
+
+                HttpContext.Session.SetString(SD.SessionShopingCarts, JsonConvert.SerializeObject(shoppingCarts));
 
                 TempData["Success"] = "Add product to cart successful";
+                return Redirect(Request.Headers["Referer"].ToString());
             }
-            return Redirect(Request.Headers["Referer"].ToString()); ;
+
         }
 
         public IActionResult Search(string query)

@@ -23,7 +23,6 @@ using static System.Net.WebRequestMethods;
 namespace SellWebsite.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize]
     public class ShoppingCartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -36,40 +35,71 @@ namespace SellWebsite.Areas.Customer.Controllers
             _paypalSettings = paypalSettings.Value;
         }
         [BindProperty]
-        public ShoppingCartVM ShoppingCartVM { get; set; }
+        public ShoppingCartVM ShoppingCartVM { get; set; } = new();
 
         public IActionResult Index()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
-            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-            var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
-
-            ShoppingCartVM = new()
+            if (claimIdentity.Name != null)
             {
-                Carts = listCarts,
-                OrderHeader = new OrderHeader()
+                var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+                var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+
+                ShoppingCartVM = new()
                 {
-                    OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity),
-                    Discount = 0,
+                    Carts = listCarts,
+                    OrderHeader = new OrderHeader()
+                    {
+                        OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity),
+                        Discount = 0,
+                    }
+                };
+
+                ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+                ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+                ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
+                ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
+                ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+                ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode;
+                ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+                ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+            }
+            else
+            {
+                var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+                if (sessionShopCart != null)
+                {
+                    var listCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
+                    ShoppingCartVM = new()
+                    {
+                        Carts = listCarts,
+                        OrderHeader = new OrderHeader()
+                        {
+                            OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity),
+                            Discount = 0,
+                        }
+                    };
                 }
-            };
-
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-
-            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-            ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
-            ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
-            ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode;
-            ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
-            ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+                else
+                {
+                    ShoppingCartVM = new()
+                    {
+                        Carts = new(),
+                        OrderHeader = new OrderHeader()
+                        {
+                            OrderTotal = 0,
+                            Discount = 0,
+                        }
+                    };
+                }
+            }
 
             return View(ShoppingCartVM);
         }
 
         [HttpPost]
         [ActionName("Index")]
+        [Authorize]
         public async Task<IActionResult> IndexPOST()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
@@ -85,10 +115,10 @@ namespace SellWebsite.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
                 var userData = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-                //if (!string.IsNullOrEmpty(userData.PhoneNumber))
-                //{
-                //    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-                //}
+                if (string.IsNullOrEmpty(userData.PhoneNumber))
+                {
+                    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+                }
 
                 ShoppingCartVM.OrderHeader.ApplicationUser = userData;
                 //
@@ -137,7 +167,7 @@ namespace SellWebsite.Areas.Customer.Controllers
             }
 
         }
-
+        [Authorize]
         public async Task<IActionResult> OrderConfirmationAsync(int id)
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;

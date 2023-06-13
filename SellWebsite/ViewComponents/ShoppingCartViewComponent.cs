@@ -3,7 +3,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
+using SellWebsite.Models.Models;
 using SellWebsite.Utility;
 
 namespace SellWebsite.ViewComponents
@@ -26,14 +29,19 @@ namespace SellWebsite.ViewComponents
                     HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
                 }
 
-                return View(HttpContext.Session.GetInt32(SD.SessionCart));
             }
             else
             {
-                //người dùng logout session được dọn sạch tránh lỗi ngớ ngẩn :3
-                HttpContext.Session.Clear();
-                return View(0);
+                var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+                var quantityOfProductInCart = 0;
+                if (sessionShopCart != null)
+                {
+                    var shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
+                    quantityOfProductInCart = shoppingCarts.Count();
+                }
+                HttpContext.Session.SetInt32(SD.SessionCart, quantityOfProductInCart);
             }
+            return View(HttpContext.Session.GetInt32(SD.SessionCart));
         }
     }
 }
