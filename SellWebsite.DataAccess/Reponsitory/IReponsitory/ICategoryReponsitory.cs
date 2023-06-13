@@ -15,6 +15,5 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
         void Update(Category category);
         //Lưu dữ liệu vào database
         //Viết ở đây vì có thể tùy mỗi table sẽ có một cách xữ lý dữ liệu khác nhau
-        void Save();
     }
 }

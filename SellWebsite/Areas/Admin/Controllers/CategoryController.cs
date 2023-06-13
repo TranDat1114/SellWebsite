@@ -8,7 +8,7 @@ using SellWebsite.Models.Models;
 using Microsoft.AspNetCore.Hosting;
 using SellWebsite.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
-using SellWebsite.Utility.IdentityHandler;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {
@@ -95,7 +95,7 @@ namespace SellWebsite.Areas.Admin.Controllers
                     _unitOfWork.Category.Update(categoryVM.Category);
                 }
                 _unitOfWork.Save();
-                TempData["Success"] = "Category update successfully";
+                TempData["success"] = "Category update successfully";
 
                 return RedirectToAction(nameof(Index));
 

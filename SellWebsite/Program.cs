@@ -6,7 +6,10 @@ using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SellWebsite.Utility.IdentityHandler;
-
+using SellWebsite.Utility;
+using System.Net.Mail;
+using MailKit.Net.Smtp;
+using SellWebsite.DataAccess.DbInitializer;
 
 namespace SellWebsite
 {
@@ -21,7 +24,17 @@ namespace SellWebsite
             //Test :tên database khác để hỗ trợ việc đổi dữ liệu 
             //DebugDb : tên database khác để hỗ trợ việc đổi dữ liệu 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DebugDb")));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TestInitializer")));
+
+
+            builder.Services.AddSession(op =>
+            {
+                op.IdleTimeout = TimeSpan.FromMinutes(60);
+                op.Cookie.HttpOnly = true;
+                op.Cookie.IsEssential = true;
+            });
+
+            builder.Services.Configure<PaypalSettings>(builder.Configuration.GetSection("Paypal"));
 
             //options.SignIn.RequireConfirmedAccount = true Đăng nhập sẽ gửi yêu cầu confirm về email
 
@@ -33,9 +46,10 @@ namespace SellWebsite
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
+
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
-
             builder.Services.AddRazorPages();
 
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
@@ -43,7 +57,11 @@ namespace SellWebsite
                 googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
             });
-
+            builder.Services.AddAuthentication().AddFacebook(fbOptions =>
+            {
+                fbOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                fbOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            });
 
             var app = builder.Build();
 
@@ -59,15 +77,32 @@ namespace SellWebsite
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
+            SeedDatas();
+
+            app.UseSession();
             app.MapRazorPages();
+
             app.MapControllerRoute(
                 name: "home",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}");
             app.Run();
+
+            //Initializer data ở đây
+            void SeedDatas()
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var dbInitilizer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                    dbInitilizer.Initialize();
+                }
+            }
         }
+
+
     }
 }

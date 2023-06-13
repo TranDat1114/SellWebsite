@@ -18,6 +18,8 @@ namespace SellWebsite.DataAccess.Reponsitory
         public ICompanyReponsitory Company { get; private set; }
         public IShoppingCartReponsitory ShoppingCart { get; private set; }
         public IApplicationUserReponsitory ApplicationUser { get; private set; }
+        public IOrderDetailReponsitory OrderDetail { get; private set; }
+        public IOrderHeaderReponsitory OrderHeader { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -26,6 +28,8 @@ namespace SellWebsite.DataAccess.Reponsitory
             Company = new CompanyReponsitory(_db);
             ShoppingCart = new ShoppingCartReponsitory(_db);
             ApplicationUser = new ApplicationUserReponsitory(_db);
+            OrderDetail = new OrderDetailReponsitory(_db);
+            OrderHeader = new OrderHeaderReponsitory(_db);
         }
 
         public void Save()

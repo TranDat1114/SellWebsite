@@ -13,8 +13,5 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
     {
         //Cập nhật dữ liệu
         void Update(ShoppingCart shoppingCart);
-        //Lưu dữ liệu vào database
-        //Viết ở đây vì có thể tùy mỗi table sẽ có một cách xữ lý dữ liệu khác nhau
-        void Save();
     }
 }

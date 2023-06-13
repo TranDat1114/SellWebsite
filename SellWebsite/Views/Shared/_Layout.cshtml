@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json;
+@using SellWebsite.DataAccess.Data;
+
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor IHttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,10 +39,11 @@
     <link href="~/css/Template_Css/swiper.css" rel="stylesheet">
     <link href="~/css/Template_Css/styles.css" rel="stylesheet">
 
+
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbarExample">
     <!-- Navigation -->
-    <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
+    <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation align-items-center">
         <div class="container-fluid">
 
             <!-- Image Logo -->
@@ -51,49 +58,62 @@
             </button>
 
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav ms-auto navbar-nav-scroll">
-                    <li class="nav-item">
-                        <a class="nav-link active" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Drop</a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                            <li><a class="dropdown-item" href="article.html">Article Details</a></li>
-                            <li><div class="dropdown-divider"></div></li>
-                            <li><a class="dropdown-item" href="terms.html">Terms Conditions</a></li>
-                            <li><div class="dropdown-divider"></div></li>
-                            <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
-                            <li class="nav-item">
-                                <a class="dropdown-item" href="#services">Services</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="dropdown-item" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">Your carts</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
+                <ul class="navbar-nav navbar-nav-scroll align-items-center ms-2">
                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss) || User.IsInRole(SD.Role_Employee))
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
                             <ul class="dropdown-menu">
                                 <li><div class="dropdown-divider"></div></li>
-
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
+                                <li><div class="dropdown-divider"></div></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Order Management</a></li>
+                                <li><div class="dropdown-divider"></div></li>
                                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
                                 {
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company Management</a></li>
+                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
                                 }
-                                <li><div class="dropdown-divider"></div></li>
                             </ul>
+
                         </li>
                     }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01" id="category-list">
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <div class="input-group search-input-group">
+                            <input class="form-control" type="text" id="searchInput" placeholder="Search product name..." />
+                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        </div>
+                        <ul class="dropdown-menu w-100" id="searchResults">
+                            <li>
+                                <div class="dropdown-item">
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
                 </ul>
-                <span class="nav-item me-0">
-                    <partial name="_LoginPartial">
-                        @*<a class="btn-solid-sm" href="#contact">Get quote</a>*@
-                </span>
+                <ul class="navbar-nav ms-auto navbar-nav-scroll align-items-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link text-nowrap" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">
+                            @await Component.InvokeAsync("ShoppingCart")
+                        </a>
+                    </li>
+
+                    <li class="nav-item me-0">
+                        <partial name="_LoginPartial">
+                            @*<a class="btn-solid-sm" href="#contact">Get quote</a>*@
+                    </li>
+                </ul>
+
             </div> <!-- end of navbar-collapse -->
         </div> <!-- end of container -->
     </nav> <!-- end of navbar -->
@@ -196,6 +216,10 @@
     <script src="~/js/Template_js/scripts.js"></script> <!-- Custom scripts -->
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/getCategoriesName.js" asp-append-version="true"></script>
+    <script src="~/js/searchProduct.js" asp-append-version="true"></script>
+    <script src="~/js/changeIconStartReview.js" asp-append-version="true"></script>
 
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

@@ -18,10 +18,57 @@
     <div class="col-md-4">
         <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email."/>
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.Email">Email</label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.Name">FullName</label>
+                    <input asp-for="Input.Name" class="form-control" placeholder="Input your name..." />
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+            </div>
+           
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.StreetAddress">Street Address</label>
+                    <input asp-for="Input.StreetAddress" class="form-control" placeholder="Input your address..." />
+                    <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.Country">Country</label>
+                    <input asp-for="Input.Country" class="form-control" placeholder="Input your Country..." />
+                    <span asp-validation-for="Input.Country" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.City">City</label>
+                    <input asp-for="Input.City" class="form-control" placeholder="Input your City..." />
+                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.PhoneNumber">Phone Number</label>
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Input your Phone number..." />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.State">State</label>
+                    <input asp-for="Input.State" class="form-control" placeholder="Input your State..." />
+                    <span asp-validation-for="Input.State" class="text-danger"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Input.Zipcode">Zipcode</label>
+                    <input asp-for="Input.Zipcode" class="form-control" placeholder="Input your Zipcode..." />
+                    <span asp-validation-for="Input.Zipcode" class="text-danger"></span>
+                </div>
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>

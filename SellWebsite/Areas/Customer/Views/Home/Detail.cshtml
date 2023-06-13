@@ -3,9 +3,7 @@
 
 
 <div class="container">
-    <form class="row" method="post">
-        <input asp-for="CartId" hidden />
-        <input asp-for="ProductId"  hidden/>
+    <div class="row align-items-center">
         <div class="col-8">
             <div class="row">
                 <div class="col-12">
@@ -17,10 +15,10 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex gap-3">
-                        <div>
-                            <i class="fa-regular fa-clock"></i>  @Model.Product.CreatedDate.ToShortDateString()
+                        <div class="text-nowrap">
+                            <i class="fa-regular fa-clock"></i> @Model.Product.CreatedDate.ToShortDateString()
                         </div>
-                        <div>
+                        <div class="text-nowrap">
                             <i class="fa-regular fa-user"></i> @Model.Product.PostsBy
                         </div>
                         <div class="text-truncate">
@@ -36,10 +34,9 @@
             </div>
         </div>
         <div class="col-4">
-            <button class="btn btn-outline-primary w-100 " type="submit"><i class="fa-solid fa-cart-shopping"></i> Add to cart</button>
+            <a class="btn btn-outline-primary w-100" asp-area="Customer" asp-controller="Home" asp-action="AddToCart" asp-route-productId="@Model.Product.Id"><i class="fa-solid fa-cart-shopping"></i> Add to cart</a>
         </div>
-    </form>
-
+    </div>
     <hr />
     <div class="container">
         <img class="w-100 shadow-lg mb-5" src="@Model.Product.Image" />
@@ -67,15 +64,15 @@
             </div>
         </div>
 
-        <div class="row justify-content-evenly">
+        <div class="row justify-content-evenly my-3">
             <div class="col col-md-4">
                 @*<a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-cart-shopping"></i> Add Cart</a>*@
             </div>
             <div class="col-12 col-md-4">
-                <a class="btn btn-outline-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-eye"></i> Live Preview</a>
+                <a class="btn btn-outline-primary w-100" asp-area="Customer" asp-controller="Preview" asp-action="Index" asp-route-id="@Model.ProductId">Live Preview</a>
             </div>
             <div class="col col-md-4">
-              @*  <a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-credit-card"></i> Buy Now</a>*@
+                @*  <a class="btn btn-primary w-100 " asp-area="Customer" asp-controller="Home" asp-action="Preview" asp-route-id="@Model.Product.Id"><i class="fa-solid fa-credit-card"></i> Buy Now</a>*@
             </div>
         </div>
         <hr />

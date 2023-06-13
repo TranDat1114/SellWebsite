@@ -1,12 +1,19 @@
-.scroll-table{
-    overflow-x:auto;
-    display:block;
+*{
+    font-family:'Quicksand Light'
+}
+h1,h2,h3{
+    font-family:Montserrat
 }
 
-.img-table{
-    object-fit:contain;
-    width:100%;
-    max-height:150px;
+.scroll-table {
+    overflow-x: auto;
+    display: block;
+}
+
+.img-table {
+    object-fit: contain;
+    width: 100%;
+    max-height: 150px;
 }
 
 .p-8rem {
@@ -35,4 +42,48 @@
     width: 100%;
     transition: all 0.5s ease-in-out;
     overflow: auto;
+}
+
+.scoll-able-modal {
+    overflow-y: scroll;
+    max-height: 350px;
+}
+
+.max-h-90 {
+    max-height: 90vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-button {
+    color: #eee;
+    background: #000;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f0ad4e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #333;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #000;
+    }
+
+.search-input-group {
+    transition: width 0.5s ease-in-out
+}
+
+.active {
+    color: #f0ad4e !important;
+}
+.user-review {
+    color: #4bbf73 !important;
 }

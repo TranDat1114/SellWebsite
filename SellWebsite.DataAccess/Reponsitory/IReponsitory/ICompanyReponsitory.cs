@@ -11,6 +11,5 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
     public interface ICompanyReponsitory : IReponsitory<Company>
     {
         void Update(Company company);
-        void Save();
     }
 }

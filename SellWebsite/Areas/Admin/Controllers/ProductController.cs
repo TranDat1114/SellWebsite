@@ -12,7 +12,7 @@ using NuGet.ContentModel;
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels.Admin;
-using SellWebsite.Utility.IdentityHandler;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {
@@ -114,7 +114,7 @@ namespace SellWebsite.Areas.Admin.Controllers
 
                 _unitOfWork.Product.UpdateCategories(productVM.Product, productVM.CategoryIdList);
                 _unitOfWork.Save();
-                TempData["Success"] = "Product update successfully";
+                TempData["success"] = "Product update successfully";
 
                 return RedirectToAction(nameof(Index));
 

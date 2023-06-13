@@ -89,6 +89,9 @@ namespace SellWebsite.Models.Models
         [MaxLength(256)]
         public string? Image { get; set; }
 
+        [Column("ProductRating")]
+        [DisplayName("Product Rating")]
+        public double? Rating { get; set; }
 
         [DisplayName("Categories")]
         public virtual ICollection<Category>? Categories { get; set; }

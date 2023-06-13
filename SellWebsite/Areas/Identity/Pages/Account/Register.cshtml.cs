@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
 using SellWebsite.Models.Models;
-using SellWebsite.Utility.IdentityHandler;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Identity.Pages.Account
 {
@@ -114,6 +114,7 @@ namespace SellWebsite.Areas.Identity.Pages.Account
             public string City { get; set; }
             public string Country { get; set; }
             public string Zipcode { get; set; }
+            public string State { get; set; }
             public string PhoneNumber { get; set; }
 
             //Xóa phần dưới sau khi hoàn thiện đăng nhập
@@ -127,19 +128,12 @@ namespace SellWebsite.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            //Dòng if dưới đây kiểm tra xem trong database đã có role phù hợp hay chưa. Nếu chưa sẽ tự động tạo các role trong database khi mở trang register
-            //Ở đây chọn 1 role mồi là customer nếu không có role customer thì tạo hết :v xử lý vậy cho lẹ => 0 nên
-            if (!_roleManager.RoleExistsAsync(SD.Role_Employee).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Boss)).GetAwaiter().GetResult();
-            }
-
             //Tạm thời thử nghiệm tạo tài khoản kèm thêm role không dùng trong dự án 
             //Xóa dòng dưới sau khi hoàn thiện đăng nhập
-            #region Xóa khi hoàn thiện chương trình
+            #region Xóa khi hoàn thiện chương trình --> Đã sửa lại không cần xóa nữa
+
+            //Nhiều lúc tôi cảm thấy tôi code nhiều quá tôi đâm ra tự kỷ + đa nhân cách 
+            //dòng #region bên trên tôi viết tầm 2 tuần trước và tôi vừa dùng --> để rep lại chính mình :(
 
             Input = new()
             {
@@ -168,10 +162,8 @@ namespace SellWebsite.Areas.Identity.Pages.Account
                 user.City = Input.City;
                 user.StreetAddress = Input.StreetAddress;
                 user.Zipcode = Input.Zipcode;
-
-                //Tài khoản đang hoạt động
-                user.State = "Active";
-
+                user.State = Input.State;
+                user.PhoneNumber = Input.PhoneNumber;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -207,7 +199,15 @@ namespace SellWebsite.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
+                        {
+                            TempData["success"] = "New User Created Successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }

@@ -8,7 +8,7 @@ using SellWebsite.Models.Models;
 using Microsoft.AspNetCore.Hosting;
 using SellWebsite.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
-using SellWebsite.Utility.IdentityHandler;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Admin.Controllers
 {
@@ -61,7 +61,7 @@ namespace SellWebsite.Areas.Admin.Controllers
                     _unitOfWork.ShoppingCart.Update(shoppingCart);
                 }
                 _unitOfWork.Save();
-                TempData["Success"] = "Shopping Cart update successfully";
+                TempData["success"] = "Shopping Cart update successfully";
                 return RedirectToAction(nameof(Index));
 
             }

@@ -15,6 +15,8 @@ namespace SellWebsite.DataAccess.Reponsitory.IReponsitory
         IProductReponsitory Product { get; }
         ICompanyReponsitory Company { get; }
         IApplicationUserReponsitory ApplicationUser { get; }
+        IOrderHeaderReponsitory OrderHeader { get; }
+        IOrderDetailReponsitory OrderDetail { get; }
         void Save();
     }
 }

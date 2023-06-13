@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SellWebsite.Models.Models;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Identity.Pages.Account
 {
@@ -84,6 +86,15 @@ namespace SellWebsite.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            public string Name { get; set; }
+            public string StreetAddress { get; set; }
+            public string City { get; set; }
+            public string Country { get; set; }
+            public string Zipcode { get; set; }
+            public string PhoneNumber { get; set; }
+            public string State { get; set; }
         }
         
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -153,12 +164,22 @@ namespace SellWebsite.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.Name = Input.Name;
+                user.Country = Input.Country;
+                user.City = Input.City;
+                user.StreetAddress = Input.StreetAddress;
+                user.Zipcode = Input.Zipcode;
+                user.State = Input.State;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
@@ -197,11 +218,11 @@ namespace SellWebsite.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {

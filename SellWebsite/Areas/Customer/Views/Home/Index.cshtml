@@ -11,8 +11,7 @@
             <div class="col-lg-6 col-xl-5">
                 <div class="text-container">
                     <div class="section-title">Welcome to JADY web agency</div>
-                    <h1 class="h1-large">JADY creates stylish and efficient sites</h1>
-                    <p class="p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim, neque ut ultrices sollicitudin</p>
+                    <h1 class="h1-large text-success">Grad up to 75% off on website</h1>
                     <a class="btn-solid-lg" href="#services">Offered services</a>
                     <a class="quote" href="#contact"><i class="fas fa-paper-plane"></i>Get quote</a>
                 </div> <!-- end of text-container -->
@@ -27,13 +26,12 @@
     </div> <!-- end of container -->
 </header> <!-- end of header -->
 <!-- end of header -->
-
 <!-- Projects -->
 <div id="projects" class="filter bg-gray">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="h2-heading">Projects that we're proud of</h2>
+                <h2 class="h2-heading">Website for you</h2>
             </div> <!-- end of col -->
         </div> <!-- end of row -->
         <div class="row">
@@ -52,10 +50,32 @@
                         <div class="element-item @(string.Join(" ",item?.Categories?.Select(p=>p.NameEnglish)!))">
                             <a asp-area="Customer" asp-controller="Home" asp-action="Detail" asp-route-id="@item?.Id">
                                 <img style="height:200px; object-fit:cover" class="w-100" src="@item?.Image" alt="alternative">
-                                <p><strong>@item?.Title</strong> - @item?.Author</p>
-                                <p><strong>@item?.Price.ToString("C", CultureInfo.CurrentCulture)</strong></p>
+                                <div class="d-flex justify-content-between">
+                                    <p><strong>@item?.Title</strong>
+                                    <p><strong>@item?.Price.ToString("C", CultureInfo.CurrentCulture)</strong></p>
+                                </div>
                             </a>
-                            <a class="btn btn-primary btn-sm" asp-area="Customer" asp-controller="Preview" asp-action="Index" asp-route-id="@item?.Id">Live Preview</a>
+                            <div class="d-flex justify-content-between">
+                                <div class="">
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        if (i < item!.Rating)
+                                        {
+                                            <i class="fa-solid fa-star text-warning"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa-regular fa-star text-success"></i>
+                                        }
+                                    }
+                                </div>
+                                <p class="text-truncate text-nowrap">@item!.Author</p>
+                            </div>
+
+                            <div class="d-flex justify-content-evenly">
+                                <a class="btn btn-primary btn-sm" asp-area="Customer" asp-controller="Preview" asp-action="Index" asp-route-id="@item?.Id">Live Preview</a>
+                                <a class="btn btn-primary btn-sm" asp-area="Customer" asp-controller="Home" asp-action="AddToCart" asp-route-productId="@item?.Id">Add to cart</a>
+                            </div>
                         </div>
                     }
                 </div> <!-- end of grid -->
@@ -96,7 +116,7 @@
         </div> <!-- end of row -->
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
-                                <!-- Contact Form -->
+                <!-- Contact Form -->
                 <form>
                     <div class="form-group">
                         <input type="text" class="form-control-input" placeholder="Name" required>

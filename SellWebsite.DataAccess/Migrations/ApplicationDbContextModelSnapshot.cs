@@ -289,23 +289,6 @@ namespace SellWebsite.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DescriptionEnglish = "Nước uống có gas cực ngon",
-                            DescriptionVietnamese = "",
-                            Image = "no Img",
-                            NameEnglish = "Thử nghiệm 2",
-                            NameVietnamese = ""
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DescriptionEnglish = "Nước uống có gas cực ngon",
-                            Image = "no Img",
-                            NameEnglish = "Thử nghiệm 1",
-                            NameVietnamese = ""
-                        },
-                        new
-                        {
-                            Id = 3,
                             DescriptionEnglish = "These are websites that provide information on a specific topic, such as news websites, educational websites, or government websites.",
                             DescriptionVietnamese = "Đây là trang web cung cấp thông tin về một chủ đề cụ thể, chẳng hạn như trang web tin tức, trang web giáo dục hoặc trang web chính phủ.",
                             Image = "no Img",
@@ -314,7 +297,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 2,
                             DescriptionEnglish = "These are websites that allow users to purchase items online, such as online shopping websites or auction websites.",
                             DescriptionVietnamese = "Đây là trang web cho phép người dùng mua hàng trực tuyến, chẳng hạn như trang web bán hàng trực tuyến hay trang web đấu giá.",
                             Image = "no Img",
@@ -323,7 +306,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 3,
                             DescriptionEnglish = "These are websites that provide entertainment content, such as movie streaming websites, gaming websites, or music streaming websites.",
                             DescriptionVietnamese = "Đây là trang web cung cấp các nội dung giải trí, chẳng hạn như trang web xem phim, trang web chơi game hoặc trang web nghe nhạc.",
                             Image = "no Img",
@@ -332,7 +315,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 4,
                             DescriptionEnglish = "These are websites that allow users to interact and connect with each other, such as Facebook, Twitter, or Instagram.",
                             DescriptionVietnamese = "Đây là trang web cho phép người dùng tương tác và kết nối với nhau, chẳng hạn như Facebook, Twitter, Instagram.",
                             Image = "no Img",
@@ -341,7 +324,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 5,
                             DescriptionEnglish = "These are personal or business websites that provide the latest posts and information on a specific topic.",
                             DescriptionVietnamese = "Đây là trang web cá nhân hoặc doanh nghiệp cung cấp các bài viết và thông tin mới nhất về chủ đề cụ thể.",
                             Image = "no Img",
@@ -350,7 +333,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 6,
                             DescriptionEnglish = "These are websites that allow users to discuss a specific topic and share their opinions with others.",
                             DescriptionVietnamese = "Đây là trang web cho phép người dùng thảo luận về một chủ đề cụ thể và chia sẻ ý kiến của mình với những người khác.",
                             Image = "no Img",
@@ -359,7 +342,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 7,
                             DescriptionEnglish = "These are websites that provide online tools or services for users, such as Google, Dropbox, or GitHub.",
                             DescriptionVietnamese = "Đây là trang web cung cấp các công cụ hoặc dịch vụ trực tuyến cho người dùng, chẳng hạn như Google, Dropbox hay GitHub.",
                             Image = "no Img",
@@ -368,7 +351,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 10,
+                            Id = 8,
                             DescriptionEnglish = "These are websites that provide online courses or study materials, such as Coursera, edX, or Udemy.",
                             DescriptionVietnamese = "Đây là trang web cung cấp các khóa học hoặc tài liệu học tập trực tuyến, chẳng hạn như Coursera, edX hay Udemy.",
                             Image = "no Img",
@@ -377,7 +360,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 9,
                             DescriptionEnglish = "I'm too lazy to write it down, I can't edit it anymore",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
                             Image = "no Img",
@@ -386,7 +369,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 10,
                             DescriptionEnglish = "Phòng trưng bày",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
                             Image = "no Img",
@@ -395,7 +378,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 11,
                             DescriptionEnglish = "I'm too lazy to write it down, I can't edit it anymore",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
                             Image = "no Img",
@@ -404,7 +387,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 15,
+                            Id = 12,
                             DescriptionEnglish = "I'm too lazy to write it down, I can't edit it anymore",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
                             Image = "no Img",
@@ -413,7 +396,7 @@ namespace SellWebsite.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 16,
+                            Id = 13,
                             DescriptionEnglish = "A huge list of the best business website templates is built to serve any company, from construction to business consulting and financial services. All templates are mobile-friendly and feature both one-page and multi-page setups. Whether you are bringing a fresh project or redesigning your current website, these templates have you covered. They are powerful enough to meet any firm and organization owner’s needs and requirements.",
                             DescriptionVietnamese = "Lười quá hông có ghi nữa, nào hết lười sửa lại",
                             Image = "/assets/dev.png",
@@ -506,6 +489,9 @@ namespace SellWebsite.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -519,13 +505,16 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
 
+                    b.Property<string>("PayerId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("PaymentDueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PaymentIntendId")
+                    b.Property<string>("PaymentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")
@@ -633,6 +622,10 @@ namespace SellWebsite.DataAccess.Migrations
                         .HasColumnName("ProductPrice")
                         .HasDefaultValueSql("0");
 
+                    b.Property<double?>("Rating")
+                        .HasColumnType("float")
+                        .HasColumnName("ProductRating");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -654,7 +647,7 @@ namespace SellWebsite.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "TranPhuDat",
-                            CreatedDate = new DateTime(2023, 6, 4, 21, 31, 36, 683, DateTimeKind.Local).AddTicks(7977),
+                            CreatedDate = new DateTime(2023, 6, 11, 15, 16, 3, 610, DateTimeKind.Local).AddTicks(7353),
                             Credits = "Images from Unsplash;Boostrap",
                             Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
                             DownloadCount = 0,
@@ -662,9 +655,27 @@ namespace SellWebsite.DataAccess.Migrations
                             License = "",
                             PostsBy = "ADminTPD",
                             PreviewUrl = "LinkPreviewUrl",
-                            Price = 500000m,
+                            Price = 50m,
+                            Rating = 4.0,
                             Title = "Glint",
-                            UpdatedDate = new DateTime(2023, 6, 4, 21, 31, 36, 683, DateTimeKind.Local).AddTicks(7991)
+                            UpdatedDate = new DateTime(2023, 6, 11, 15, 16, 3, 610, DateTimeKind.Local).AddTicks(7364)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Author = "TranPhuDat",
+                            CreatedDate = new DateTime(2023, 6, 11, 15, 16, 3, 610, DateTimeKind.Local).AddTicks(7373),
+                            Credits = "Images from Unsplash;Boostrap",
+                            Description = "Glint is a modern and stylish digital agency HTML template. Designed for creative designers, agencies, freelancers, photographers, or any creative profession.",
+                            DownloadCount = 3,
+                            DownloadUrl = "https://trandat1114.github.io/DotnetuniverseProject/#!/",
+                            License = "",
+                            PostsBy = "ADminTPD",
+                            PreviewUrl = "https://trandat1114.github.io/DotnetuniverseProject/#!/",
+                            Price = 999m,
+                            Rating = 3.0,
+                            Title = "Dotnet Universe",
+                            UpdatedDate = new DateTime(2023, 6, 11, 15, 16, 3, 610, DateTimeKind.Local).AddTicks(7374)
                         });
                 });
 
