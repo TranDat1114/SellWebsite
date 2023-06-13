@@ -24,7 +24,7 @@ namespace SellWebsite
             //Test :tên database khác để hỗ trợ việc đổi dữ liệu 
             //DebugDb : tên database khác để hỗ trợ việc đổi dữ liệu 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TestInitializer")));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
 
             builder.Services.AddSession(op =>

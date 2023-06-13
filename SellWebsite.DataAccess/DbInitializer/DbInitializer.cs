@@ -27,7 +27,7 @@ namespace SellWebsite.DataAccess.DbInitializer
         }
 
         //Tạo dữ liệu trong database nếu dữ liệu chưa được tạo 
-        public void Initialize()
+        public async void Initialize()
         {
             try
             {
@@ -53,7 +53,7 @@ namespace SellWebsite.DataAccess.DbInitializer
                 //Tạo thêm một tài khoản Admin ban đầu để tránh việc không có ai để tạo người dùng
                 _userManager.CreateAsync(new ApplicationUser()
                 {
-                    UserName = "ad@phudetdeptrai.com",
+                    UserName = "dattranphu1114@gmail.com",
                     Email = "dattranphu1114@gmail.com",
                     Name = "Trần Phú Đạt",
                     PhoneNumber = "0985950723",
@@ -62,14 +62,13 @@ namespace SellWebsite.DataAccess.DbInitializer
                     State = "Bình Định",
                     Country = "Việt Nam",
                     Zipcode = "70500",
+                    LockoutEnabled = false,
+                }, @"Iloveuzienoi1114@").GetAwaiter().GetResult();
 
-                },"Jackandy249@").GetAwaiter().GetResult();
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(p => p.Email == "dattranphu1114@gmail.com");
 
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(p => p.Email == "dattranphu1114@gmail.com")!;
-                if (user != null)
-                {
-                    _userManager.AddToRoleAsync(user, SD.Role_Admin);
-                }
+                _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
+
             }
             return;
         }
