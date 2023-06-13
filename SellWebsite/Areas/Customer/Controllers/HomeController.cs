@@ -2,6 +2,7 @@
 using System.Security.Claims;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
@@ -12,6 +13,7 @@ using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
 using SellWebsite.Models.ViewModels;
 using SellWebsite.Models.ViewModels.Customer;
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -26,7 +28,7 @@ namespace SellWebsite.Areas.Customer.Controllers
         }
 
         public IActionResult Index()
-        {
+        {           
             var homeVM = new HomeVM()
             {
                 Products = _unitOfWork.Product.GetAll(includes: p => p.Categories!).ToList(),
@@ -50,28 +52,37 @@ namespace SellWebsite.Areas.Customer.Controllers
             };
             return View(cart);
         }
-        [HttpPost]
-        [Authorize]
-        public IActionResult Detail(ShoppingCart shoppingCart)
-        {
-            var claimIdentity = (ClaimsIdentity)User.Identity!;
-            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId);
-            if (cartFromDb != null)
-            {
+        #region Chỉnh sửa
+        //[HttpPost]
+        //[Authorize]
+        //public IActionResult Detail(ShoppingCart shoppingCart)
+        //{
+        //    var claimIdentity = (ClaimsIdentity)User.Identity!;
+        //    var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-            }
-            else
-            {
-                shoppingCart.ApplicationUserId = userId;
-                _unitOfWork.ShoppingCart.Add(shoppingCart);
-                _unitOfWork.Save();
-            }
-            //return RedirectToAction("Index");
-            //Sử dụng ở dưới tránh viết sai chính tả và *MagicString*
-            return RedirectToAction(nameof(ShoppingCartController.Index), nameof(ShoppingCartController).Replace("Controller", ""));
-        }
+        //    var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId);
+        //    if (cartFromDb != null)
+        //    {
+        //        TempData["Success"] = "Product allready in your cart";
+
+        //    }
+        //    else
+        //    {
+        //        shoppingCart.ApplicationUserId = userId;
+        //        _unitOfWork.ShoppingCart.Add(shoppingCart);
+
+        //        _unitOfWork.Save();
+
+        //        HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
+
+        //        TempData["Success"] = "Add product to cart successful";
+        //    }
+        //    //return RedirectToAction("Index");
+        //    //Sử dụng ở dưới tránh viết sai chính tả và *MagicString*
+        //    return RedirectToAction(nameof(ShoppingCartController.Index), nameof(ShoppingCartController).Replace("Controller", ""));
+        //}
+        #endregion
 
         [Authorize]
         public IActionResult AddToCart(int productId)
@@ -84,6 +95,12 @@ namespace SellWebsite.Areas.Customer.Controllers
             if (cartFromDb != null)
             {
                 //Logic nếu sản phẩm có rồi
+                cartFromDb.Quantity += 1;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
+
+                //Sau kiểm tra sản phẩm có phải trang web hay không
+                //Nếu không thì cộng 
                 TempData["Success"] = "Product allready in your cart";
             }
             else
@@ -96,15 +113,16 @@ namespace SellWebsite.Areas.Customer.Controllers
                 cart.ApplicationUserId = userId;
                 _unitOfWork.ShoppingCart.Add(cart);
                 _unitOfWork.Save();
+
                 TempData["Success"] = "Add product to cart successful";
             }
-            return RedirectToAction(nameof(Index));
+            return Redirect(Request.Headers["Referer"].ToString()); ;
         }
 
         public IActionResult Search(string query)
         {
             // Perform the search based on the query
-            var searchResults = _unitOfWork.Product.GetAll(p=>p.Title.Contains(query)).ToList();
+            var searchResults = _unitOfWork.Product.GetAll(p => p.Title.Contains(query)).ToList();
 
             // Return the partial view with the search results
             return PartialView("_SearchResults", searchResults);

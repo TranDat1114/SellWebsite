@@ -9,6 +9,7 @@ using SellWebsite.Utility.IdentityHandler;
 using SellWebsite.Utility;
 using System.Net.Mail;
 using MailKit.Net.Smtp;
+using SellWebsite.DataAccess.DbInitializer;
 
 namespace SellWebsite
 {
@@ -23,8 +24,15 @@ namespace SellWebsite
             //Test :tên database khác để hỗ trợ việc đổi dữ liệu 
             //DebugDb : tên database khác để hỗ trợ việc đổi dữ liệu 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TestInitializer")));
 
+
+            builder.Services.AddSession(op =>
+            {
+                op.IdleTimeout = TimeSpan.FromMinutes(60);
+                op.Cookie.HttpOnly = true;
+                op.Cookie.IsEssential = true;
+            });
 
             builder.Services.Configure<PaypalSettings>(builder.Configuration.GetSection("Paypal"));
 
@@ -38,20 +46,10 @@ namespace SellWebsite
                 options.LogoutPath = "/Identity/Account/Logout";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
+
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            builder.Services.AddSingleton<ISmtpClient>(sp =>
-            {
-                var client = new SmtpClient();
-                client.Connect(smtpSettings.Host, smtpSettings.Port, SecureSocketOptions.StartTls);
-                client.Authenticate(smtpSettings.Username, smtpSettings.Password);
-                return client;
-            });
-
             builder.Services.AddScoped<IEmailSender, EmailSender>();
-
-
-
             builder.Services.AddRazorPages();
 
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
@@ -84,12 +82,27 @@ namespace SellWebsite
 
             app.UseAuthorization();
 
+            SeedDatas();
+
+            app.UseSession();
             app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "home",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}");
             app.Run();
+
+            //Initializer data ở đây
+            void SeedDatas()
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var dbInitilizer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                    dbInitilizer.Initialize();
+                }
+            }
         }
+
+
     }
 }

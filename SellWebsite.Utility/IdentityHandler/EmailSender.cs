@@ -7,42 +7,42 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
 
-using MimeKit;
 
 namespace SellWebsite.Utility.IdentityHandler
 {
     public class EmailSender : IEmailSender
     {
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        private readonly string key;
+        public EmailSender(IConfiguration configuration)
         {
+            key = configuration["Mail:Password"]!;
+        }
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        {
+
+            #region Tạm thời chưa triển khai gửi email
             //Triển khai gửi mail ở đây
-            //Tạm thời chưa triển khai gửi email
+            // Tạo đối tượng MailMessage
 
+            //var mail = new MailMessage();
+            //mail.From = new MailAddress("jackandy249@gmail.com", "PhuDat");
+            //mail.To.Add(email);
+            //mail.Subject = subject;
+            //mail.Body = htmlMessage;
 
-            // Cấu hình thông tin SMTP
-            using (var smtp_client = new SmtpClient()
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("jackandy@gmail.com", "cokngurcfknhghvz"),
-                EnableSsl = true,
-            })
-            {
+            //// Cấu hình thông tin SMTP
+            //SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            //smtpClient.UseDefaultCredentials = false;
+            //smtpClient.Credentials = new NetworkCredential("jackandy@gmail.com", key);
+            //smtpClient.EnableSsl = true;
 
-                // Tạo đối tượng MailMessage
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("jackandy249@gmail.com");
-                mail.To.Add(toEmail);
-                mail.Subject = subject;
-                mail.Body = body;
+            //// Gửi email
+            //return smtpClient.SendMailAsync(mail);
+            #endregion
+            return Task.CompletedTask;
 
-                // Gửi email
-                await smtp_client.SendMailAsync(mail);
-
-            };
-            return ;
         }
     }
 }

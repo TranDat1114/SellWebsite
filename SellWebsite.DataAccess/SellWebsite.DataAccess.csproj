@@ -13,5 +13,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SellWebsite.Models\SellWebsite.Models.csproj" />
+	  <ProjectReference Include="..\SellWebsite.Utility\SellWebsite.Utility.csproj" />
 	</ItemGroup>
 </Project>

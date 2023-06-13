@@ -1,5 +1,9 @@
 ﻿@using Newtonsoft.Json;
 @using SellWebsite.DataAccess.Data;
+
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor IHttpContextAccessor
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,13 +97,17 @@
                         </ul>
                     </li>
 
-                    
+
 
                 </ul>
                 <ul class="navbar-nav ms-auto navbar-nav-scroll align-items-center">
+
                     <li class="nav-item">
-                        <a class="nav-link text-nowrap" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+                        <a class="nav-link text-nowrap" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">
+                            @await Component.InvokeAsync("ShoppingCart")
+                        </a>
                     </li>
+
                     <li class="nav-item me-0">
                         <partial name="_LoginPartial">
                             @*<a class="btn-solid-sm" href="#contact">Get quote</a>*@

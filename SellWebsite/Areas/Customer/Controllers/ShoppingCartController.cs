@@ -85,11 +85,11 @@ namespace SellWebsite.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
                 var userData = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-                if (!string.IsNullOrEmpty(userData.PhoneNumber))
-                {
-                    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-                }
-                
+                //if (!string.IsNullOrEmpty(userData.PhoneNumber))
+                //{
+                //    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+                //}
+
                 ShoppingCartVM.OrderHeader.ApplicationUser = userData;
                 //
 
@@ -151,7 +151,10 @@ namespace SellWebsite.Areas.Customer.Controllers
                 {
                     var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
 
+                    //Mua hàng xong thì clear cái giỏ hàng đi
                     _unitOfWork.ShoppingCart.RemoveRange(listCarts);
+                    //Clear cả cái session mới thêm vào nữa :_) bug mò cả ngày mới ra
+                    HttpContext.Session.Remove(SD.SessionCart);
 
                     _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDate = DateTime.Now;
@@ -250,6 +253,9 @@ namespace SellWebsite.Areas.Customer.Controllers
         {
             var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
             _unitOfWork.ShoppingCart.Remove(productInCart);
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == productInCart.ApplicationUserId).Count() - 1);
+
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
@@ -258,6 +264,9 @@ namespace SellWebsite.Areas.Customer.Controllers
             var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
             if (productInCart.Quantity <= 1)
             {
+                //Session cho số lượng sản phẩm trong cart thành 0 nếu sản phẩm bị xóa hoặc số lượng = 0
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == productInCart.ApplicationUserId).Count() - 1);
+
                 _unitOfWork.ShoppingCart.Remove(productInCart);
             }
             else

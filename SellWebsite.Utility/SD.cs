@@ -28,7 +28,7 @@ namespace SellWebsite.Utility
         public const string PaymentStatusDelayPayment = "ApprovedForDelayPayment";
         public const string PaymentRejected = "Rejected";
 
-
+        public const string SessionCart = "SessionShopingCart";
 
         //Cảm thấy sử dụng enum có vẻ không phù hợp hơn nên đổi
         //public enum Role

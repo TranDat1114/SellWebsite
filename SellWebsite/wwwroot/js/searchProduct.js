@@ -7,7 +7,7 @@
         $('.search-input-group').css("width", "30rem");
         // Send AJAX request to the server
         $.ajax({
-            url: "Customer/Home/Search", // Replace with your controller and action
+            url: "/Customer/Home/Search", // Replace with your controller and action
             type: "GET",
             data: { query: searchQuery },
             dataType: "html",
