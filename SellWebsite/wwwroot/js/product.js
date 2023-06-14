@@ -21,7 +21,7 @@ function loadDataTable() {
                 data: 'Description',
                 "render": function (data) {
                     return `
-                     <td class="w-100">
+                     <td style="max-width:300px">
                         <p class="text-truncate">${data}</p>
                     </td>
                     `

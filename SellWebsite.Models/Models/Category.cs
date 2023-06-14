@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SellWebsite.Models.Models
 {
@@ -18,12 +19,7 @@ namespace SellWebsite.Models.Models
         [Required]
         [MaxLength(128)]
         public string NameEnglish { get; set; } = string.Empty;
-
-        [Column("CategoryImage", TypeName = "varchar(256)")]
-        [DisplayName("Category Image Url")]
-        [MaxLength(256)]
-        public string? Image { get; set; }
-
+               
         [Column("CategoryDescriptionEnglish", TypeName = "varchar(2048)")]
         [DisplayName("Category Description")]
         [MaxLength(2048)]
@@ -39,7 +35,7 @@ namespace SellWebsite.Models.Models
         [DisplayName("Mô tả danh mục")]
         [MaxLength(2048)]
         public string? DescriptionVietnamese { get; set; }
-
+        [ValidateNever]
         public virtual ICollection<Product>? Products { get; set; }
     }
 }

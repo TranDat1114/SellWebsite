@@ -6,15 +6,7 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/category/getall' },
         "columns": [
-            { data: 'id' },
-            {
-                data: 'image',
-                "render": function (data) {
-                    return `
-                    <img class="img-table" src="${data}" alt="img" />
-                        `
-                },
-            },
+            { data: 'id' },            
             { data: 'nameEnglish' },
             { data: 'descriptionEnglish' },
             { data: 'nameVietnamese' },

@@ -19,11 +19,11 @@ using SellWebsite.Utility;
 using SellWebsite.Utility.Helpers;
 
 using static System.Net.WebRequestMethods;
+using System.Linq;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize]
     public class ShoppingCartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -41,35 +41,73 @@ namespace SellWebsite.Areas.Customer.Controllers
         public IActionResult Index()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
-            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-            var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+            var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+            var listCarts = new List<ShoppingCart>();
 
             ShoppingCartVM = new()
             {
-                Carts = listCarts,
                 OrderHeader = new OrderHeader()
                 {
-                    OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity),
                     Discount = 0,
                 }
             };
 
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            if (sessionShopCart != null)
+            {
+                listCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
+            }
+            if (claimIdentity.Name != null)
+            {
+                var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-            ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
-            ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
-            ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode;
-            ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
-            ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+                if (listCarts.Count() > 0)
+                {
+                    var listNewCart = new List<ShoppingCart>();
+                    foreach (var item in listCarts)
+                    {
+                        var list = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+                        if (!list.Any(p => p.ProductId == item.ProductId))
+                        {
+                            item.ApplicationUserId = userId;
+                            item.Product = null;
+                            listNewCart.Add(item);
+                        }
+                        else
+                        {
+                            //Logic khi cần tăng thêm số lượng sản phẩm theo session vào database
+                        }
+                    }
+                    if (listNewCart.Count() > 0)
+                    {
+                        _unitOfWork.ShoppingCart.AddRange(listNewCart);
+                        _unitOfWork.Save();
+
+                        //Xong rồi thì nhớ xóa session tránh việc lặp lại việc tăng sản phẩm trong giỏ mỗi khi gọi tới index
+                        HttpContext.Session.Remove(SD.SessionShopingCarts);
+                    }
+                }
+
+                listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
+
+                ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+                ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+                ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
+                ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
+                ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+                ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode;
+                ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+                ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+            }
+
+            ShoppingCartVM.Carts = listCarts;
+            ShoppingCartVM.OrderHeader.OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity);
 
             return View(ShoppingCartVM);
         }
 
         [HttpPost]
         [ActionName("Index")]
+        [Authorize]
         public async Task<IActionResult> IndexPOST()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
@@ -85,10 +123,10 @@ namespace SellWebsite.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
                 var userData = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-                //if (!string.IsNullOrEmpty(userData.PhoneNumber))
-                //{
-                //    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-                //}
+                if (string.IsNullOrEmpty(userData.PhoneNumber))
+                {
+                    userData.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+                }
 
                 ShoppingCartVM.OrderHeader.ApplicationUser = userData;
                 //
@@ -137,7 +175,7 @@ namespace SellWebsite.Areas.Customer.Controllers
             }
 
         }
-
+        [Authorize]
         public async Task<IActionResult> OrderConfirmationAsync(int id)
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
@@ -249,44 +287,132 @@ namespace SellWebsite.Areas.Customer.Controllers
 
 
         #region Cart Options
-        public IActionResult Remove(int id)
+        public IActionResult Remove(int cartId, int productId)
         {
-            var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
-            _unitOfWork.ShoppingCart.Remove(productInCart);
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
 
-            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == productInCart.ApplicationUserId).Count() - 1);
+            var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
 
-            _unitOfWork.Save();
-            return RedirectToAction(nameof(Index));
-        }
-        public IActionResult Minus(int id)
-        {
-            var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
-            if (productInCart.Quantity <= 1)
+            var listCarts = new List<ShoppingCart>();
+
+            if (sessionShopCart != null)
             {
-                //Session cho số lượng sản phẩm trong cart thành 0 nếu sản phẩm bị xóa hoặc số lượng = 0
-                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == productInCart.ApplicationUserId).Count() - 1);
+                listCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
+            }
 
+            if (claimIdentity.Name != null)
+            {
+                var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == cartId);
                 _unitOfWork.ShoppingCart.Remove(productInCart);
+                _unitOfWork.Save();
+
+                listCarts.Remove(listCarts.FirstOrDefault(p => p.CartId == cartId));
             }
             else
             {
-                productInCart.Quantity -= 1;
+                listCarts.Remove(listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0"));
             }
-            _unitOfWork.Save();
+
+            HttpContext.Session.SetString(SD.SessionShopingCarts, JsonConvert.SerializeObject(listCarts));
+
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Plus(int id)
+        public IActionResult Minus(int cartId, int productId)
         {
-            var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == id);
-            if (productInCart.Quantity >= 999)
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
+
+            var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+
+            var listCarts = new List<ShoppingCart>();
+
+            if (sessionShopCart != null)
             {
+                listCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
+            }
+
+            if (claimIdentity.Name != null)
+            {
+                var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == cartId);
+                if (productInCart.Quantity <= 1)
+                {
+                    //Session cho số lượng sản phẩm trong cart thành 0 nếu sản phẩm bị xóa hoặc số lượng = 0
+                    _unitOfWork.ShoppingCart.Remove(productInCart);
+
+                    listCarts.Remove(listCarts.FirstOrDefault(p => p.CartId == cartId));
+
+                }
+                else
+                {
+                    productInCart.Quantity -= 1;
+                    if (listCarts.Count() != 0)
+                    {
+                        listCarts.FirstOrDefault(p => p.CartId == cartId).Quantity -= 1;
+                    }
+
+                }
+                _unitOfWork.Save();
             }
             else
             {
-                productInCart.Quantity += 1;
+                //Vì không có sản phẩm nên không cần kiểm tra số lượng trong session
+                if (listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0").Quantity <= 1)
+                {
+                    listCarts.Remove(listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0"));
+                }
+                else
+                {
+                    listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0").Quantity -= 1;
+                }
+
             }
-            _unitOfWork.Save();
+            HttpContext.Session.SetString(SD.SessionShopingCarts, JsonConvert.SerializeObject(listCarts));
+
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Plus(int cartId, int productId)
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity!;
+
+            var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+
+            var listCarts = new List<ShoppingCart>();
+
+            if (sessionShopCart != null)
+            {
+                listCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
+            }
+
+            if (claimIdentity.Name != null)
+            {
+                var productInCart = _unitOfWork.ShoppingCart.Get(p => p.CartId == cartId);
+                if (productInCart.Quantity >= 999)
+                {
+
+                }
+                else
+                {
+                    productInCart.Quantity += 1;
+                    if (listCarts.Count() != 0)
+                    {
+                        listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0").Quantity += 1;
+                    }
+                }
+                _unitOfWork.Save();
+            }
+            else
+            {
+                if (listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0").Quantity >= 999)
+                {
+
+                }
+                else
+                {
+                    listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0").Quantity += 1;
+                }
+            }
+
+            HttpContext.Session.SetString(SD.SessionShopingCarts, JsonConvert.SerializeObject(listCarts));
+
             return RedirectToAction(nameof(Index));
         }
         #endregion

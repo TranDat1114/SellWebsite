@@ -29,14 +29,14 @@
                                 <td class="text-center" style="width:250px">
                                     @*nếu là web thì không cộng trừ*@
                                     <div class="input-group">
-                                        <a class="input-group-text text-decoration-none" asp-controller="ShoppingCart" asp-action="Minus" asp-route-id="@item.CartId"><i class="fa-solid fa-minus"></i></a>
+                                        <a class="input-group-text text-decoration-none" asp-controller="ShoppingCart" asp-action="Minus" asp-route-cartId="@item.CartId" asp-route-productId="@item.ProductId"><i class="fa-solid fa-minus"></i></a>
                                         <input class="form-control" asp-for="@item.Quantity" value="@item.Quantity" readonly type="number" />
                                         <a class="input-group-text text-decoration-none"
-                                   asp-controller="ShoppingCart" asp-action="Plus" asp-route-id="@item.CartId"><i class="fa-solid fa-plus"></i></a>
+                                   asp-controller="ShoppingCart" asp-action="Plus" asp-route-cartId="@item.CartId" asp-route-productId="@item.ProductId"><i class="fa-solid fa-plus"></i></a>
                                     </div>
                                 </td>
                                 <td>@((item.Product.Price * item.Quantity).ToString("C", CultureInfo.CurrentCulture))</td>
-                                <td><a class="btn btn-sm btn-outline-danger" asp-controller="ShoppingCart" asp-action="Remove" asp-route-id="@item.CartId"><i class="fa-solid fa-xmark"></i></a></td>
+                                <td><a class="btn btn-sm btn-outline-danger" asp-controller="ShoppingCart" asp-action="Remove" asp-route-cartId="@item.CartId" asp-route-productId="@item.ProductId"><i class="fa-solid fa-xmark"></i></a></td>
                             </tr>
                         }
                     </tbody>

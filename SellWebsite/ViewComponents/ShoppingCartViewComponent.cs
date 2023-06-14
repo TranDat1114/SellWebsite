@@ -3,7 +3,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
+using SellWebsite.Models.Models;
+using SellWebsite.Models.ViewModels.Customer;
 using SellWebsite.Utility;
 
 namespace SellWebsite.ViewComponents
@@ -18,22 +22,30 @@ namespace SellWebsite.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
-            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim != null)
-            {
-                if (HttpContext.Session.GetInt32(SD.SessionCart) == null)
-                {
-                    HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
-                }
 
-                return View(HttpContext.Session.GetInt32(SD.SessionCart));
-            }
-            else
+            var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+            var shoppingCarts = new List<ShoppingCart>();
+            if (sessionShopCart != null)
             {
-                //người dùng logout session được dọn sạch tránh lỗi ngớ ngẩn :3
-                HttpContext.Session.Clear();
-                return View(0);
+                shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
             }
+            var cartQuantity = shoppingCarts.Count();
+            if (claimIdentity.Name != null)
+            {
+                var listCart = _unitOfWork.ShoppingCart.GetAll().ToList();
+                foreach (var item in listCart)
+                {
+                    if (!shoppingCarts.Any(p => p.ProductId == item.ProductId))
+                    {
+                        cartQuantity += 1;
+                    }
+
+                }
+            }
+
+            HttpContext.Session.SetInt32(SD.SessionCart, cartQuantity);
+
+            return View(HttpContext.Session.GetInt32(SD.SessionCart));
         }
     }
 }

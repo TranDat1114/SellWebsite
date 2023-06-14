@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 namespace SellWebsite.Models.Models
 {
     [Table("Products")]
@@ -27,7 +29,7 @@ namespace SellWebsite.Models.Models
         [Column("ProductAuthor", TypeName = "nvarchar(128)")]
         [DisplayName("Product Author")]
         [MaxLength(128)]
-        public string Author { get; set; }= string.Empty;
+        public string Author { get; set; } = string.Empty;
 
         [Column("ProductDescription", TypeName = "nvarchar(2048)")]
         [MaxLength(2048)]
@@ -47,7 +49,7 @@ namespace SellWebsite.Models.Models
 
         [Column("ProductLicense", TypeName = "varchar(128)")]
         [DisplayName("Product License")]
-                [MaxLength(128)]
+        [MaxLength(128)]
         public string? License { get; set; }
 
         [Column("ProductCredits", TypeName = "varchar(256)")]
@@ -75,7 +77,7 @@ namespace SellWebsite.Models.Models
         [Required]
         [Column("ProductPrice")]
         [DisplayName("Product Price")]
-        [Range(0,double.MaxValue,ErrorMessage ="Input right value please")]
+        [Range(0, double.MaxValue, ErrorMessage = "Input right value please")]
         public decimal Price { get; set; }
 
         [Required]
@@ -91,9 +93,10 @@ namespace SellWebsite.Models.Models
 
         [Column("ProductRating")]
         [DisplayName("Product Rating")]
+        [Range(1, 5)]
         public double? Rating { get; set; }
 
-        [DisplayName("Categories")]
+        [ValidateNever]
         public virtual ICollection<Category>? Categories { get; set; }
 
     }

@@ -26,7 +26,6 @@ namespace SellWebsite
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TestInitializer")));
 
-
             builder.Services.AddSession(op =>
             {
                 op.IdleTimeout = TimeSpan.FromMinutes(60);

@@ -61,23 +61,25 @@
                 <ul class="navbar-nav navbar-nav-scroll align-items-center ms-2">
                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss) || User.IsInRole(SD.Role_Employee))
                     {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
-                            <ul class="dropdown-menu">
-                                <li><div class="dropdown-divider"></div></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
-                                <li><div class="dropdown-divider"></div></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Order Management</a></li>
-                                <li><div class="dropdown-divider"></div></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Management</a>
+                                <ul class="dropdown-menu">
+                                    <li><div class="dropdown-divider"></div></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product Management</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category Management</a></li>
+                                    <li><div class="dropdown-divider"></div></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Order Management</a></li>
+                                    <li><div class="dropdown-divider"></div></li>
                                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Boss))
                                 {
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company Management</a></li>
-                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
+                                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company Management</a></li>
+                                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">User Management</a></li>
+                                        <li><div class="dropdown-divider"></div></li>
+                                                                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
                                 }
-                            </ul>
+                                </ul>
 
-                        </li>
+                            </li>
                     }
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
@@ -124,7 +126,7 @@
             <div class="col-12">
                 <main class="mx-5" role="main">
                     @{
-                        <partial name="_Notification" />
+                            <partial name="_Notification" />
                     }
                     @RenderBody()
                 </main>

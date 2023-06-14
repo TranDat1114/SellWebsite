@@ -34,6 +34,11 @@ namespace SellWebsite.DataAccess.Reponsitory
             //Thêm record vào bảng
             dbSet.Add(item);
         }
+        public void AddRange(IEnumerable<T> items)
+        {
+            //Thêm nhiều record vào bảng
+            dbSet.AddRange(items);
+        }
 
         //Truy vấn theo filter
         public T Get(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)

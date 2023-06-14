@@ -4,11 +4,14 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+
+using SellWebsite.Utility;
 
 namespace SellWebsite.Areas.Identity.Pages.Account
 {
@@ -26,6 +29,10 @@ namespace SellWebsite.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+
+            //người dùng logout session được dọn sạch tránh lỗi ngớ ngẩn :3
+            HttpContext.Session.Remove(SD.SessionCart);
+            HttpContext.Session.Remove(SD.SessionShopingCarts);
 
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)

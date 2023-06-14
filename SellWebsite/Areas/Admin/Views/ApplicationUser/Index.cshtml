@@ -3,13 +3,8 @@
     <div class="row">
         <div class="col-12 col-md-6">
             <h2 class="text-primary">
-                Company List
+                User List
             </h2>
-        </div>
-        <div class="col-12 col-md-6 text-end">
-            <a class="btn btn-primary" asp-controller="Company" asp-action="Upsert">
-                <i class="bi bi-plus-circle"></i> Create new company
-            </a>
         </div>
     </div>
 </div>
@@ -18,29 +13,17 @@
         <table id="tblData" class="table table-striped scroll-table w-100">
             <thead>
                 <tr>
-                    <th>
-                        Id
-                    </th>
                     <th class="text-nowrap">
                         Name
                     </th>
                     <th class="text-nowrap">
-                        State
-                    </th>
-                    <th class="text-nowrap">
-                        Address
+                        Email
                     </th>
                     <th class="text-nowrap">
                         Phone Number
                     </th>
                     <th class="text-nowrap">
-                        Zip code
-                    </th>
-                    <th class="text-nowrap">
-                        Edit
-                    </th>
-                    <th class="text-nowrap">
-                        Delete
+                        Role
                     </th>
                 </tr>
             </thead>
@@ -52,6 +35,5 @@
 
 
 @section Scripts{
-    <script src="~/js/company.js"></script>
-    <script src="~/js//DeleteByAPI.js"></script>
+    <script src="~/js/user.js"></script>
 }
