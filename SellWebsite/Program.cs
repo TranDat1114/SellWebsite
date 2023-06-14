@@ -33,7 +33,6 @@ namespace SellWebsite
                 op.Cookie.IsEssential = true;
             });
 
-            builder.Services.Configure<SMTPMail>(builder.Configuration.GetSection("Mail"));
             builder.Services.Configure<PaypalSettings>(builder.Configuration.GetSection("Paypal"));
 
             //options.SignIn.RequireConfirmedAccount = true Đăng nhập sẽ gửi yêu cầu confirm về email
