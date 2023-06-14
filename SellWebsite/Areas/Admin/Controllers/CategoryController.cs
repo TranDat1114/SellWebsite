@@ -51,7 +51,7 @@ namespace SellWebsite.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upsert(CategoryVM categoryVM, IFormFile? file)
+        public IActionResult Upsert(CategoryVM categoryVM)
         {
             //Custom Validation testing
             //if (category.NameEnglish != null && category.NameEnglish.ToLower() == "test")
@@ -61,31 +61,6 @@ namespace SellWebsite.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (file != null)
-                {
-                    string folderName = "categories";
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @$"assets\Images\{folderName}\");
-
-                    if (!string.IsNullOrEmpty(categoryVM.Category.Image))
-                    {
-                        //Xóa img cũ đi 
-                        var oldIMGPath = Path.Combine(wwwRootPath, categoryVM.Category.Image.TrimStart('\\'));
-                        if (System.IO.File.Exists(oldIMGPath))
-                        {
-                            System.IO.File.Delete(oldIMGPath);
-                        }
-                    }
-
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-                    categoryVM.Category.Image = @$"\assets\Images\{folderName}\{fileName}";
-                }
-
                 if (categoryVM.Category.Id == 0)
                 {
                     _unitOfWork.Category.Add(categoryVM.Category);
@@ -152,14 +127,8 @@ namespace SellWebsite.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
-            var oldIMG = Path.Combine(_webHostEnvironment.WebRootPath, category?.Image?.Trim('\\')!);
-            if (System.IO.File.Exists(oldIMG))
-            {
-                System.IO.File.Delete(oldIMG);
-            }
-
+          
             _unitOfWork.Category.Remove(category!);
-
 
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful" });

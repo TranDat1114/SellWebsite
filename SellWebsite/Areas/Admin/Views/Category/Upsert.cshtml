@@ -15,10 +15,7 @@
                     <label asp-for="Category.Id"></label>
                     <input style="width:150px" class="form-control" readonly asp-for="Category.Id" />
                 </div>
-                <div class="col-12 col-md-6">
-                    <label asp-for="Category.Image"></label>
-                    <input class="form-control" readonly asp-for="Category.Image" />
-                </div>
+               
             </div>
 
             <div class="mb-3 row">
@@ -33,27 +30,7 @@
                     <span class="text-danger" asp-validation-for="Category.NameVietnamese"></span>
                 </div>
             </div>
-            <div class="mb-3 row">
-                <div class="col-12 col-md-6">
-                    <label asp-for="Category.Image"></label>
-                    <input id="input-img" class="form-control" type="file" accept="image/*" name="file" asp-for="Category.Image" />
-                </div>
-            </div>
-            <div class="mb-3 row justify-content-center">
-                @if (Model.Category.Id != 0)
-                {
-                    <div class="col-12 col-md-6">
-                        <label>Old Image</label>
-                        <img style="height:200px;object-fit:contain" class="w-100" src="@Model.Category.Image" alt="img error" />
-                    </div>
-                }
-
-                <div id="preview-img-div" class="col-12 col-md-6" hidden>
-                    <label>New Image</label>
-                    <img id="preview-img" style="height:200px;object-fit:contain" class="w-100" src="." alt="img" />
-                </div>
-
-            </div>
+          
             <div class="mb-3 row">
                 <label asp-for="Category.DescriptionEnglish"></label>
                 <textarea class="form-control" rows="6" asp-for="Category.DescriptionEnglish" placeholder="Input Category Description...">

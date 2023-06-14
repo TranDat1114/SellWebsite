@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ namespace SellWebsite.Areas.Identity.Pages.Account
 
             //người dùng logout session được dọn sạch tránh lỗi ngớ ngẩn :3
             HttpContext.Session.Remove(SD.SessionCart);
+            HttpContext.Session.Remove(SD.SessionShopingCarts);
 
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)

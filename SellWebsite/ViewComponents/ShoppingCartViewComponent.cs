@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 using SellWebsite.DataAccess.Reponsitory.IReponsitory;
 using SellWebsite.Models.Models;
+using SellWebsite.Models.ViewModels.Customer;
 using SellWebsite.Utility;
 
 namespace SellWebsite.ViewComponents
@@ -21,26 +22,29 @@ namespace SellWebsite.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity!;
-            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim != null)
-            {
-                if (HttpContext.Session.GetInt32(SD.SessionCart) == null)
-                {
-                    HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
-                }
 
-            }
-            else
+            var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
+            var shoppingCarts = new List<ShoppingCart>();
+            if (sessionShopCart != null)
             {
-                var sessionShopCart = HttpContext.Session.GetString(SD.SessionShopingCarts);
-                var quantityOfProductInCart = 0;
-                if (sessionShopCart != null)
-                {
-                    var shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
-                    quantityOfProductInCart = shoppingCarts.Count();
-                }
-                HttpContext.Session.SetInt32(SD.SessionCart, quantityOfProductInCart);
+                shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
             }
+            var cartQuantity = shoppingCarts.Count();
+            if (claimIdentity.Name != null)
+            {
+                var listCart = _unitOfWork.ShoppingCart.GetAll().ToList();
+                foreach (var item in listCart)
+                {
+                    if (!shoppingCarts.Any(p => p.ProductId == item.ProductId))
+                    {
+                        cartQuantity += 1;
+                    }
+
+                }
+            }
+
+            HttpContext.Session.SetInt32(SD.SessionCart, cartQuantity);
+
             return View(HttpContext.Session.GetInt32(SD.SessionCart));
         }
     }

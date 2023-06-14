@@ -29,6 +29,7 @@ namespace SellWebsite.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            //Cộng dữ liệu đã thêm vào cart vào tài khoản người dùng sau khi đăng nhập
             var homeVM = new HomeVM()
             {
                 Products = _unitOfWork.Product.GetAll(includes: p => p.Categories!).ToList(),
@@ -86,19 +87,33 @@ namespace SellWebsite.Areas.Customer.Controllers
 
         public IActionResult AddToCart(int productId)
         {
-
             var claimIdentity = (ClaimsIdentity)User.Identity!;
+
+            var ShopCartString = HttpContext.Session.GetString(SD.SessionShopingCarts);
+
+            var shoppingCarts = new List<ShoppingCart>();
+
+            if (!string.IsNullOrEmpty(ShopCartString))
+            {
+                shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(ShopCartString);
+            }
+
             if (claimIdentity.Name != null)
             {
                 var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-                var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == productId);
 
-                if (cartFromDb != null)
+                shoppingCarts = _unitOfWork.ShoppingCart.GetAll().ToList();
+
+                var cart = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == productId);
+
+                if (cart != null)
                 {
                     //Logic nếu sản phẩm có rồi
-                    cartFromDb.Quantity += 1;
-                    _unitOfWork.ShoppingCart.Update(cartFromDb);
+                    cart.Quantity += 1;
+                    _unitOfWork.ShoppingCart.Update(cart);
                     _unitOfWork.Save();
+
+                    shoppingCarts.FirstOrDefault(p => p.CartId == cart.CartId).Quantity += 1;
 
                     //Sau kiểm tra sản phẩm có phải trang web hay không
                     //Nếu không thì cộng 
@@ -106,7 +121,7 @@ namespace SellWebsite.Areas.Customer.Controllers
                 }
                 else
                 {
-                    var cart = new ShoppingCart()
+                    cart = new ShoppingCart()
                     {
                         Product = _unitOfWork.Product.Get(x => x.Id == productId, p => p.Categories!),
                         ProductId = productId,
@@ -115,22 +130,18 @@ namespace SellWebsite.Areas.Customer.Controllers
                     _unitOfWork.ShoppingCart.Add(cart);
                     _unitOfWork.Save();
 
+                    shoppingCarts.Add(cart);
+
                     TempData["Success"] = "Add product to cart successful";
                 }
-                return Redirect(Request.Headers["Referer"].ToString());
             }
             else
             {
-                var ShopCartString = HttpContext.Session.GetString(SD.SessionShopingCarts);
-                var shoppingCarts = new List<ShoppingCart>();
-                if (!string.IsNullOrEmpty(ShopCartString))
-                {
-                    shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(ShopCartString);
-                }
-
                 if (shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId) != null)
                 {
                     shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId).Quantity += 1;
+
+                    TempData["Success"] = "Product allready in your cart";
                 }
                 else
                 {
@@ -144,12 +155,14 @@ namespace SellWebsite.Areas.Customer.Controllers
                     shoppingCarts.Add(cart);
                 }
 
-                HttpContext.Session.SetString(SD.SessionShopingCarts, JsonConvert.SerializeObject(shoppingCarts));
-
                 TempData["Success"] = "Add product to cart successful";
-                return Redirect(Request.Headers["Referer"].ToString());
             }
 
+            HttpContext.Session.SetString(SD.SessionShopingCarts, JsonConvert.SerializeObject(shoppingCarts, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            }));
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         public IActionResult Search(string query)
