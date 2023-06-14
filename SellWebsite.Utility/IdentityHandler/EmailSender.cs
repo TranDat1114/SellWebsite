@@ -27,7 +27,7 @@ namespace SellWebsite.Utility.IdentityHandler
             // Tạo đối tượng MailMessage
             var a = _config["Mail:SMTPHostName"];
             var mail = new MailMessage();
-            mail.From = new MailAddress("postmaster@sandbox2cd0e25e52cd4685b7600fdb2f60e884.mailgun.org", "PhuDat");
+            mail.From = new MailAddress(_config["Mail:UsernameSandBox"], "PhuDat");
             mail.To.Add(email);
             mail.Subject = subject;
             mail.Body = htmlMessage;
@@ -35,9 +35,9 @@ namespace SellWebsite.Utility.IdentityHandler
             // Cấu hình thông tin SMTP  
             SmtpClient smtpClient = new SmtpClient(_config["Mail:SMTPHostName"], Convert.ToInt32(_config["Mail:Port"]));
             //Ứng dụng thực tế
-            //smtpClient.Credentials = new NetworkCredential(_config["Mail:Username"], _config["Mail:Password"]);
+            smtpClient.Credentials = new NetworkCredential(_config["Mail:Username"], _config["Mail:Password"]);
             //Môi trường sandbox
-            smtpClient.Credentials = new NetworkCredential(_config["Mail:UsernameSandBox"], _config["Mail:PassSandBox"]);
+            //smtpClient.Credentials = new NetworkCredential(_config["Mail:UsernameSandBox"], _config["Mail:PassSandBox"]);
             //smtpClient.UseDefaultCredentials = true;
             smtpClient.EnableSsl = true;
 
