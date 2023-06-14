@@ -14,10 +14,10 @@ namespace SellWebsite.Utility.IdentityHandler
 {
     public class EmailSender : IEmailSender
     {
-        private readonly string key;
+        private readonly IConfiguration _config;
         public EmailSender(IConfiguration configuration)
         {
-            key = configuration["Mail:Password"]!;
+            _config = configuration;
         }
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
@@ -25,23 +25,26 @@ namespace SellWebsite.Utility.IdentityHandler
             #region Tạm thời chưa triển khai gửi email
             //Triển khai gửi mail ở đây
             // Tạo đối tượng MailMessage
+            var a = _config["Mail:SMTPHostName"];
+            var mail = new MailMessage();
+            mail.From = new MailAddress("postmaster@sandbox2cd0e25e52cd4685b7600fdb2f60e884.mailgun.org", "PhuDat");
+            mail.To.Add(email);
+            mail.Subject = subject;
+            mail.Body = htmlMessage;
 
-            //var mail = new MailMessage();
-            //mail.From = new MailAddress("jackandy249@gmail.com", "PhuDat");
-            //mail.To.Add(email);
-            //mail.Subject = subject;
-            //mail.Body = htmlMessage;
+            // Cấu hình thông tin SMTP  
+            SmtpClient smtpClient = new SmtpClient(_config["Mail:SMTPHostName"], Convert.ToInt32(_config["Mail:Port"]));
+            //Ứng dụng thực tế
+            //smtpClient.Credentials = new NetworkCredential(_config["Mail:Username"], _config["Mail:Password"]);
+            //Môi trường sandbox
+            smtpClient.Credentials = new NetworkCredential(_config["Mail:UsernameSandBox"], _config["Mail:PassSandBox"]);
+            //smtpClient.UseDefaultCredentials = true;
+            smtpClient.EnableSsl = true;
 
-            //// Cấu hình thông tin SMTP
-            //SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-            //smtpClient.UseDefaultCredentials = false;
-            //smtpClient.Credentials = new NetworkCredential("jackandy@gmail.com", key);
-            //smtpClient.EnableSsl = true;
-
-            //// Gửi email
-            //return smtpClient.SendMailAsync(mail);
+            // Gửi email
+            return smtpClient.SendMailAsync(mail);
             #endregion
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
 
         }
     }
