@@ -51,26 +51,26 @@ namespace SellWebsite.Utility.IdentityHandler
             //return smtpClient.SendMailAsync(mail);
             #endregion
 
-            var message = new MimeMessage();
+            //var message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress("Sender Name", _config["Mail:Username"]));
-            message.To.Add(new MailboxAddress("Receiver Name", email));
+            //message.From.Add(new MailboxAddress("Sender Name", _config["Mail:Username"]));
+            //message.To.Add(new MailboxAddress("Receiver Name", email));
 
-            message.Subject = subject;
-            message.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
-            {
-                Text = htmlMessage
-            };
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect(_config["Mail:SMTPHostName"], Convert.ToInt32(_config["Mail:Port"]), false);
+            //message.Subject = subject;
+            //message.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+            //{
+            //    Text = htmlMessage
+            //};
+            //using (var smtp = new SmtpClient())
+            //{
+            //    smtp.Connect(_config["Mail:SMTPHostName"], Convert.ToInt32(_config["Mail:Port"]), false);
 
-                // Note: only needed if the SMTP server requires authentication
-                smtp.Authenticate(_config["Mail:Username"], _config["Mail:Password"]);
+            //    // Note: only needed if the SMTP server requires authentication
+            //    smtp.Authenticate(_config["Mail:Username"], _config["Mail:Password"]);
 
-                smtp.Send(message);
-                smtp.Disconnect(true);
-            }
+            //    smtp.Send(message);
+            //    smtp.Disconnect(true);
+            //}
             return Task.CompletedTask;
 
         }
