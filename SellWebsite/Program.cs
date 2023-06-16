@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SellWebsite.Utility.IdentityHandler;
 using SellWebsite.Utility;
-using System.Net.Mail;
-using MailKit.Net.Smtp;
 using SellWebsite.DataAccess.DbInitializer;
 
 namespace SellWebsite
@@ -94,11 +92,9 @@ namespace SellWebsite
             //Initializer data ở đây
             void SeedDatas()
             {
-                using (var scope = app.Services.CreateScope())
-                {
-                    var dbInitilizer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-                    dbInitilizer.Initialize();
-                }
+                using var scope = app.Services.CreateScope();
+                var dbInitilizer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                dbInitilizer.Initialize();
             }
         }
 
