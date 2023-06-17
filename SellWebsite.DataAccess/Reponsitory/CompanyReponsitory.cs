@@ -12,10 +12,10 @@ namespace SellWebsite.DataAccess.Reponsitory
 {
     public class CompanyReponsitory : Reponsitory<Company>, ICompanyReponsitory
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public CompanyReponsitory(ApplicationDbContext db) : base(db)
         {
-           
+
             _db = db;
         }
 

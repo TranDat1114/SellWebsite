@@ -13,11 +13,14 @@ namespace SellWebsite.DataAccess.Reponsitory
 {
     public class ApplicationUserReponsitory : Reponsitory<ApplicationUser>, IApplicationUserReponsitory
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public ApplicationUserReponsitory(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
-
+        public void Update(ApplicationUser applicationUser)
+        {
+            _db.ApplicationUsers.Update(applicationUser);
+        }
     }
 }
