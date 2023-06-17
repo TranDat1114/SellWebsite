@@ -1,0 +1,10 @@
+﻿@model OrderHeader
+<div class="container-fluid">
+
+    @foreach (var item in Model.OrderDetails)
+    {
+        <p>@item.Id</p>
+    }
+
+</div>
+

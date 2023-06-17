@@ -1,23 +1,62 @@
 ﻿@model IEnumerable<Product>
 
 @if (Model != null && Model.Any())
-{        @foreach (var product in Model)
+{ @foreach (var product in Model)
     {
         <li class="dropdown-item">
-            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Detail" asp-route-id="@product.Id">
-                <div class="row g-3">
-                    <div class="col-5">
+            <div class="nav-link">
+                <div class="row ">
+                    <div class="col-6">
                         <img class="w-100" style="height:100px; object-fit:cover" src="@product.Image" alt="search img" />
                     </div>
-                    <div class="col-7">
-                        <p class="text-wrap"><strong>@product.Title</strong></p>
+                    <div class="col-6">
+                        <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Detail"
+                            asp-route-id="@product?.Id">
+                            <div class="row ">
+                                <div class="col-12">
+                                    <p class="text-truncate"><strong>@product.Title</strong></p>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-baseline">
+                                        <div class="text-nowrap">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                if (i < product!.Rating)
+                                                {
+                                                    <i class="fa-solid fa-star text-warning"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-star text-success"></i>
+                                                }
+                                            }
+                                        </div>
+                                        <p class="text-nowrap"><strong>@product?.Price.ToString("C",
+                                        System.Globalization.CultureInfo.CurrentCulture)</strong></p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
                     </div>
                 </div>
-            </a>
+                <div class="row">
+                    <div class="col-12">
+                        <a class="btn btn-outline-dark w-100" asp-action="AddToCart" asp-controller="Home" asp-area="Customer">
+                            Add to cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="dropdown-divider"></div>
         </li>
     }
 }
 else
 {
-    <li><div class="dropdown-item" style="height:100px;">No results found.</div></li>
+    <li>
+        <div class="dropdown-item" style="height:100px;">No results found.</div>
+    </li>
 }

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SellWebsite.Models.Models
 {
-
     [Table("Catagories")]
     public class Category
     {
@@ -19,7 +18,7 @@ namespace SellWebsite.Models.Models
         [Required]
         [MaxLength(128)]
         public string NameEnglish { get; set; } = string.Empty;
-               
+
         [Column("CategoryDescriptionEnglish", TypeName = "varchar(2048)")]
         [DisplayName("Category Description")]
         [MaxLength(2048)]

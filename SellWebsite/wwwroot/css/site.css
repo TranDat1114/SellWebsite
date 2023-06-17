@@ -1,8 +1,11 @@
-*{
-    font-family:'Quicksand Light'
+* {
+    font-family: 'Quicksand', sans-serif;
 }
-h1,h2,h3{
-    font-family:Montserrat
+
+h1,
+h2,
+h3 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 .scroll-table {
@@ -62,6 +65,7 @@ h1,h2,h3{
     color: #eee;
     background: #000;
 }
+
 /* Track */
 ::-webkit-scrollbar-track {
     background: #f0ad4e;
@@ -72,10 +76,10 @@ h1,h2,h3{
     background: #333;
 }
 
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #000;
-    }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #000;
+}
 
 .search-input-group {
     transition: width 0.5s ease-in-out
@@ -84,6 +88,7 @@ h1,h2,h3{
 .active {
     color: #f0ad4e !important;
 }
+
 .user-review {
     color: #4bbf73 !important;
 }

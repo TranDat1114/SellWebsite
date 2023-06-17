@@ -20,6 +20,7 @@ using SellWebsite.Utility.Helpers;
 
 using static System.Net.WebRequestMethods;
 using System.Linq;
+using SellWebsite.Models;
 
 namespace SellWebsite.Areas.Customer.Controllers
 {
@@ -60,7 +61,7 @@ namespace SellWebsite.Areas.Customer.Controllers
             {
                 var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-                if (listCarts.Count() > 0)
+                if (listCarts.Count > 0)
                 {
                     var listNewCart = new List<ShoppingCart>();
                     foreach (var item in listCarts)
@@ -77,7 +78,7 @@ namespace SellWebsite.Areas.Customer.Controllers
                             //Logic khi cần tăng thêm số lượng sản phẩm theo session vào database
                         }
                     }
-                    if (listNewCart.Count() > 0)
+                    if (listNewCart.Count > 0)
                     {
                         _unitOfWork.ShoppingCart.AddRange(listNewCart);
                         _unitOfWork.Save();
@@ -90,17 +91,17 @@ namespace SellWebsite.Areas.Customer.Controllers
                 listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
 
                 ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-                ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-                ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-                ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country;
-                ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
-                ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode;
-                ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+                ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber!;
+                ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City!;
+                ShoppingCartVM.OrderHeader.Country = ShoppingCartVM.OrderHeader.ApplicationUser.Country!;
+                ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State!;
+                ShoppingCartVM.OrderHeader.Zipcode = ShoppingCartVM.OrderHeader.ApplicationUser.Zipcode!;
+                ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress!;
                 ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
             }
 
-            ShoppingCartVM.Carts = listCarts;
-            ShoppingCartVM.OrderHeader.OrderTotal = (Double)listCarts.Sum(p => p.Product.Price * p.Quantity);
+            ShoppingCartVM.Carts = listCarts!;
+            ShoppingCartVM.OrderHeader.OrderTotal = (Double)listCarts!.Sum(p => p.Product.Price * p.Quantity);
 
             return View(ShoppingCartVM);
         }
@@ -185,34 +186,40 @@ namespace SellWebsite.Areas.Customer.Controllers
                 var apiContext = await PaypalGetAccessTokenHelper.GetPayPalAccessTokenAsync(_paypalSettings);
 
                 PayPalPaymentExecutedResponse executedPayment = await ExecutePaypalPaymentAsync(apiContext, id);
+                var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
                 if (executedPayment.payer.status == SD.PaypalVERIFIED)
                 {
-                    var listCarts = _unitOfWork.ShoppingCart.GetAll(p => p.ApplicationUserId == userId, x => x.Product).ToList();
-
-                    //Mua hàng xong thì clear cái giỏ hàng đi
-                    _unitOfWork.ShoppingCart.RemoveRange(listCarts);
-                    //Clear cả cái session mới thêm vào nữa :_) bug mò cả ngày mới ra
-                    HttpContext.Session.Remove(SD.SessionCart);
-
                     _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDate = DateTime.Now;
                     _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDueDate = DateTime.Now;
-                    _unitOfWork.Save();
                 }
                 else
                 {
                     _unitOfWork.OrderHeader.UpdateStatus(id, SD.PaymentRejected, SD.PaymentRejected);
                     _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDate = DateTime.Now;
                     _unitOfWork.OrderHeader.Get(p => p.Id == id).PaymentDueDate = DateTime.Now;
-                    _unitOfWork.Save();
                 }
+
+                //Mua hàng xong thì clear cái giỏ hàng đi
+                _unitOfWork.ShoppingCart.RemoveRange(listCarts);
+                _unitOfWork.Save();
+                //Clear cả cái session mới thêm vào nữa :_) bug mò cả ngày mới ra
+                HttpContext.Session.Remove(SD.SessionCart);
+
+                TempData["Success"] = $"Your payment is {executedPayment.payer.status}";
             }
             catch (Exception)
             {
                 ///
                 throw;
             }
-            return View(id);
+
+            OrderConfirmationVM orderConfirmationVM = new()
+            {
+                OrderHeader = _unitOfWork.OrderHeader.Get(p => p.Id == id),
+            };
+
+            return View(orderConfirmationVM);
         }
 
         #region Paypal
@@ -220,7 +227,7 @@ namespace SellWebsite.Areas.Customer.Controllers
         public async Task<PayPalPaymentCreatedResponse> CreatePaypalPaymentAsync(PayPalAccessToken accessToken, int orderId)
         {
             var httpUri = PaypalGetAccessTokenHelper.GetPaypalHttpClient();
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "v1/payments/payment");
+            HttpRequestMessage request = new(HttpMethod.Post, "v1/payments/payment");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.access_token);
 
             //https://localhost:7196/
@@ -265,7 +272,7 @@ namespace SellWebsite.Areas.Customer.Controllers
             var httpUri = PaypalGetAccessTokenHelper.GetPaypalHttpClient();
             var orderHeader = _unitOfWork.OrderHeader.Get(p => p.Id == orderId);
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"v1/payments/payment/{orderHeader.PaymentId}/execute");
+            HttpRequestMessage request = new(HttpMethod.Post, $"v1/payments/payment/{orderHeader.PaymentId}/execute");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.access_token);
 
             var payment = JObject.FromObject(new
@@ -344,7 +351,7 @@ namespace SellWebsite.Areas.Customer.Controllers
                 else
                 {
                     productInCart.Quantity -= 1;
-                    if (listCarts.Count() != 0)
+                    if (listCarts.Count != 0)
                     {
                         listCarts.FirstOrDefault(p => p.CartId == cartId).Quantity -= 1;
                     }
@@ -392,7 +399,7 @@ namespace SellWebsite.Areas.Customer.Controllers
                 else
                 {
                     productInCart.Quantity += 1;
-                    if (listCarts.Count() != 0)
+                    if (listCarts.Count != 0)
                     {
                         listCarts.FirstOrDefault(p => p.ProductId == productId && p.ApplicationUserId == "0").Quantity += 1;
                     }

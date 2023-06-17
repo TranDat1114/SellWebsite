@@ -65,7 +65,7 @@ namespace SellWebsite.DataAccess.DbInitializer
                     LockoutEnabled = false,
                 }, @"Iloveuzienoi1114@").GetAwaiter().GetResult();
 
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(p => p.Email == "dattranphu1114@gmail.com");
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(p => p.Email == "dattranphu1114@gmail.com")!;
 
                 _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
 

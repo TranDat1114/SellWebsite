@@ -17,6 +17,8 @@ namespace SellWebsite.Models.Models
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
+        [ValidateNever]
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
 
         public DateTime OrderTime { get; set; }
         public DateTime ShipingDate { get; set; }

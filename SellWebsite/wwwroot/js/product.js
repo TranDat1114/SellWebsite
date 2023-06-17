@@ -17,16 +17,7 @@ function loadDataTable() {
             },
             { data: 'Title' },
             { data: 'Author' },
-            {
-                data: 'Description',
-                "render": function (data) {
-                    return `
-                     <td style="max-width:300px">
-                        <p class="text-truncate">${data}</p>
-                    </td>
-                    `
-                }
-            },
+            { data: 'Description', "width": "50%" },
             { data: 'CreatedDate' },
             { data: 'UpdatedDate' },
             { data: 'License' },
@@ -36,7 +27,7 @@ function loadDataTable() {
             { data: 'DownloadUrl' },
             { data: 'Price' },
             { data: 'PostsBy' },
-            {data: 'Rating'},
+            { data: 'Rating' },
             {
                 data: 'Categories',
                 "render": function (data) {

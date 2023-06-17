@@ -39,7 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\assets\Images\categories\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
