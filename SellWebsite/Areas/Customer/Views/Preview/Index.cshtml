@@ -11,10 +11,10 @@
     }
     else
     {
-        <div class="row justify-content-between text-center align-middle"
-             id="OptionsBar">
+        <div class="row justify-content-between text-center align-middle" id="OptionsBar">
             <div class="col-12 col-md-3">
-                <a class="btn-outline-success btn" asp-area="Customer" asp-controller="Home" asp-action="Index">Back to home</a>
+                <a class="btn-outline-success btn" asp-area="Customer" asp-controller="Home" asp-action="Index">Back to
+                    home</a>
             </div>
             <div class="col-12 col-md-3">
                 <button class="btn btn-primary w-100" onclick="ChangeToPhone()">
@@ -34,10 +34,7 @@
         </div>
         <hr class="my-3" />
         <div class="d-flex justify-content-center">
-            <iframe class="iframe-class min-vh-100"
-                    id="Preview"
-                    src="@Model.PreviewUrl"
-                    title="WebPreview"></iframe>
+            <iframe class="iframe-class min-vh-100" id="Preview" src="@Model.PreviewUrl" title="WebPreview"></iframe>
         </div>
 
     }
