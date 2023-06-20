@@ -15,7 +15,7 @@ namespace SellWebsite.DataAccess.Reponsitory
     public class CategoryReponsitory : Reponsitory<Category>, ICategoryReponsitory
     {
         //Như trên
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         //db nhận được dựa trên lớp kế thừa Reponsitory<Category>
         public CategoryReponsitory(ApplicationDbContext db) : base(db)
         {

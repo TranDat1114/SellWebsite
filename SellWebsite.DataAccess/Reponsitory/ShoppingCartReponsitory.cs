@@ -13,7 +13,7 @@ namespace SellWebsite.DataAccess.Reponsitory
 {
     public class ShoppingCartReponsitory : Reponsitory<ShoppingCart>, IShoppingCartReponsitory
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public ShoppingCartReponsitory(ApplicationDbContext db) : base(db)
         {
             _db = db;

@@ -17,7 +17,7 @@ namespace SellWebsite.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -276,7 +276,7 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Catagories", (string)null);
+                    b.ToTable("Catagories");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.Company", b =>
@@ -308,7 +308,7 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.OrderDetail", b =>
@@ -337,7 +337,7 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.OrderHeader", b =>
@@ -420,7 +420,7 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("OrderHeaders", (string)null);
+                    b.ToTable("OrderHeaders");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.Product", b =>
@@ -514,7 +514,7 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.ShoppingCart", b =>
@@ -543,7 +543,7 @@ namespace SellWebsite.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("SellWebsite.Models.Models.ApplicationUser", b =>
@@ -641,7 +641,7 @@ namespace SellWebsite.DataAccess.Migrations
             modelBuilder.Entity("SellWebsite.Models.Models.OrderDetail", b =>
                 {
                     b.HasOne("SellWebsite.Models.Models.OrderHeader", "OrderHeader")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -685,6 +685,11 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SellWebsite.Models.Models.OrderHeader", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,7 +12,7 @@ using SellWebsite.DataAccess.Data;
 namespace SellWebsite.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230613231040_demo_1")]
+    [Migration("20230618003106_demo_1")]
     partial class demo_1
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace SellWebsite.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -644,7 +644,7 @@ namespace SellWebsite.DataAccess.Migrations
             modelBuilder.Entity("SellWebsite.Models.Models.OrderDetail", b =>
                 {
                     b.HasOne("SellWebsite.Models.Models.OrderHeader", "OrderHeader")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -688,6 +688,11 @@ namespace SellWebsite.DataAccess.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SellWebsite.Models.Models.OrderHeader", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

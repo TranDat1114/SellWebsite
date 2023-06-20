@@ -29,7 +29,7 @@ namespace SellWebsite.ViewComponents
             {
                 shoppingCarts = JsonConvert.DeserializeObject<List<ShoppingCart>>(HttpContext.Session.GetString(SD.SessionShopingCarts));
             }
-            var cartQuantity = shoppingCarts.Count();
+            var cartQuantity = shoppingCarts.Count;
             if (claimIdentity.Name != null)
             {
                 var listCart = _unitOfWork.ShoppingCart.GetAll().ToList();

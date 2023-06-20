@@ -32,6 +32,13 @@ namespace SellWebsite.Areas.Admin.Controllers
             return Json(new { data = orderHeaders });
         }
 
+        [HttpGet]
+        public IActionResult GetOrderDetail(int? idOrder)
+        {
+            List<OrderDetail> orderDetails = _unitOfWork.OrderDetail.GetAll(filter: p => p.OrderHeaderId == idOrder).ToList();
+            return Json(new { data = orderDetails });
+        }
+
         #endregion
     }
 }

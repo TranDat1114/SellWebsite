@@ -13,7 +13,7 @@ namespace SellWebsite.DataAccess.Reponsitory
 {
     public class OrderDetailReponsitory : Reponsitory<OrderDetail>, IOrderDetailReponsitory
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
         public OrderDetailReponsitory(ApplicationDbContext db) : base(db)
         {
             _db = db;

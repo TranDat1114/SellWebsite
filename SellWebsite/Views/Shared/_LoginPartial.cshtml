@@ -1,27 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a id="manage" class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello
+                @UserManager.GetUserName(User)!</a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })">
                 <button id="logout" type="submit" class="btn-solid-sm text-uppercase text-nowrap">Log out</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
             <a class="nav-link text-nowrap" id="login" asp-area="Identity" asp-page="/Account/Login">Log in</a>
-    </li>
+        </li>
         <li class="nav-item">
             <a class="btn-solid-sm text-nowrap" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
-}
+    }
 </ul>

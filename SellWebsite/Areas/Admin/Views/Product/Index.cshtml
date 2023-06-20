@@ -1,5 +1,4 @@
-﻿
-<div class="container">
+﻿<div class="container">
     <div class="row">
         <div class="col-12 col-md-6">
             <h2 class="text-primary">
@@ -39,7 +38,6 @@
                     <th class="text-nowrap">
                         Updated Date
                     </th>
-
                     <th class="text-nowrap">
                         Product License
                     </th>
@@ -131,14 +129,17 @@
                 </td>
 
                 <td>
-                <img style="width:100px; object-fit:contain; object-position:center" class="m-auto" src="@item.Image" alt="CategoryIMG" />
+                <img style="width:100px; object-fit:contain; object-position:center" class="m-auto" src="@item.Image"
+                alt="CategoryIMG" />
                 </td>
 
                 <td>
-                <a class="btn btn-primary text-nowrap" asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
+                <a class="btn btn-primary text-nowrap" asp-controller="Product" asp-action="Upsert"
+                asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
                 </td>
                 <td>
-                <a class="btn btn-danger text-nowrap" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3-fill"></i> Delete</a>
+                <a class="btn btn-danger text-nowrap" asp-controller="Product" asp-action="Delete"
+                asp-route-id="@item.Id"><i class="bi bi-trash3-fill"></i> Delete</a>
                 </td>
                 </tr>
                 }*@
@@ -149,6 +150,6 @@
 
 
 @section Scripts{
-    <script src="~/js/product.js"></script>
-    <script src="~/js//DeleteByAPI.js"></script>
+    <script src="~/js/product.js" asp-append-version="true"></script>
+    <script src="~/js//DeleteByAPI.js" asp-append-version="true"></script>
 }

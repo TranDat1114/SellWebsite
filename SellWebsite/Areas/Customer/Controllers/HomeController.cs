@@ -113,7 +113,7 @@ namespace SellWebsite.Areas.Customer.Controllers
                     _unitOfWork.ShoppingCart.Update(cart);
                     _unitOfWork.Save();
 
-                    shoppingCarts.FirstOrDefault(p => p.CartId == cart.CartId).Quantity += 1;
+                    shoppingCarts.FirstOrDefault(p => p.CartId == cart.CartId)!.Quantity += 1;
 
                     //Sau kiểm tra sản phẩm có phải trang web hay không
                     //Nếu không thì cộng 
@@ -121,12 +121,12 @@ namespace SellWebsite.Areas.Customer.Controllers
                 }
                 else
                 {
-                    cart = new ShoppingCart()
+                    cart = new ShoppingCart
                     {
                         Product = _unitOfWork.Product.Get(x => x.Id == productId, p => p.Categories!),
                         ProductId = productId,
+                        ApplicationUserId = userId
                     };
-                    cart.ApplicationUserId = userId;
                     _unitOfWork.ShoppingCart.Add(cart);
                     _unitOfWork.Save();
 
@@ -137,9 +137,9 @@ namespace SellWebsite.Areas.Customer.Controllers
             }
             else
             {
-                if (shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId) != null)
+                if (shoppingCarts?.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId) != null)
                 {
-                    shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId).Quantity += 1;
+                    shoppingCarts.FirstOrDefault(p => p.ApplicationUserId == "0" && p.ProductId == productId)!.Quantity += 1;
 
                     TempData["Success"] = "Product allready in your cart";
                 }
@@ -152,7 +152,7 @@ namespace SellWebsite.Areas.Customer.Controllers
                         ApplicationUserId = "0",
                         Quantity = 1,
                     };
-                    shoppingCarts.Add(cart);
+                    shoppingCarts?.Add(cart);
                 }
 
                 TempData["Success"] = "Add product to cart successful";
@@ -168,7 +168,7 @@ namespace SellWebsite.Areas.Customer.Controllers
         public IActionResult Search(string query)
         {
             // Perform the search based on the query
-            var searchResults = _unitOfWork.Product.GetAll(p => p.Title.Contains(query)).ToList();
+            var searchResults = _unitOfWork.Product.GetAll(p => p.Title.Contains(query)).Take(5).ToList();
 
             // Return the partial view with the search results
             return PartialView("_SearchResults", searchResults);

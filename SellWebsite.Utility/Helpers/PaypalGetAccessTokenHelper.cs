@@ -35,7 +35,7 @@ namespace SellWebsite.Utility.Helpers
 
             byte[] bytes = Encoding.GetEncoding("iso-8859-1").GetBytes($"{clientId}:{secret}");
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/v1/oauth2/token");
+            HttpRequestMessage request = new(HttpMethod.Post, "/v1/oauth2/token");
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(bytes));
 
             var form = new Dictionary<string, string>
@@ -53,6 +53,6 @@ namespace SellWebsite.Utility.Helpers
         }
 
 
-       
+
     }
 }
